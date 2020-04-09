@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -17,12 +18,15 @@ public class Edificio {
 	private Long id;
 
 	private String portal;
+	
+	@ManyToOne
+	private Urbanizacion pertenece;
 
 	@OneToMany(mappedBy = "vive")
 	private Collection<Vecino> vecinos;
 
 	// ======================
-	
+
 	public Edificio() {
 		super();
 		this.vecinos = new ArrayList<Vecino>();
@@ -36,7 +40,7 @@ public class Edificio {
 	}
 
 	// ======================
-	
+
 	public Long getId() {
 		return id;
 	}
