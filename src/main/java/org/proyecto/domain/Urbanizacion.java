@@ -22,16 +22,23 @@ public class Urbanizacion {
 	@OneToMany(mappedBy = "pertenece")
 	private Collection<Edificio> edificios;
 	
+	@OneToMany(mappedBy = "corresponde")
+	private Collection<ZonaComun> zonasComunes;
+	
 	//=========================================
 	
 	public Urbanizacion(String nombre) {
 		this.nombre = nombre;
 		this.edificios = new ArrayList<Edificio>();
+		this.zonasComunes = new ArrayList<ZonaComun>();
 	}
 	
 	public Urbanizacion() {
 		this.edificios = new ArrayList<>();
+		this.zonasComunes = new ArrayList<ZonaComun>();
 	}
+
+	//=========================================
 
 	public Long getId() {
 		return id;
@@ -56,7 +63,13 @@ public class Urbanizacion {
 	public void setEdificios(Collection<Edificio> edificios) {
 		this.edificios = edificios;
 	}
-	
-	
+
+	public Collection<ZonaComun> getZonasComunes() {
+		return zonasComunes;
+	}
+
+	public void setZonasComunes(Collection<ZonaComun> zonasComunes) {
+		this.zonasComunes = zonasComunes;
+	}
 	
 }
