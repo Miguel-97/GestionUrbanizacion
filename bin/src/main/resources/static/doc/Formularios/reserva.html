@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+  <form name="miForm">
+    <h4>Introduce datos de la reserva:</h4>
+    Zona a reservar<select name="zona" id="">
+      <option value="">Pistas disponibles</option>
+    </select><br>
+    Fecha: <input type="date" name="fecha"> <br>
+    Duracion:<select name="ini" id="">
+      <option value="1">30min</option>
+      <option value="2">60min</option>
+      <option value="n">tiempo max</option>
+    </select><br>
+    Hora inicio: <select name="ini" id="">
+      <option value="0">Hora apertura zona</option>
+      <option value="1">Hora apertura zona(+30min)</option>
+      <option value="n-1">Hora cierre zona(-30min)</option>
+    </select> <br>
+    <input type="button" value="Confirmar" name="confirmar">
+    <input type="reset" value="Limpiar" name="limpiar">
+    <h4>Datos completos:</h4>
+    <textArea name="datos"></textarea>
+    <br>
+
+  </form>
+</body>
+
+</html>

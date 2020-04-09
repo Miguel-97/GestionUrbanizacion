@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+  <form name="miForm">
+    <h4>Introduce datos de la zona comun:</h4>
+    Nombre: <input type="text" name="nombre"> <br>
+    Horario: <input type="text" name="horario"> <br>
+    Tiempo Max: <input type="number" name="tiempoMax" required="false" min="30" step="30"> <br>
+    Aforo Max: <input type="text" name="aforoMax" required="false" min="1"> <br>
+    <br>
+    <input type="button" value="Confirmar" name="confirmar">
+    <input type="reset" value="Limpiar" name="limpiar">
+    <h4>Datos completos:</h4>
+    <textArea name="datos"></textarea>
+    <br>
+
+  </form>
+  <script src="zona.js"></script>
+</body>
+
+</html>
