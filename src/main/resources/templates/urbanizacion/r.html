@@ -1,0 +1,26 @@
+<div class="container">
+
+	<h1>Lista de Urbanizaciones</h1>
+	<br/>
+	<a href="/urbanizacion/c"><button class="btn btn-dark">Nueva Urbanización</button></a>
+	<a href="/"><button class="btn btn-dark">Volver</button></a>
+	<br/><br/>
+	<table class="table table-lm table-striped table-hover">
+		<tr>
+			<th>Nombre</th>
+			<th>Acción</th>
+		</tr>
+		<tr th:each="urbanizacion:${urbanizaciones}">
+			<td th:text="${urbanizacion.nombre}"></td>
+			<td class="form-inline">
+				<form action="/urbanizacion/d" method="post">
+					<input type="hidden" name="id" th:value="${urbanizacion.id}">
+					<button onclick="submit()" class="btn btn-light">
+						<img src="/img/trash.png" width="20" height="20">
+					</button>
+				</form>
+			</td>
+		</tr>
+	</table>
+
+</div>
