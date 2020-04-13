@@ -13,12 +13,12 @@ public class Vecino {
 	private String id;
 
 	private String nombre;
-
+	
 	@Column(unique = true)
 	private String username;
 
 	private String password;
-
+	
 	@Column(unique = true)
 	private String email;
 
@@ -26,26 +26,17 @@ public class Vecino {
 	private Edificio vive;
 
 	// ======================
-
+	
 	public Vecino() {
 		super();
 	}
 
-	public Vecino(String id, String username, String password) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		
-	}
-
 	public Vecino(String nombre, String email, Edificio vive) {
 		super();
-		this.nombre = nombre;
+		this.nombre = nombre;	
 		this.email = email;
 		this.vive = vive;
 	}
-
 	public Vecino(String nombre, String username, String password, String email, Edificio vive) {
 		super();
 		this.nombre = nombre;
@@ -54,8 +45,12 @@ public class Vecino {
 		this.email = email;
 		this.vive = vive;
 	}
-
+	
 	// ======================
+
+	
+
+
 
 	public String getId() {
 		return id;
