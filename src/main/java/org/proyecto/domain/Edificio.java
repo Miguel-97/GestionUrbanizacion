@@ -27,8 +27,7 @@ public class Edificio {
 
 	@ManyToOne
 	private Urbanizacion pertenece;
-	//Coleccion vecinos
-	
+
 	@OneToMany(mappedBy = "vive")
 	private Collection<Vecino> vecinos;
 

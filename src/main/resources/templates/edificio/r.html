@@ -17,6 +17,7 @@
 		</tr>
 
 		<tr th:each="edificio:${edificios}">
+			<td th:text="${edificio.pertenece?.nombre}"></td>
 			<td th:text="${edificio.portal}"></td>
 			<td th:text="${edificio.pisos}"></td>
 			<td th:text="${edificio.puertasXpiso}"></td>

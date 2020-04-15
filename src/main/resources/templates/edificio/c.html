@@ -4,19 +4,18 @@
 		<button>Cancelar</button>
 	</a>
 
-	<form method="post" action="/edificio/r" class="form">
+	<form method="post" action="/edificio/c" class="form">
 
-		Urbanizacion <select name="urbaId ">
+		Urbanizacion <select name="urbaId">
 			<option th:each="urbanizacion:${urbanizaciones}"
 				th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}"></option>
 		</select><br> Portal <input type="text" name="portal"><br>
 		Pisos <input type="number" name="pisos"><br> Puertas por
-		piso <input type="number" name="puertasXpiso"> <br><label>&nbsp;&nbsp;&nbsp;&nbsp;Denominación</label>
-		<label for="letra">Letras</label><input type="radio" name="denominacion"
-			value="l" id="letra">
-		<label for="numero">Números</label><input type="radio" name="denominacion" 
-			value="n" id="numero">
-				<br>
-				<input type="submit" class="form-item" />
+		piso <input type="number" name="puertasXpiso"> <br> <label>&nbsp;&nbsp;&nbsp;&nbsp;Denominación</label>
+		<label for="letra">Letras</label><input type="radio"
+			name="denominacion" value="letras" id="letra"> <label
+			for="numero">Números</label><input type="radio" name="denominacion"
+			value="numeros" id="numero"> <br> <input type="submit"
+			class="form-item" />
 	</form>
 </div>

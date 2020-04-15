@@ -1,0 +1,21 @@
+<div class="container">
+	<h1>Lista de Vecinos</h1>
+	<a href="/">
+		<button>Cancelar</button>
+	</a>
+
+	<table class="table table-striped">
+		<tr>
+			<th>Edificio</th>
+			<th>Nombre de usuario</th>
+			<th>Contraseña</th>
+		</tr>
+
+		<tr th:each="vecino:${vecinos}">
+			<td th:text="${vecino.vive?.portal}"></td>
+			<td th:text="${vecino.username}"></td>
+			<td th:text="${vecino.password}"></td>
+		</tr>
+
+	</table>
+</div>

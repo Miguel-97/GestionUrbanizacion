@@ -1,5 +1,6 @@
 package org.proyecto.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,15 +15,13 @@ public class Vecino {
 
 	private String nombre;
 
-	@Column(unique = true)
 	private String username;
 
 	private String password;
 
-	@Column(unique = true)
 	private String email;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Edificio vive;
 
 	// ======================
@@ -36,23 +35,6 @@ public class Vecino {
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		
-	}
-
-	public Vecino(String nombre, String email, Edificio vive) {
-		super();
-		this.nombre = nombre;
-		this.email = email;
-		this.vive = vive;
-	}
-
-	public Vecino(String nombre, String username, String password, String email, Edificio vive) {
-		super();
-		this.nombre = nombre;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.vive = vive;
 	}
 
 	// ======================

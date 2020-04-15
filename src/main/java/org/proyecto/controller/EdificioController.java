@@ -40,60 +40,65 @@ public class EdificioController {
 	}
 
 	@PostMapping("c")
-	public void crearPost(@RequestParam("portal") String portal, @RequestParam("pisos") Integer pisos,
+	public String crearPost(@RequestParam("portal") String portal, @RequestParam("pisos") Integer pisos,
 			@RequestParam("puertasXpiso") Integer puertasXpiso, @RequestParam("denominacion") String denominacion,
-			@RequestParam(value = "urbaId", required = false) Long urbaId, HttpSession s)
-			throws DangerException, InfoException {
+			@RequestParam("urbaId") Long urbaId) throws DangerException, InfoException {
 		try {
 			Edificio edificio = new Edificio(portal, pisos, puertasXpiso, denominacion);
+			if (urbaId != null) {
+				Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
 
-			Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
-			urbanizacion.getEdificios().add(edificio);
-			edificio.setPertenece(urbanizacion);
+				urbanizacion.getEdificios().add(edificio);
+				edificio.setPertenece(urbanizacion);
 
-			// TODO C vecinos
+				// TODO C vecinos Genera tantos edificios como vecinos hay
 
-			ArrayList<Character> letras = new ArrayList<Character>();
-			for (int i = 0; i < puertasXpiso; i++) {
-				letras.add((char) (65 + i));
-			}
-			ArrayList<Vecino> vecindad = new ArrayList<Vecino>();
-			for (int j = 0; j < pisos; j++) {
+				ArrayList<Character> letras = new ArrayList<Character>();
 				for (int i = 0; i < puertasXpiso; i++) {
-					if (denominacion == "l") {
-						String id = urbanizacion.getNombre() + "_" + edificio.getPortal() + "_" + j + "_"
-								+ letras.get(i);
-						String username = urbanizacion.getNombre() + "_" + edificio.getPortal() + "_" + j + "_"
-								+ letras.get(i);
-						String password = "aleatoria";
-						Vecino vecino = new Vecino(id, username, password);
-						vecino.setVive(edificio);
-						vecindad.add(vecino);
-						repoVecino.save(vecino);
-					} else if (denominacion == "n") {
-						String id = urbanizacion.getNombre() + "_" + edificio.getPortal() + "_" + j + "_" + i;
-						String username = urbanizacion.getNombre() + "_" + edificio.getPortal() + "_" + j + "_" + i;
-						String password = "aleatoria";
-						Vecino vecino = new Vecino(id, username, password);
-						vecino.setVive(edificio);
-						vecindad.add(vecino);
-						repoVecino.save(vecino);
-					} else {
-						PRG.error("Error al crear algun vecino con la denominacion " + denominacion, "/edificio/c");
+					letras.add((char) (65 + i));
+				}
+
+				for (int j = 0; j < pisos; j++) {
+					for (int i = 0; i < puertasXpiso; i++) {
+						//No se por que no me entra en el if, salta al else, y en teoria le llega la denominacion, pero aun asi, no entra en el if
+						if (denominacion == "numeros") {
+							String id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
+							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
+									+ i;
+							String password = "aleatoria";
+							Vecino vecino = new Vecino(id, username, password);
+
+							vecino.setVive(edificio);
+							edificio.getVecinos().add(vecino);
+							repoVecino.save(vecino);
+
+						} else {
+							String id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
+							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
+									+ letras.get(i);
+							String password = "aleatoria";
+							Vecino vecino = new Vecino(id, username, password);
+
+							vecino.setVive(edificio);
+							edificio.getVecinos().add(vecino);
+							repoVecino.save(vecino);
+						}
 					}
 				}
+				// Fin C Vecinos
+
 			}
-			// Fin C Vecinos
-			
-			
-			edificio.setVecinos(vecindad);
+
 			repoEdificio.save(edificio);
+
 		} catch (Exception e) {
 			PRG.error("Edificio duplicado", "/edificio/c");
 		}
+
 		PRG.info("Edificio creado correctamente", "/edificio/r");
+
+		return "redirect:/edificio/r";
 	}
-	
 
 	@GetMapping("r")
 	public String r(ModelMap m) {
