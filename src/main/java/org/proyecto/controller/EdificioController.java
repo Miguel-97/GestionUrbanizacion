@@ -63,8 +63,7 @@ public class EdificioController {
 						//No se por que no me entra en el if, salta al else, y en teoria le llega la denominacion, pero aun asi, no entra en el if
 						if (denominacion == "numeros") {
 							String id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
-							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
-									+ i;
+							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
 							String password = "aleatoria";
 							Vecino vecino = new Vecino(id, username, password);
 
@@ -74,8 +73,7 @@ public class EdificioController {
 
 						} else {
 							String id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
-							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
-									+ letras.get(i);
+							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
 							String password = "aleatoria";
 							Vecino vecino = new Vecino(id, username, password);
 
