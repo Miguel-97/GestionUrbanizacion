@@ -54,7 +54,7 @@
   margin: 0px; 
   padding: 0px; 
   box-sizing: border-box;
-  overflow: hidden;
+  
 }
 
 body, html {
@@ -67,12 +67,13 @@ a {
   font-family: Poppins-Regular;
   font-size: 14px;
   line-height: 1.7;
-  color: #666666;
+  color: white;
   margin: 0px;
   transition: all 0.4s;
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
+  align: center;
 }
 
 a:focus {
@@ -207,20 +208,17 @@ iframe {
 
 .container-contact100 {
   width: 100%;  
-  min-height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   background: #f2f2f2;
   max-width: 100%;
   position: relative;
   background: linear-gradient(to right, blue, green);
-  padding-top: 80px;
   padding-right: 80px;
   
       

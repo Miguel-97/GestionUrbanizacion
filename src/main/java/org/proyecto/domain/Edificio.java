@@ -3,7 +3,6 @@ package org.proyecto.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +28,7 @@ public class Edificio {
 	@ManyToOne
 	private Urbanizacion pertenece;
 
-	@OneToMany(mappedBy = "vive", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(mappedBy = "vive")
 	private Collection<Vecino> vecinos;
 
 	// ======================
