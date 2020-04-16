@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Urbanización</title>
+	<title>Login</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -15,6 +15,14 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="../../static/vendor/animate/animate.css">
 <!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="../../static/css/util.css">
 	<link rel="stylesheet" type="text/css" href="../../static/css/main.css">
 <!--===============================================================================================-->
@@ -24,16 +32,22 @@
 
 	<div class="container-contact100">
 		<div class="wrap-contact100">
-			<form action="/urbanizacion/c" method="post" class="contact100-form validate-form">
+
+			<form class="contact100-form validate-form">
 				<span class="contact100-form-title">
-					Nueva Urbanización
-					<img id="logo" src="../../static/img/LogoPagina.png" width="15%" height="25%">
+					Introduce los credenciales para entrar a tu comunidad.
 				</span>
 
 
 				<div class="wrap-input100 validate-input" data-validate="Nombre requerido">
-					<label class="label-input100" for="nombre">Nombre</label>
+					<label class="label-input100" for="name">Nombre</label>
 					<input id="nombre" class="input100" type="text" name="nombre" >
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate="Contraseña requerida">
+					<label class="label-input100" for="contraseña">contraseña</label>
+					<input id="contraseña" class="input100" type="password" name="contraseña" >
 					<span class="focus-input100"></span>
 				</div>
 
@@ -43,21 +57,22 @@
 
 				<div class="container-contact100-form-btn">
 					<button class="contact100-form-btn">
-						Crear
+						Entrar
 					</button>
 				</div>
 
 				
-			<div class="container-contact100-form-btn">
-					<a href="/urbanizacion/r"><button class="contact100-form-btn">
-						Volver
-					</button><a/>
+				
+				<div class="container-contact100-form-btn">
+					<a href="#">Olvidaste tu contraseña?</a>
 				</div>
+
+				
 			</form>
 
+			<img id="login" src="../../static/img/LogoPagina.png" width="20%" height="20%">
 
-			<!-- <div class="contact100-more flex-col-c-m" style="background-image: url('images/bg-01.jpg');"> -->
-			</div>
+			
 		</div>
 	</div>
 
@@ -72,6 +87,11 @@
 <!--===============================================================================================-->
 	<script src="../../static/vendor/bootstrap/js/popper.js"></script>
 	<script src="../../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../../static/vendor/daterangepicker/moment.min.js"></script>
+	<script src="../../static/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="../../static/vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="../../static/js/main.js"></script>
 	

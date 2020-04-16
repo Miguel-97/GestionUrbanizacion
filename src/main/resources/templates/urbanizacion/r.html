@@ -1,3 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Lista de Urbanizaciones</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="../../static/img/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../static/css/util.css">
+	<link rel="stylesheet" type="text/css" href="../../static/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+
 <div class="container">
 
 	<h1>Lista de Urbanizaciones</h1>
@@ -14,7 +38,7 @@
 			<td th:text="${urbanizacion.nombre}"></td>
 			<td class="form-inline">
 				<form action="/urbanizacion/d" method="post">
-					<input type="hidden" name="id" th:value="${urbanizacion.id}">
+					<input type="hidden" name="urbaId" th:value="${urbanizacion.id}">
 					<button onclick="submit()" class="btn btn-light">
 						<img src="/img/trash.png" width="20" height="20">
 					</button>
@@ -24,3 +48,21 @@
 	</table>
 
 </div>
+
+
+
+
+
+<!--===============================================================================================-->
+	<script src="../../static/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../../static/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../../static/vendor/bootstrap/js/popper.js"></script>
+	<script src="../../static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	
+	<script src="../../static/js/main.js"></script>
+	
+</body>
+</html>
