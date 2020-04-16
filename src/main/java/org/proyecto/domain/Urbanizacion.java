@@ -2,6 +2,8 @@ package org.proyecto.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,11 +20,10 @@ public class Urbanizacion {
 	
 	@Column(unique = true)
 	private String nombre;
-	
-	@OneToMany(mappedBy = "pertenece")
+	@OneToMany(mappedBy = "pertenece", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<Edificio> edificios;
 	
-	@OneToMany(mappedBy = "corresponde")
+	@OneToMany(mappedBy = "corresponde", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<ZonaComun> zonasComunes;
 	
 	//=========================================
