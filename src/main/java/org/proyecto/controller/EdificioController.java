@@ -11,6 +11,7 @@ import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
+import org.proyecto.helper.helper;
 import org.proyecto.repository.EdificioRepository;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.VecinoRepository;
@@ -44,55 +45,45 @@ public class EdificioController {
 			@RequestParam("puertasXpiso") Integer puertasXpiso, @RequestParam("denominacion") String denominacion,
 			@RequestParam("urbaId") Long urbaId) throws DangerException, InfoException {
 		try {
-			Edificio edificio = new Edificio(portal, pisos, puertasXpiso, denominacion);
-			if (urbaId != null) {
-				Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
+			Edificio edificio = new Edificio(portal, pisos, puertasXpiso);
+			Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
 
-				urbanizacion.getEdificios().add(edificio);
-				edificio.setPertenece(urbanizacion);
-
-				// TODO C vecinos Genera tantos edificios como vecinos hay
-
-				ArrayList<Character> letras = new ArrayList<Character>();
-				for (int i = 0; i < puertasXpiso; i++) {
-					letras.add((char) (65 + i));
-				}
+			urbanizacion.getEdificios().add(edificio);
+			edificio.setPertenece(urbanizacion);
+			try {
+				ArrayList<Character> letras = helper.denomPuerta(puertasXpiso);
+				String id = "", username = "", password = "";
 
 				for (int j = 0; j < pisos; j++) {
 					for (int i = 0; i < puertasXpiso; i++) {
-						//No se por que no me entra en el if, salta al else, y en teoria le llega la denominacion, pero aun asi, no entra en el if
-						if (denominacion == "numeros") {
-							String id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
-							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
-									+ i;
-							String password = "aleatoria";
-							Vecino vecino = new Vecino(id, username, password);
+						if (denominacion.equals("numeros")) {
+							id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
+							username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + (i + 1);
+							password = helper.generadorPassword();
 
-							vecino.setVive(edificio);
-							edificio.getVecinos().add(vecino);
-							repoVecino.save(vecino);
+						} else if (denominacion.equals("letras")) {
+							id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
+							username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
+							password = helper.generadorPassword();
 
-						} else {
-							String id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
-							String username = "Vecino_" + urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
-									+ letras.get(i);
-							String password = "aleatoria";
-							Vecino vecino = new Vecino(id, username, password);
-
-							vecino.setVive(edificio);
-							edificio.getVecinos().add(vecino);
-							repoVecino.save(vecino);
 						}
+						Vecino vecino = new Vecino(id, username, password);
+
+						vecino.setVive(edificio);
+						edificio.getVecinos().add(vecino);
+						repoVecino.save(vecino);
 					}
 				}
-				// Fin C Vecinos
-
+			} catch (Exception e) {
+				PRG.error("Vecino no creado", "/edificio/c");
 			}
-
 			repoEdificio.save(edificio);
 
-		} catch (Exception e) {
-			PRG.error("Edificio duplicado", "/edificio/c");
+		} catch (
+
+		Exception e) {
+
+			PRG.error("Edificio no creado", "/edificio/c");
 		}
 
 		PRG.info("Edificio creado correctamente", "/edificio/r");
@@ -106,6 +97,21 @@ public class EdificioController {
 		m.put("edificios", edificios);
 		m.put("view", "/edificio/r");
 		return "/_t/frame";
+	}
+
+	// =========================================
+
+	@PostMapping("d")
+	public String d(@RequestParam("idE") Long idE) throws DangerException {
+		String portalEdificio = "----";
+		try {
+			Edificio edificio = repoEdificio.getOne(idE);
+			portalEdificio = edificio.getPortal();
+			repoEdificio.delete(edificio);
+		} catch (Exception e) {
+			PRG.error("Error al borrar el portal " + portalEdificio, "/edificio/r");
+		}
+		return "redirect:/edificio/r";
 	}
 
 }
