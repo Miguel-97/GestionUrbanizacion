@@ -2,6 +2,8 @@ package org.proyecto.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,30 +17,30 @@ public class Urbanizacion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(unique = true)
 	private String nombre;
-	
-	@OneToMany(mappedBy = "pertenece")
+
+	@OneToMany(mappedBy = "pertenece", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<Edificio> edificios;
-	
-	@OneToMany(mappedBy = "corresponde")
+
+	@OneToMany(mappedBy = "corresponde", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<ZonaComun> zonasComunes;
-	
-	//=========================================
-	
+
+	// =========================================
+
 	public Urbanizacion(String nombre) {
 		this.nombre = nombre;
 		this.edificios = new ArrayList<Edificio>();
 		this.zonasComunes = new ArrayList<ZonaComun>();
 	}
-	
+
 	public Urbanizacion() {
 		this.edificios = new ArrayList<>();
 		this.zonasComunes = new ArrayList<ZonaComun>();
 	}
 
-	//=========================================
+	// =========================================
 
 	public Long getId() {
 		return id;
@@ -71,5 +73,5 @@ public class Urbanizacion {
 	public void setZonasComunes(Collection<ZonaComun> zonasComunes) {
 		this.zonasComunes = zonasComunes;
 	}
-	
+
 }

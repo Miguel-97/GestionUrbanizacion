@@ -18,33 +18,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/urbanizacion")
 public class UrbanizacionController {
-	
+
 	@Autowired
 	private UrbanizacionRepository repoUrbanizacion;
-	
-	//=========================================
+
+	// =========================================
 
 	@GetMapping("c")
 	public String c(ModelMap m) {
 		m.put("view", "/urbanizacion/c");
 		return "/_t/frame";
 	}
-	
+
 	@PostMapping("c")
 	public String cPost(@RequestParam("nombre") String nombreUrba) throws DangerException, InfoException {
-		
+
 		try {
 			repoUrbanizacion.save(new Urbanizacion(nombreUrba));
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			PRG.error("Urbanización " + nombreUrba + " duplicada", "/urbanizacion/c");
 		}
 		PRG.info("Urbanización " + nombreUrba + " creada correctamente", "urbanizacion/r");
-		
+
 		return "redirect:/urbanizacion/r";
 	}
-	
-	//=========================================
+
+	// =========================================
 
 	@GetMapping("r")
 	public String r(ModelMap m) {
@@ -53,6 +52,20 @@ public class UrbanizacionController {
 		m.put("view", "/urbanizacion/r");
 		return "/_t/frame";
 	}
-	
-	
+
+	// =========================================
+
+	@PostMapping("d")
+	public String dPost(@RequestParam("urbaId") Long urbaId) throws DangerException {
+		String nombreUrba = "----";
+		try {
+			Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
+			nombreUrba = urbanizacion.getNombre();
+			repoUrbanizacion.delete(urbanizacion);
+		} catch (Exception e) {
+			PRG.error("Error al borrar la urbanización " + nombreUrba, "/urbanizacion/r");
+		}
+		return "redirect:/urbanizacion/r";
+	}
+
 }
