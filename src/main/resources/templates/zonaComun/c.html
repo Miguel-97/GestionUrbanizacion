@@ -1,57 +1,69 @@
-<div class="container">
-
-	<h1>Nueva Zona Común</h1>
-	
-	<form action="/zonaComun/c" method="post">
-		<div class="mt-3">
+ <div class="container-contact100">
+	<div class="wrap-contact100">
+		<form action="/zonaComun/c" method="post"
+			class="contact100-form validate-form">
+			<span class="contact100-form-title"> Nueva Zona Comun <img
+				id="logo" src="/img/LogoPagina.png" width="15%"
+				height="25%">
+			</span>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="Nombre requerido">
+				<label class="label-input100" for="nombre">Nombre</label> <input
+					id="id-nombre" class="input100" type="text" name="nombre" required="required"> <span
+					class="focus-input100"></span>
+			</div>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="Horario requerido">
+				<label class="label-input100" for="nombre">Horario</label> <input
+					id="id-horario" class="input100" type="text" name="horario" required="required"> <span
+					class="focus-input100"></span>
+			</div>
         	
-        	<div class="form-group row">
-        		<label for="id-nombre" class="col-sm-1 col-form-label font-weight-bold">Nombre</label>
-        		<div class="col-sm-2">
-        			<input type="text" class="form-control" id="id-nombre" name="nombre" required="required"/>
-        		</div>
-        	</div>
-
-        	<div class="form-group row">
-        		<label for="id-horario" class="col-sm-1 col-form-label font-weight-bold">Horario</label>
-        		<div class="col-sm-2">
-        			<input type="text" class="form-control" id="id-horario" name="horario" required="required"/>
-        		</div>
-        	</div>
-
-        	<div class="form-group row">
-        		<label for="id-tiempoMax" class="col-sm-1 col-form-label font-weight-bold">Tiempo Máx</label>
-        		<div class="col-sm-2">
-        			<input type="number" class="form-control" id="id-tiempoMax" name="tiempoMax" min="30" step="30" required="required"/>
-        		</div>
-        	</div>
-
-        	<div class="form-group row">
-        		<label for="id-aforoMax" class="col-sm-1 col-form-label font-weight-bold">Aforo Máx</label>
-        		<div class="col-sm-2">
-        			<input type="number" class="form-control" id="id-aforoMax" name="aforoMax" min="1" required="required"/>
-        		</div>
-        	</div>
         	
-        	<div class="form-group row">
-        		<label for="id-urbaId" class="col-sm-1 col-form-label font-weight-bold">Urb.</label>
-        		<div class="col-sm-3">
-        			<select class="custom-select" id="id-urbaId" name="urbaId">
+			<div class="wrap-input100 validate-input"
+				data-validate="TiempoMAX requerido">
+				<label class="label-input100" for="nombre">Tiempo Máx</label> <input
+					id="id-tiempoMAX" class="input100" type="number"  min="30" step="30" name="tiempoMax" required="required"> <span
+					class="focus-input100"></span>
+			</div>
+
+
+			<div class="wrap-input100 validate-input"
+				data-validate="aforoMAX requerido">
+				<label class="label-input100" for="nombre">Aforo Máx</label> <input
+					id="id-aforoMAX" class="input100" type="number"  min="1" name="aforoMax" required="required"> <span
+					class="focus-input100"></span>
+			</div>
+        	
+        	<div class="wrap-input100 validate-input">
+        		<label for="id-urbaId" class="label-input100">Urbanizacion</label>
+        		
+        			<select class="js-select2" id="id-urbaId" name="urbaId">
     						<option th:each="urbanizacion:${urbanizaciones}" th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}"></option>
         			</select>
-        		</div>
+        		
         	</div>
         	
-        	<div class="form-group row">
-        	   	<div class="col-sm-2">
-        	   		<input type="submit" class="btn btn-dark">
-        	   		<input type="reset" class="btn btn-dark" value="Cancelar">
-        	   	</div>
-        	</div>
         	
-		</div>
-	</form>
+				<input type="submit" class="contact100-form-btn" />
+			
+
+			<div class="container-contact100-form-btn">
+			<button class="contact100-form-btn"><a href="/" class="contact100-form-btn">Volver</a></button>
+				
+			</div>
+			
+			</form>
+        	   		
+        
+        	
+        	
+        	
+		
 	
-	<a href="/urbanizacion/r"><button class="btn btn-dark">Volver</button></a>
+		
 	
-</div>
+	
+	

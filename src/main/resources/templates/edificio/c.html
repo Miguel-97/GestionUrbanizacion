@@ -1,21 +1,65 @@
-<div class="container">
-	<h1>Nuevo Edificio</h1>
-	<a href="/">
-		<button>Cancelar</button>
-	</a>
+   <div class="container-contact100">
+	<div class="wrap-contact100">
+		<form action="/edificio/c" method="post"
+			class="contact100-form validate-form">
+			<span class="contact100-form-title"> Nuevo Edificio <img
+				id="logo" src="/img/LogoPagina.png" width="15%"
+				height="25%">
+			</span>
+			
 
-	<form method="post" action="/edificio/c" class="form">
-
-		Urbanizacion <select name="urbaId">
+   <div class="wrap-input100">
+					<div class="label-input100">Urbanizacion</div>
+					<div></div>
+				 <select class="js-select2" name="urbaId">
 			<option th:each="urbanizacion:${urbanizaciones}"
-				th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}"></option>
-		</select><br> Portal <input type="text" name="portal"><br>
-		Pisos <input type="number" name="pisos"><br> Puertas por
-		piso <input type="number" name="puertasXpiso"> <br> <label>&nbsp;&nbsp;&nbsp;&nbsp;Denominación</label>
-		<label for="letra">Letras</label><input type="radio"
-			name="denominacion" value="letras" id="letra"> <label
-			for="numero">Números</label><input type="radio" name="denominacion"
-			value="numeros" id="numero"> <br> <input type="submit"
-			class="form-item" />
+				th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}">
+				</option>
+		</select>
+		<div class="dropDownSelect2"></div>
+					
+					<span class="focus-input100"></span>
+				</div>
+		
+		
+		<div class="wrap-input100 validate-input"
+				data-validate="portal requerido">
+				<label class="label-input100" for="nombre">Portal</label> <input
+					id="portal" class="input100" type="text" name="portal"> <span
+					class="focus-input100"></span>
+			</div>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="pisos requerido">
+				<label class="label-input100" for="nombre">Pisos</label> <input
+					id="pisos" class="input100" type="number" name="pisos"> <span
+					class="focus-input100"></span>
+			</div>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="puertasXpiso requerido">
+				<label class="label-input100" for="nombre">Puertas por piso</label> <input
+					id="puertasXpiso" class="input100" type="number" name="puertasXpiso"> <span
+					class="focus-input100"></span>
+			</div>
+		
+	   
+		<div class="wrap-input100">
+				
+				<label class="label-input100">Denominacion</label><br>
+	    
+		<label class="label-input100" for="letra">Letras:</label>
+		<input class="wrap-input100" type="radio" name="denominacion" value="letras" id="letra"> 
+		<label class="label-input100" for="numero">Números:</label>
+		<input class="wrap-input100" type="radio" name="denominacion"
+			value="numeros" id="numero">
+			</div> <br> 
+	    <input type="submit" class="contact100-form-btn" />
+	    <div class="container-contact100-form-btn">
+			<button class="contact100-form-btn"><a href="/" class="contact100-form-btn">Volver</a></button>
+				
+			</div>
+	    
 	</form>
+	
 </div>
