@@ -44,6 +44,12 @@
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
+
+
+#home{
+  opacity: 0.1;
+  
+}
 #login {
 
   margin-top: -35%;
@@ -52,21 +58,29 @@
 
 * {
   margin: 0px; 
-  padding: 0px; 
   box-sizing: border-box;
+  
+  
   
 }
 
 body, html {
   height: 100%;
   font-family: Poppins-Regular, sans-serif;
+  
+  
+  
 }
 
 /*---------------------------------------------*/
+
+#aNAV{
+  margin: 2px 20px;
+}
 a {
   font-family: Poppins-Regular;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 11px;
+  line-height: 1.2;
   color: white;
   margin: 0px;
   transition: all 0.4s;
@@ -74,6 +88,7 @@ a {
   -o-transition: all 0.4s;
   -moz-transition: all 0.4s;
   align: center;
+  
 }
 
 a:focus {
@@ -206,6 +221,7 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Contact ]*/
 
+
 .container-contact100 {
   width: 100%;  
   display: -webkit-box;
@@ -218,10 +234,10 @@ iframe {
   background: #f2f2f2;
   max-width: 100%;
   position: relative;
-  background: linear-gradient(to right, blue, green);
-  padding-rigth: 80px;
+  background: linear-gradient(to left, green,  blue);
   
-      
+ 
+  
     }
     
 
@@ -239,8 +255,7 @@ iframe {
   flex-wrap: wrap;
   align-items: stretch;
   align-items: center;
-
-
+ 
 }
 
 /*==================================================================
@@ -313,8 +328,8 @@ iframe {
 }
 
 .labelUrb{
-	 text-align: center;
-	 align-items: center;
+   text-align: center;
+   align-items: center;
 }
 
 .input100 {
