@@ -50,10 +50,14 @@ public class EdificioController {
 
 			urbanizacion.getEdificios().add(edificio);
 			edificio.setPertenece(urbanizacion);
+			repoEdificio.save(edificio);
+
 			try {
+				Edificio edi = repoEdificio.getOne(edificio.getId());
+
 				ArrayList<Character> letras = helper.denomPuerta(puertasXpiso);
 				String id = "", username = "", password = "";
-
+				ArrayList<Vecino> vecindad = new ArrayList<>();
 				for (int j = 0; j < pisos; j++) {
 					for (int i = 0; i < puertasXpiso; i++) {
 						if (denominacion.equals("numeros")) {
@@ -68,16 +72,18 @@ public class EdificioController {
 
 						}
 						Vecino vecino = new Vecino(id, username, password);
-
-						vecino.setVive(edificio);
-						edificio.getVecinos().add(vecino);
+						vecindad.add(vecino);
+						vecino.setVive(edi);
 						repoVecino.save(vecino);
+
 					}
 				}
+
+				edi.getVecinos().addAll(vecindad);
+				repoEdificio.save(edi);
 			} catch (Exception e) {
 				PRG.error("Vecino no creado", "/edificio/c");
 			}
-			repoEdificio.save(edificio);
 
 		} catch (
 
