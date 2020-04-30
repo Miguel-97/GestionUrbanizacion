@@ -37,15 +37,18 @@
 					class="focus-input100"></span>
 			</div>
         	
-        	<div class="wrap-input100 validate-input">
-        		<label for="id-urbaId" class="label-input100">Urbanizacion</label>
-        		
-        			<select class="js-select2" id="id-urbaId" name="urbaId">
-    						<option th:each="urbanizacion:${urbanizaciones}" th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}"></option>
-        			</select>
-        		
-        	</div>
-        	
+        	<div class="wrap-input100">
+					<div class="label-input100">Urbanizacion</div>
+					<div></div>
+				 <select class="js-select2" name="urbaId">
+			<option th:each="urbanizacion:${urbanizaciones}"
+				th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}">
+				</option>
+		</select>
+		<div class="dropDownSelect2"></div>
+					
+					<span class="focus-input100"></span>
+				</div>
         	
 				<input type="submit" class="contact100-form-btn" />
 			
@@ -59,6 +62,27 @@
 			
 			<img id="home" src="/img/LogoPagina.png" width="55%" height="55%"/>
         	   		
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+		$(".js-select2").each(function(){
+			$(this).on('select2:open', function (e){
+				$(this).parent().next().addClass('eff-focus-selection');
+			});
+		});
+		$(".js-select2").each(function(){
+			$(this).on('select2:close', function (e){
+				$(this).parent().next().removeClass('eff-focus-selection');
+			});
+		});
+
+	</script>
 
 		
 	
