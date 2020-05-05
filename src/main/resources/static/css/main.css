@@ -98,6 +98,7 @@ a:focus {
 
 a:hover {
   text-decoration: none;
+  color:white;
 }
 
 /*---------------------------------------------*/
@@ -678,12 +679,12 @@ input.input100 {
 }
 
 .select2-container .select2-results__option[aria-selected="true"] {
-  background: #6675df;
+  
   color: white;
 }
 
 .select2-container .select2-results__option--highlighted[aria-selected] {
-  background: #6675df;
+   
   color: white;
 }
 

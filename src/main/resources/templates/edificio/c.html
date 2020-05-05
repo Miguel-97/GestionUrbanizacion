@@ -46,7 +46,7 @@
 	   
 		<div class="wrap-input100">
 				
-				<label class="label-input100">Denominacion</label><br>
+				<label class="label-input100">Denominacion</label>
 	    
 		<label class="label-input100" for="letra">Letras:</label>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" type="radio" name="denominacion" value="letras" id="letra"> 
@@ -68,27 +68,7 @@
 
 
 
-<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-		$(".js-select2").each(function(){
-			$(this).on('select2:open', function (e){
-				$(this).parent().next().addClass('eff-focus-selection');
-			});
-		});
-		$(".js-select2").each(function(){
-			$(this).on('select2:close', function (e){
-				$(this).parent().next().removeClass('eff-focus-selection');
-			});
-		});
 
-	</script>
 
 
       
