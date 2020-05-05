@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VecinoRepository extends JpaRepository<Vecino, String> {
+	public Vecino getByUsername(String username);
+
 }

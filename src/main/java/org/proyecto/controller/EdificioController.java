@@ -105,20 +105,23 @@ public class EdificioController {
 		return "/_t/frame";
 	}
 
-	// =========================================
-
 	@PostMapping("d")
 	public String d(@RequestParam("idE") Long idE) throws DangerException {
 		String portalEdificio = "";
 		try {
 			Edificio edificio = repoEdificio.getOne(idE);
+
+			// ==========historico==========
 			ArrayList<Vecino> vecinos = new ArrayList<>();
 			for (int i = 0; i < edificio.getVecinos().size(); i++) {
 				vecinos.addAll(edificio.getVecinos());
 				System.out.println(vecinos.get(i).getId());
 			}
-			System.out.println(helper.leerArchivo("edificios"))	;
+			
 			helper.historicoEdificio(edificio, vecinos, "");
+			System.out.println(helper.leerArchivo("edificios"));
+			// ==========historico==========
+
 			portalEdificio = edificio.getPortal();
 			repoEdificio.delete(edificio);
 		} catch (Exception e) {

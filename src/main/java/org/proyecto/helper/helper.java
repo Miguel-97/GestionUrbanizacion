@@ -6,18 +6,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Random;
 import org.proyecto.domain.Edificio;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class helper {
 
 	public static String generadorPassword() {
+		BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
 		char[] validas = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 		StringBuilder password = new StringBuilder(10);
 		Random random = new Random();
@@ -25,7 +27,7 @@ public class helper {
 			char c = validas[random.nextInt(validas.length)];
 			password.append(c);
 		}
-		return password.toString();
+		return bpe.encode(password.toString());
 	}
 
 	public static ArrayList<Character> denomPuerta(Integer puertasXpiso) {
@@ -41,7 +43,7 @@ public class helper {
 	// =================HISTORICO=================
 
 	public static String leerArchivo(String tipo) {
-		File file = new File("/historicos/" + tipo + ".txt");
+		File file = new File("../../resources/static/historicos/" + tipo + ".txt");
 		String doc = "";
 		try {
 			FileReader fr = new FileReader(file);
@@ -65,12 +67,14 @@ public class helper {
 		try {
 			File fileZ = new File("/historicos/zonas.txt");
 			File fileR = new File("/historicos/reservas.txt");
-			Calendar fechaBaja = new GregorianCalendar();
+
+			LocalDate fechaNow = LocalDate.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
+			String fechaBaja = fechaNow.format(formatter);
 
 			// $Z[#idUrba],[#idZona],[#nombreZona],[#horario],[#fechaBaja]
 			String zonaComun = zona.getCorresponde().getId() + "," + zona.getId() + "," + zona.getNombre() + ","
-					+ zona.getHorario() + "," + fechaBaja.get(Calendar.DAY_OF_MONTH) + "/"
-					+ fechaBaja.get(Calendar.MONTH) + 1 + "/" + fechaBaja.get(Calendar.YEAR) + "/" + "|";
+					+ zona.getHorario() + "," + fechaBaja + "|";
 
 			// TODO añadir reservas como clase en vez del string
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
@@ -103,21 +107,22 @@ public class helper {
 
 	public static void historicoEdificio(Edificio edificio, ArrayList<Vecino> vecinos, String reservas) {
 		try {
-			File fileE = new File("/historicos/edificios.txt");
+			File fileE = new File("/static/historicos/edificios.txt");
 			File fileV = new File("/historicos/vecinos.txt");
 			File fileR = new File("/historicos/reservas.txt");
-			Calendar fecha = new GregorianCalendar();
-			String fechaBaja = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"
-					+ fecha.get(Calendar.YEAR);
 
-			// $E[[#idUrba],[#idEdificio],[#portal],[#pisos],[#fechaBaja]]
+			LocalDate fechaNow = LocalDate.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
+			String fechaBaja = fechaNow.format(formatter);
+
+			// $E[[#idUrba],[#idEdificio],[#portal],[#pisos],[#puertasXpisos],[#fechaBaja]]
 			String edificacion = edificio.getPertenece().getId() + "," + edificio.getId() + "," + edificio.getPortal()
 					+ "," + edificio.getPisos() + "," + edificio.getPuertasXpiso() + "," + fechaBaja + "|";
 
 			// $V[[#idEdificio],[#idVecino],[#fechaBaja]]
 			ArrayList<String> vecindad = new ArrayList<String>();
 			for (int i = 0; i < vecinos.size(); i++) {
-				vecindad.add(vecinos.get(i).getVive().getId() + "," + vecinos.get(i).getId() + fechaBaja + "|");
+				vecindad.add(vecinos.get(i).getVive().getId() + "," + vecinos.get(i).getId() + "," + fechaBaja + "|");
 			}
 
 			// TODO añadir reservas como clase en vez del string
@@ -169,9 +174,10 @@ public class helper {
 			File fileV = new File("/historicos/vecinos.txt");
 			File fileZ = new File("/historicos/zonas.txt");
 			File fileR = new File("/historicos/reservas.txt");
-			Calendar fecha = new GregorianCalendar();
-			String fechaBaja = fecha.get(Calendar.DAY_OF_MONTH) + "/" + (fecha.get(Calendar.MONTH) + 1) + "/"
-					+ fecha.get(Calendar.YEAR);
+
+			LocalDate fechaNow = LocalDate.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
+			String fechaBaja = fechaNow.format(formatter);
 
 			// $U[[#idUrba],[#nombreUrba],[#fechaBaja]]
 			String urbanizacion = urba.getId() + "," + urba.getNombre() + "," + fechaBaja + "|";
@@ -187,7 +193,7 @@ public class helper {
 			// $V[[#idEdificio],[#idVecino],[#fechaBaja]]
 			ArrayList<String> vecindad = new ArrayList<String>();
 			for (int i = 0; i < vecinos.size(); i++) {
-				vecindad.add(vecinos.get(i).getVive().getId() + "," + vecinos.get(i).getId() + fechaBaja + "|");
+				vecindad.add(vecinos.get(i).getVive().getId() + "," + vecinos.get(i).getId() + "," + fechaBaja + "|");
 			}
 
 			// $Z[#idUrba],[#idZona],[#nombreZona],[#horario],[#fechaBaja]
@@ -207,6 +213,7 @@ public class helper {
 			for (int i = 0; i < edificaciones.size(); i++) {
 				docE += edificaciones.get(i);
 			}
+
 			String docV = leerArchivo("vecinos");
 			for (int i = 0; i < vecindad.size(); i++) {
 				docV += vecindad.get(i);

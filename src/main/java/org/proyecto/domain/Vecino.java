@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @Entity
 public class Vecino {
 
@@ -34,7 +36,8 @@ public class Vecino {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = password;
+		this.password = (new BCryptPasswordEncoder()).encode(password);
+
 	}
 
 	// ======================
@@ -68,7 +71,7 @@ public class Vecino {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = (new BCryptPasswordEncoder()).encode(password);
 	}
 
 	public String getEmail() {
