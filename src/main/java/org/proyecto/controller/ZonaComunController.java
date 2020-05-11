@@ -5,7 +5,6 @@ import java.util.List;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
-import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.ZonaComunRepository;
@@ -42,7 +41,7 @@ public class ZonaComunController {
 			@RequestParam("horario") String horario,
 			@RequestParam("tiempoMax") Integer tiempoMax,
 			@RequestParam("aforoMax") Integer aforoMax,
-			@RequestParam("urbaId") Long urbaId) throws DangerException, InfoException {
+			@RequestParam("urbaId") Long urbaId) throws DangerException {
 		
 		try {
 			ZonaComun zona = new ZonaComun(nombreZona, horario, tiempoMax, aforoMax);
@@ -58,7 +57,6 @@ public class ZonaComunController {
 		} catch (Exception e) {
 			PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
 		}
-		PRG.info("Zona común " + nombreZona + " creada correctamente", "/zonaComun/r");
 		
 		return "redirect:/zonaComun/r";
 	}
@@ -73,5 +71,65 @@ public class ZonaComunController {
 		return "/_t/frame";
 	}
 	
+	//=========================================
+
+	@GetMapping("u")
+	public String u(ModelMap m, @RequestParam("zonaComunId") Long zonaComunId) {
+		m.put("zonaComun", repoZonaComun.getOne(zonaComunId));
+		m.put("urbanizaciones", repoUrbanizacion.findAll());
+		m.put("view", "/zonaComun/u");
+		return"/_t/frame";
+	}
+	
+	@PostMapping("u")
+	public String uPost(
+			@RequestParam("zonaComunId") Long zonaComunId, 
+			@RequestParam("nombre") String nombreZona,
+			@RequestParam("horario") String horario,
+			@RequestParam("tiempoMax") Integer tiempoMax,
+			@RequestParam("aforoMax") Integer aforoMax,
+			@RequestParam("urbaId") Long urbaId) throws DangerException {
+		
+		try {
+			ZonaComun zona = repoZonaComun.getOne(zonaComunId);
+			
+			//ATRIBUTOS NORMALES
+			zona.setNombre(nombreZona);
+			zona.setHorario(horario);
+			zona.setTiempoMax(tiempoMax);
+			zona.setAforoMax(aforoMax);
+			
+			//URBANIZACION CORRESPONDE
+			Urbanizacion urbaCorresponde = repoUrbanizacion.getOne(urbaId);
+			Urbanizacion urbaCorrespondeAnt = zona.getCorresponde();
+			
+			urbaCorrespondeAnt.getZonasComunes().remove(zona);
+			zona.setCorresponde(null);
+			
+			urbaCorresponde.getZonasComunes().add(zona);
+			zona.setCorresponde(urbaCorresponde);
+			
+			repoZonaComun.save(zona);
+		} 
+		catch (Exception e) {
+			PRG.error("La zona común no pudo ser actualizada.", "/zonaComun/r");
+		}
+		return "redirect:/zonaComun/r";
+	}
+	
+	//=========================================
+
+	@PostMapping("d")
+	public String dPost(@RequestParam("zonaComunId") Long zonaComunId) throws DangerException {
+		String nombreZona = "----";
+		try {
+			ZonaComun zona = repoZonaComun.getOne(zonaComunId);
+			nombreZona = zona.getNombre();
+			repoZonaComun.delete(zona);
+		} catch (Exception e) {
+			PRG.error("Error al borrar la zona común " + nombreZona, "/zonaComun/r");
+		}
+		return "redirect:/zonaComun/r";
+	}
 	
 }

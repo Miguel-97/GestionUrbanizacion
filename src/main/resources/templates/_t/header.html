@@ -1,2 +1,22 @@
 <header class="container">
+	<div th:if="${session.vecino == null}">
+	
+		<div class="row">
+			<form action="/login">
+				<input type="submit" value="Login" class="btn-info"/>
+			</form>
+			
+			<form action="/registro">
+				<input type="submit" value="Registro" class="btn-light"/>
+			</form>
+		</div>
+	
+	</div>
+	
+	<div th:if="${session.vecino != null}" class="row">
+		<span th:text="${session.vecino.username}" class="btn-info"></span>
+		<form action="/logout">
+			<input type="submit" value="Logout" class="btn-light"/>
+		</form>
+	</div>
 </header>

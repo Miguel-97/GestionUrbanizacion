@@ -92,8 +92,6 @@ public class EdificioController {
 			PRG.error("Edificio no creado", "/edificio/c");
 		}
 
-		PRG.info("Edificio creado correctamente", "/edificio/r");
-
 		return "redirect:/edificio/r";
 	}
 

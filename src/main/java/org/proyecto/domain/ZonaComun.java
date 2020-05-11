@@ -1,11 +1,15 @@
 package org.proyecto.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class ZonaComun {
@@ -26,21 +30,21 @@ public class ZonaComun {
 	@ManyToOne
 	private Urbanizacion corresponde;
 	
+	/*@OneToMany(mappedBy = "tiene", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private Collection<Reserva> reservas;*/
+	
 	//=========================================
 
-	public 	ZonaComun(String nombre) {
-		this.nombre = nombre;
-	}
-	
 	public ZonaComun(String nombre, String horario, Integer tiempoMax, Integer aforoMax) {
 		this.nombre = nombre;
 		this.horario = horario;
 		this.tiempoMax = tiempoMax;
 		this.aforoMax = aforoMax;
+		//this.reservas = new ArrayList<Reserva>();
 	}
 	
-	public ZonaComun() {
-		
+	public 	ZonaComun() {
+		//this.reservas = new ArrayList<Reserva>();
 	}
 
 	//=========================================

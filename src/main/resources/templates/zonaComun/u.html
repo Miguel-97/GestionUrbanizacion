@@ -1,0 +1,58 @@
+<div class="container">
+
+	<h1>Editar Zona Común</h1>
+	
+	<a href="/zonaComun/r"><button class="btn btn-dark">Volver</button></a>
+	
+	<form action="/zonaComun/u" method="post">
+		<div class="mt-3">
+   			<input type="hidden" name="zonaComunId" th:value="${zonaComun.id}"/>
+        	
+        	<div class="form-group row">
+        		<label for="id-nombre" class="col-sm-1 col-form-label font-weight-bold">Nombre</label>
+        		<div class="col-sm-2">
+        			<input type="text" class="form-control" id="id-nombre" name="nombre"  th:value="${zonaComun.nombre}"/>
+        		</div>
+        	</div>
+
+        	<div class="form-group row">
+        		<label for="id-horario" class="col-sm-1 col-form-label font-weight-bold">Horario</label>
+        		<div class="col-sm-2">
+        			<input type="text" class="form-control" id="id-horario" name="horario"  th:value="${zonaComun.horario}"/>
+        		</div>
+        	</div>
+
+        	<div class="form-group row">
+        		<label for="id-tiempoMax" class="col-sm-1 col-form-label font-weight-bold">Tiempo Max</label>
+        		<div class="col-sm-2">
+        			<input type="number" class="form-control" id="id-tiempoMax" name="tiempoMax"  min="30" step="30" th:value="${zonaComun.tiempoMax}"/>
+        		</div>
+        	</div>
+
+        	<div class="form-group row">
+        		<label for="id-aforoMax" class="col-sm-1 col-form-label font-weight-bold">Aforo Max</label>
+        		<div class="col-sm-2">
+        			<input type="number" class="form-control" id="id-aforoMax" name="aforoMax" min="1" th:value="${zonaComun.aforoMax}"/>
+        		</div>
+        	</div>
+
+			<div class="form-group row">
+        		<label for="id-urbaId" class="col-sm-2 col-form-label font-weight-bold">Urbanización</label>
+        		<div class="col-sm-2">
+        			<select class="custom-select" id="id-urbaId" name="urbaId">
+    						<option th:each="urbanizacion:${urbanizaciones}" th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}" th:selected="${zonaComun.corresponde.id==urbanizacion.id}"></option>
+        			</select>
+        		</div>
+        	</div>        	
+        	
+        	<div class="form-group row">
+        	   	<div class="col-sm-4">
+        	   		<input type="submit" class="btn btn-dark">
+        	   		<input type="reset" class="btn btn-dark" value="Cancelar">
+        	   	</div>
+        	</div>
+        	
+		</div>
+	</form>
+	
+</div>

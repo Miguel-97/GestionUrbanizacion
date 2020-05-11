@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(value = "/vecino")
 public class VecinoController {
+
 	@Autowired
 	private VecinoRepository repoVecino;
+	
+	// =========================================
 
 	@GetMapping("r")
 	public String r(ModelMap m) {
@@ -22,4 +25,5 @@ public class VecinoController {
 		m.put("view", "/vecino/r");
 		return "/_t/frame";
 	}
+	
 }
