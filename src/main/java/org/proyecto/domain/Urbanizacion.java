@@ -31,9 +31,9 @@ public class Urbanizacion {
 
 	// =========================================
 
-	public Urbanizacion(String nombre, String estado) {
+	public Urbanizacion(String nombre) {
 		this.nombre = nombre;
-		this.estado = estado;
+		this.estado = "activa";
 		this.edificios = new ArrayList<Edificio>();
 		this.zonasComunes = new ArrayList<ZonaComun>();
 	}

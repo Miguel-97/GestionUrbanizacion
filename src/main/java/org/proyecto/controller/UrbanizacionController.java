@@ -30,10 +30,8 @@ public class UrbanizacionController {
 
 	@PostMapping("c")
 	public String cPost(@RequestParam("nombre") String nombreUrba) throws DangerException {
-
 		try {
-			String estado="activo";
-			repoUrbanizacion.save(new Urbanizacion(nombreUrba, estado));
+			repoUrbanizacion.save(new Urbanizacion(nombreUrba));
 		} catch (Exception e) {
 			PRG.error("Urbanización " + nombreUrba + " duplicada", "/urbanizacion/c");
 		}
@@ -57,25 +55,23 @@ public class UrbanizacionController {
 	public String u(ModelMap m, @RequestParam("urbaId") Long urbaId) {
 		m.put("urbanizacion", repoUrbanizacion.getOne(urbaId));
 		m.put("view", "/urbanizacion/u");
-		return"/_t/frame";
+		return "/_t/frame";
 	}
-	
+
 	@PostMapping("u")
-	public String uPost(
-			@RequestParam("urbaId") Long urbaId, 
-			@RequestParam("nombre") String nombreUrba) throws DangerException {
-		
+	public String uPost(@RequestParam("urbaId") Long urbaId, @RequestParam("nombre") String nombreUrba)
+			throws DangerException {
+
 		try {
 			Urbanizacion urba = repoUrbanizacion.getOne(urbaId);
 			urba.setNombre(nombreUrba);
 			repoUrbanizacion.save(urba);
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			PRG.error("La urbanización no pudo ser actualizada.", "/urbanizacion/r");
 		}
 		return "redirect:/urbanizacion/r";
 	}
-	
+
 	// =========================================
 
 	@PostMapping("d")

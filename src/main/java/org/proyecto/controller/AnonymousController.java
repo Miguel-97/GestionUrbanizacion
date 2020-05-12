@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AnonymousController {
-	
+
 	@Autowired
 	VecinoRepository repoVecino;
 
@@ -65,60 +65,56 @@ public class AnonymousController {
 		m.put("view", "/anonymous/init");
 		return "/_t/frame";
 	}
-	
+
 	@PostMapping("/init")
 	public String initPost(@RequestParam("password") String password, ModelMap m) throws DangerException {
 		if (repoVecino.getByUsername("administrador") != null) {
 			PRG.error("Operación no válida. BD no vacía");
 		}
 		BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
-		if (!bpe.matches(password, bpe.encode("40m1n157r40or"))) { // Password harcoded
+		if (!bpe.matches(password, (bpe.encode("40m1n157r40or")))) { // Password harcoded
 			PRG.error("Contraseña incorrecta", "/init");
 		}
 		repoVecino.deleteAll();
-		repoVecino.save(new Vecino("40m1n157r40or", "administrador", bpe.encode("40m1n157r40or")));
+		repoVecino.save(new Vecino("40m1n157r40or", "administrador", "40m1n157r40or"));
 		return "redirect:/";
 	}
 
 	// =========================================
 
-	//HAY QUE CAMBIARLO
+	// HAY QUE CAMBIARLO
 	/*
-	@GetMapping("/registro")
-	public String registro(ModelMap m, HttpSession s) throws DangerException {
-		rol.isRolOK("anon", s);
-		m.put("view", "/anonymous/registro");
-		return "/_t/frame";
-	}
-	
-	@PostMapping("registro")
-	public String registroPost(
-			@RequestParam("urbaId") Long urbaId,
-			@RequestParam(value = "portal", required = false) Integer portal,
-			@RequestParam(value = "piso", required = false) String piso,
-			@RequestParam(value = "puerta", required = false) String puerta,
-			@RequestParam("nombre") String nombre,
-			@RequestParam("emailUsuario") String emailUsuario) throws DangerException{
-		try {
-			//Enviar el email al usuario
-			String asunto="App Gestión Urbanización";
-			String mensaje="Gracias por tu registro,\r\n" + 
-	    					"Estas son tus credenciales para acceder a la app:\r\n" + 
-	    					"Nombre de usuario:       Contraseña: \r\n" + 
-	    					"Gracias.\r\n";
-			
-			mailService.sendMail("gestion.urbanizacion.2020@gmail.com",emailUsuario,asunto,mensaje);
-			//Guardar datos en la bbdd
-		}
-		catch(Exception e) {
-			PRG.error("Error al registrar el vecino", "/vecino/r");
-		}
-		
-		return "redirect:/vecino/r";
-	}*/
-	
+	 * @GetMapping("/registro") public String registro(ModelMap m, HttpSession s)
+	 * throws DangerException { rol.isRolOK("anon", s); m.put("view",
+	 * "/anonymous/registro"); return "/_t/frame"; }
+	 * 
+	 * @PostMapping("registro") public String registroPost(
+	 * 
+	 * @RequestParam("urbaId") Long urbaId,
+	 * 
+	 * @RequestParam(value = "portal", required = false) Integer portal,
+	 * 
+	 * @RequestParam(value = "piso", required = false) String piso,
+	 * 
+	 * @RequestParam(value = "puerta", required = false) String puerta,
+	 * 
+	 * @RequestParam("nombre") String nombre,
+	 * 
+	 * @RequestParam("emailUsuario") String emailUsuario) throws DangerException{
+	 * try { //Enviar el email al usuario String asunto="App Gestión Urbanización";
+	 * String mensaje="Gracias por tu registro,\r\n" +
+	 * "Estas son tus credenciales para acceder a la app:\r\n" +
+	 * "Nombre de usuario:       Contraseña: \r\n" + "Gracias.\r\n";
+	 * 
+	 * mailService.sendMail("gestion.urbanizacion.2020@gmail.com",emailUsuario,
+	 * asunto,mensaje); //Guardar datos en la bbdd } catch(Exception e) {
+	 * PRG.error("Error al registrar el vecino", "/vecino/r"); }
+	 * 
+	 * return "redirect:/vecino/r"; }
+	 */
+
 	// =========================================
-	
+
 	@GetMapping("/login")
 	public String login(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("anon", s);
@@ -127,29 +123,30 @@ public class AnonymousController {
 	}
 
 	@PostMapping("/login")
-	public String loginPost(@RequestParam("username") String usuario, @RequestParam("password") String password, ModelMap m, HttpSession s) throws DangerException {
-		String view="/";
+	public String loginPost(@RequestParam("username") String usuario, @RequestParam("password") String password,
+			ModelMap m, HttpSession s) throws DangerException {
+		String view = "/";
 		try {
 			Vecino vecino = repoVecino.getByUsername(usuario);
-			if(!(new BCryptPasswordEncoder()).matches(password, vecino.getPassword())) {
+			BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
+			if (!(bpe.matches(password, vecino.getPassword()))) {
 				throw new Exception();
 			}
 			s.setAttribute("vecino", vecino);
-		} 
-		catch (Exception e) {
-			PRG.error( "Usuario o Contraseña incorrecta", "/login");
+		} catch (Exception e) {
+			PRG.error("Usuario o Contraseña incorrecta", "/login");
 			view = "/info";
 		}
 		return "redirect:" + view;
 	}
-	
+
 	// =========================================
-	
-		//Logout va en AuthController
+
+	// Logout va en AuthController
 	@GetMapping("/logout")
 	public String logout(HttpSession s) throws DangerException {
 		rol.isRolOK("auth", s);
 		s.invalidate();
-		return"redirect:/";
+		return "redirect:/";
 	}
 }
