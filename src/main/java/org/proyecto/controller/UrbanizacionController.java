@@ -1,10 +1,8 @@
 package org.proyecto.controller;
 
 import java.util.List;
-
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.exception.DangerException;
-import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +29,14 @@ public class UrbanizacionController {
 	}
 
 	@PostMapping("c")
-	public String cPost(@RequestParam("nombre") String nombreUrba) throws DangerException, InfoException {
+	public String cPost(@RequestParam("nombre") String nombreUrba) throws DangerException {
 
 		try {
-			repoUrbanizacion.save(new Urbanizacion(nombreUrba));
+			String estado="activo";
+			repoUrbanizacion.save(new Urbanizacion(nombreUrba, estado));
 		} catch (Exception e) {
 			PRG.error("Urbanización " + nombreUrba + " duplicada", "/urbanizacion/c");
 		}
-		PRG.info("Urbanización " + nombreUrba + " creada correctamente", "urbanizacion/r");
 
 		return "redirect:/urbanizacion/r";
 	}
@@ -53,6 +51,31 @@ public class UrbanizacionController {
 		return "/_t/frame";
 	}
 
+	// =========================================
+
+	@GetMapping("u")
+	public String u(ModelMap m, @RequestParam("urbaId") Long urbaId) {
+		m.put("urbanizacion", repoUrbanizacion.getOne(urbaId));
+		m.put("view", "/urbanizacion/u");
+		return"/_t/frame";
+	}
+	
+	@PostMapping("u")
+	public String uPost(
+			@RequestParam("urbaId") Long urbaId, 
+			@RequestParam("nombre") String nombreUrba) throws DangerException {
+		
+		try {
+			Urbanizacion urba = repoUrbanizacion.getOne(urbaId);
+			urba.setNombre(nombreUrba);
+			repoUrbanizacion.save(urba);
+		} 
+		catch (Exception e) {
+			PRG.error("La urbanización no pudo ser actualizada.", "/urbanizacion/r");
+		}
+		return "redirect:/urbanizacion/r";
+	}
+	
 	// =========================================
 
 	@PostMapping("d")

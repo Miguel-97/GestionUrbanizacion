@@ -2,7 +2,7 @@ package org.proyecto.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +30,7 @@ public class ZonaComun {
 	@ManyToOne
 	private Urbanizacion corresponde;
 
-	@OneToMany(mappedBy = "tiene")
+	@OneToMany(mappedBy = "tiene", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<Reserva> reservas;
 
 	// =========================================

@@ -20,6 +20,8 @@ public class Urbanizacion {
 
 	@Column(unique = true)
 	private String nombre;
+	
+	private String estado;
 
 	@OneToMany(mappedBy = "pertenece", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<Edificio> edificios;
@@ -29,8 +31,9 @@ public class Urbanizacion {
 
 	// =========================================
 
-	public Urbanizacion(String nombre) {
+	public Urbanizacion(String nombre, String estado) {
 		this.nombre = nombre;
+		this.estado = estado;
 		this.edificios = new ArrayList<Edificio>();
 		this.zonasComunes = new ArrayList<ZonaComun>();
 	}
@@ -56,6 +59,14 @@ public class Urbanizacion {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	public Collection<Edificio> getEdificios() {

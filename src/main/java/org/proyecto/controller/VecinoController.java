@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/vecino")
 public class VecinoController {
+
 	@Autowired
 	private VecinoRepository repoVecino;
+	
+	// =========================================
 
 	@GetMapping("r")
 	public String r(ModelMap m) {

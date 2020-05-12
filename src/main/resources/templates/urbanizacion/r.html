@@ -9,11 +9,19 @@
 	<table class="table table-lm table-striped table-hover">
 		<tr>
 			<th>Nombre</th>
+			<th>Estado</th>
 			<th>Acción</th>
 		</tr>
 		<tr th:each="urbanizacion:${urbanizaciones}">
 			<td th:text="${urbanizacion.nombre}"></td>
+			<td th:text="${urbanizacion.estado}"></td>
 			<td class="form-inline">
+				<form action="/urbanizacion/u" method="get">
+					<input type="hidden" name="urbaId" th:value="${urbanizacion.id}">
+					<button onclick="submit()" class="btn btn-light">
+						<img src="/img/edit.png" width="20" height="20">
+					</button>
+				</form>
 				<form action="/urbanizacion/d" method="post">
 					<input type="hidden" name="urbaId" th:value="${urbanizacion.id}">
 					<button onclick="submit()" class="btn btn-light">
