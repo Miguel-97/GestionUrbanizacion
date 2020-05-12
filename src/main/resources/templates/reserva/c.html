@@ -1,0 +1,66 @@
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<form action="/reserva/c" method="post"
+			class="contact100-form validate-form">
+			<span class="contact100-form-title"> Nueva Reserva <img
+				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
+			</span>
+
+
+			<div class="wrap-input100">
+				<div class="label-input100">Vecino</div>
+				<div></div>
+				<select class="js-select2" name="vecinoId">
+					<option th:each="vecino:${vecinos}" th:text="${vecino.id}"
+						th:value="${vecino.id}"></option>
+				</select>
+				<div class="dropDownSelect2"></div>
+
+				<span class="focus-input100"></span>
+			</div>
+			<div class="wrap-input100">
+				<div class="label-input100">Zona Comun</div>
+				<div></div>
+				<select class="js-select2" name="zonaId">
+					<option th:each="zona:${zonas}" th:text="${zona.nombre}"
+						th:value="${zona.id}"></option>
+				</select>
+				<div class="dropDownSelect2"></div>
+
+				<span class="focus-input100"></span>
+			</div>
+
+
+			<div class="wrap-input100 validate-input"
+				data-validate="fecha requerido">
+				<label class="label-input100" for="fecha">Fecha</label> <input
+					id="fecha" class="input100" type="date" name="fecha"> <span
+					class="focus-input100"></span>
+			</div>
+
+			<div class="wrap-input100 validate-input"
+				data-validate="inicio requerido">
+				<label class="label-input100" for="nombre">Inicio</label> <input
+					id="inicio" class="input100" type="text" name="inicio"> <span
+					class="focus-input100"></span>
+			</div>
+
+			<div class="wrap-input100 validate-input"
+				data-validate="nBloques requerido">
+				<label class="label-input100" for="nBloques">Numero Bloques</label>
+				<input id="nBloques" class="input100" type="number" name="nBloques">
+				<span class="focus-input100"></span>
+			</div>
+
+			<br> <input type="submit" class="contact100-form-btn" />
+			<div class="container-contact100-form-btn">
+				<button class="contact100-form-btn">
+					<a href="/" class="contact100-form-btn">Volver</a>
+				</button>
+
+			</div>
+
+		</form>
+		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
+	</div>
+</div>

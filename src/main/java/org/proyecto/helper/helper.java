@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Random;
 import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
@@ -43,7 +44,9 @@ public class helper {
 	// =================HISTORICO=================
 
 	public static String leerArchivo(String tipo) {
-		File file = new File("../../resources/static/historicos/" + tipo + ".txt");
+		File file = new File(
+				"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/"
+						+ tipo + ".txt");
 		String doc = "";
 		try {
 			FileReader fr = new FileReader(file);
@@ -63,10 +66,88 @@ public class helper {
 		return doc;
 	}
 
-	public static void historicoZonaComun(ZonaComun zona, String reservas) {
+	public static void historicoReserva(Reserva reserva) {
 		try {
-			File fileZ = new File("/historicos/zonas.txt");
-			File fileR = new File("/historicos/reservas.txt");
+			File fileR = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+
+			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
+			String agenda = reserva.getTiene().getId() + "," + reserva.getFecha() + "," + reserva.getInicio() + ","
+					+ reserva.getnBloques() + "," + reserva.getHace().getId() + "|";
+
+			String docR = leerArchivo("reservas");
+			docR += agenda;
+
+			FileWriter fwr = new FileWriter(fileR);
+
+			BufferedWriter bwr = new BufferedWriter(fwr);
+
+			bwr.write(docR);
+
+			bwr.flush();
+
+			fwr.close();
+		} catch (IOException e) {
+			e.getMessage();
+		}
+
+	}
+
+	public static void historicoVecino(Vecino vecino, ArrayList<Reserva> reservas) {
+		try {
+			File fileV = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/vecinos.txt");
+			File fileR = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+
+			LocalDate fechaNow = LocalDate.now();
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
+			String fechaBaja = fechaNow.format(formatter);
+
+			// $V[[#idEdificio],[#idVecino],[#fechaBaja]]
+			String vecinito = vecino.getVive().getId() + "," + vecino.getId() + "," + fechaBaja + "|";
+
+			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
+			ArrayList<String> agenda = new ArrayList<String>();
+			for (int i = 0; i < reservas.size(); i++) {
+				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
+						+ reservas.get(i).getInicio() + "," + reservas.get(i).getnBloques() + ","
+						+ reservas.get(i).getHace().getId() + "|");
+			}
+
+			String docV = leerArchivo("vecinos");
+			docV += vecinito;
+
+			String docR = leerArchivo("reservas");
+			for (int i = 0; i < agenda.size(); i++) {
+				docR += agenda.get(i);
+			}
+			FileWriter fwz = new FileWriter(fileV);
+			FileWriter fwr = new FileWriter(fileR);
+
+			BufferedWriter bwz = new BufferedWriter(fwz);
+			BufferedWriter bwr = new BufferedWriter(fwr);
+
+			bwz.write(docV);
+			bwr.write(docR);
+
+			bwz.flush();
+			bwr.flush();
+
+			fwz.close();
+			fwr.close();
+		} catch (IOException e) {
+			e.getMessage();
+		}
+
+	}
+
+	public static void historicoZonaComun(ZonaComun zona, ArrayList<Reserva> reservas) {
+		try {
+			File fileZ = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/zonas.txt");
+			File fileR = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -76,15 +157,20 @@ public class helper {
 			String zonaComun = zona.getCorresponde().getId() + "," + zona.getId() + "," + zona.getNombre() + ","
 					+ zona.getHorario() + "," + fechaBaja + "|";
 
-			// TODO añadir reservas como clase en vez del string
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
-			reservas = "idZona,12/03/20,1,2,idVecino" + "|";
+			ArrayList<String> agenda = new ArrayList<String>();
+			for (int i = 0; i < reservas.size(); i++) {
+				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
+						+ reservas.get(i).getnBloques() + "," + reservas.get(i).getHace().getId() + "|");
+			}
 
 			String docZ = leerArchivo("zonas");
 			docZ += zonaComun;
-			String docR = leerArchivo("reservas");
-			docR += reservas;
 
+			String docR = leerArchivo("reservas");
+			for (int i = 0; i < agenda.size(); i++) {
+				docR += agenda.get(i);
+			}
 			FileWriter fwz = new FileWriter(fileZ);
 			FileWriter fwr = new FileWriter(fileR);
 
@@ -105,11 +191,14 @@ public class helper {
 
 	}
 
-	public static void historicoEdificio(Edificio edificio, ArrayList<Vecino> vecinos, String reservas) {
+	public static void historicoEdificio(Edificio edificio, ArrayList<Vecino> vecinos, ArrayList<Reserva> reservas) {
 		try {
-			File fileE = new File("/static/historicos/edificios.txt");
-			File fileV = new File("/historicos/vecinos.txt");
-			File fileR = new File("/historicos/reservas.txt");
+			File fileE = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/edificios.txt");
+			File fileV = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/vecinos.txt");
+			File fileR = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -125,9 +214,12 @@ public class helper {
 				vecindad.add(vecinos.get(i).getVive().getId() + "," + vecinos.get(i).getId() + "," + fechaBaja + "|");
 			}
 
-			// TODO añadir reservas como clase en vez del string
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
-			reservas = "idZona,12/03/20,1,2,idVecino" + "|";
+			ArrayList<String> agenda = new ArrayList<String>();
+			for (int i = 0; i < reservas.size(); i++) {
+				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
+						+ reservas.get(i).getnBloques() + "," + reservas.get(i).getHace().getId() + "|");
+			}
 
 			String docE = leerArchivo("edificios");
 			docE += edificacion;
@@ -137,9 +229,10 @@ public class helper {
 				docV += vecindad.get(i);
 			}
 
-			// TODO añadir reservas como clase en vez del string
 			String docR = leerArchivo("reservas");
-			docR += reservas;
+			for (int i = 0; i < agenda.size(); i++) {
+				docR += agenda.get(i);
+			}
 
 			FileWriter fwe = new FileWriter(fileE);
 			FileWriter fwv = new FileWriter(fileV);
@@ -167,13 +260,18 @@ public class helper {
 	}
 
 	public static void historicoUrbanizacion(Urbanizacion urba, ArrayList<Edificio> edificios,
-			ArrayList<Vecino> vecinos, ArrayList<ZonaComun> zonas, String reservas) {
+			ArrayList<Vecino> vecinos, ArrayList<ZonaComun> zonas, ArrayList<Reserva> reservas) {
 		try {
-			File fileU = new File("/historicos/urbanizaciones.txt");
-			File fileE = new File("/historicos/edificios.txt");
-			File fileV = new File("/historicos/vecinos.txt");
-			File fileZ = new File("/historicos/zonas.txt");
-			File fileR = new File("/historicos/reservas.txt");
+			File fileU = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/urbanizaciones.txt");
+			File fileE = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/edificios.txt");
+			File fileV = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/vecinos.txt");
+			File fileZ = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/zonas.txt");
+			File fileR = new File(
+					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -202,9 +300,12 @@ public class helper {
 				zonasComunes.add(zonas.get(i).getCorresponde().getId() + "," + zonas.get(i).getId() + ","
 						+ zonas.get(i).getNombre() + "," + zonas.get(i).getHorario() + "," + fechaBaja + "|");
 			}
-			// TODO añadir reservas como clase en vez del string
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
-			reservas = "idZona,12/03/20,1,2,idVecino" + "|";
+			ArrayList<String> agenda = new ArrayList<String>();
+			for (int i = 0; i < reservas.size(); i++) {
+				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
+						+ reservas.get(i).getnBloques() + "," + reservas.get(i).getHace().getId() + "|");
+			}
 
 			String docU = leerArchivo("urbanizaciones");
 			docU += urbanizacion;
@@ -224,9 +325,10 @@ public class helper {
 				docZ += zonasComunes.get(i);
 			}
 
-			// TODO añadir reservas como clase en vez del string
 			String docR = leerArchivo("reservas");
-			docR += reservas;
+			for (int i = 0; i < agenda.size(); i++) {
+				docR += agenda.get(i);
+			}
 
 			FileWriter fwu = new FileWriter(fileU);
 			FileWriter fwe = new FileWriter(fileE);
@@ -263,5 +365,6 @@ public class helper {
 		}
 
 	}
+
 	// =============FIN=HISTORICO=================
 }

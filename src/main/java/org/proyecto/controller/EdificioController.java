@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
@@ -112,13 +113,14 @@ public class EdificioController {
 			Edificio edificio = repoEdificio.getOne(idE);
 
 			// ==========historico==========
+			// Guarda los vecinos del edificio y las reservas realizadas por estos vecinos
 			ArrayList<Vecino> vecinos = new ArrayList<>();
-			for (int i = 0; i < edificio.getVecinos().size(); i++) {
-				vecinos.addAll(edificio.getVecinos());
-				System.out.println(vecinos.get(i).getId());
+			ArrayList<Reserva> reservas = new ArrayList<>();
+			vecinos.addAll(edificio.getVecinos());
+			for (Vecino vecino : vecinos) {
+				reservas.addAll(vecino.getReservas());
 			}
-			
-			helper.historicoEdificio(edificio, vecinos, "");
+			helper.historicoEdificio(edificio, vecinos, reservas);
 			System.out.println(helper.leerArchivo("edificios"));
 			// ==========historico==========
 

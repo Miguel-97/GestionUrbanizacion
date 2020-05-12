@@ -1,0 +1,14 @@
+<div class="container">
+	<h1>Editar Vecino</h1>
+	<form method="post" action="/vecino/u" class="form">
+		Nombre
+		<input type="text" name="nombre" th:value="${vecino.nombre}" autofocus="autofocus"><br>
+		Email
+		<input type="text" name="email" th:value="${vecino.email}"><br>
+	
+		<input type="hidden" name="id" th:value="${vecino.id}"/>
+		
+		<input type="submit" class="form-item" />
+		
+	</form>
+</div>

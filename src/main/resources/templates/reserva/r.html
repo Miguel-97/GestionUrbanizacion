@@ -1,0 +1,38 @@
+
+
+
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<br /> <br /> <span class="contact100-form-title"> Listado de
+			Reservas </span> <br /> <br /> <br /> &nbsp;<a href="/reserva/c"><button
+				class="contact100-form-btn">Nueva Reserva</button></a> &nbsp;<a href="/"><button
+				class="contact100-form-btn">Volver</button></a> <br /> <br />
+
+		<table class="table table-striped">
+			<tr>
+
+				<th>Vecino</th>
+				<th>Zona Comun</th>
+				<th>Fecha</th>
+				<th>Inicio</th>
+				<th>Numero Bloques</th>
+				<th>Acciones</th>
+			</tr>
+
+			<tr th:each="reserva:${reservas}">
+				<td th:text="${reserva.hace?.id}"></td>
+				<td th:text="${reserva.tiene?.nombre}"></td>
+				<td th:text="${reserva.fecha}"></td>
+				<td th:text="${reserva.inicio}"></td>
+				<td th:text="${reserva.nBloques}"></td>
+				<td><form action="/reserva/d" method="post">
+						<input type="hidden" name="idR" th:value="${reserva.id}">
+						<button onclick="submit()" class="btn btn-light">
+							<img src="/img/trash.png" width="20" height="20">
+						</button>
+					</form></td>
+			</tr>
+
+		</table>
+	</div>
+</div>

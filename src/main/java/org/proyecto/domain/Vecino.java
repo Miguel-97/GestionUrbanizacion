@@ -1,10 +1,14 @@
 package org.proyecto.domain;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -23,13 +27,19 @@ public class Vecino {
 
 	private String email;
 
+	private String estado;
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Edificio vive;
+
+	@OneToMany(mappedBy = "hace")
+	private Collection<Reserva> reservas;
 
 	// ======================
 
 	public Vecino() {
 		super();
+		this.reservas = new ArrayList<Reserva>();
 	}
 
 	public Vecino(String id, String username, String password) {
@@ -37,7 +47,8 @@ public class Vecino {
 		this.id = id;
 		this.username = username;
 		this.password = (new BCryptPasswordEncoder()).encode(password);
-
+		this.estado = "inactivo";
+		this.reservas = new ArrayList<Reserva>();
 	}
 
 	// ======================
@@ -88,5 +99,21 @@ public class Vecino {
 
 	public void setVive(Edificio vive) {
 		this.vive = vive;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Collection<Reserva> getReservas() {
+		return reservas;
+	}
+
+	public void setReservas(Collection<Reserva> reservas) {
+		this.reservas = reservas;
 	}
 }

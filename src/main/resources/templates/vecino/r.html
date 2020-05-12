@@ -1,25 +1,40 @@
- <div class="container-contact100">
-<div class="wrap-contact100">
-	<br/><br/>
-	<span class="contact100-form-title"> Listado de Urbanizaciones </span>
-	<br/><br/>
-	&nbsp;<a href="/"><button class="contact100-form-btn">Volver</button></a>
-	<br/><br/>
-	<table class="table table-lm table-striped table-hover">
 
-	
-		<tr>
-			<th>Edificio</th>
-			<th>Nombre de usuario</th>
-			<th>Contraseña</th>
-		</tr>
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<br /> <br /> <span class="contact100-form-title"> Listado de
+			Urbanizaciones </span> <br /> <br /> &nbsp;<a href="/"><button
+				class="contact100-form-btn">Volver</button></a> <br /> <br />
+		<table class="table table-lm table-striped table-hover">
 
-		<tr th:each="vecino:${vecinos}">
-			<td th:text="${vecino.vive?.portal}"></td>
-			<td th:text="${vecino.username}"></td>
-			<td th:text="${vecino.password}"></td>
-		</tr>
 
-	</table>
-</div>
+			<tr>
+				<th>Edificio</th>
+				<th>Nombre de usuario</th>
+				<th>Contraseña</th>
+				<th>Nombre</th>
+				<th>E-mail</th>
+				<th>Estado</th>
+				<th>Acciones</th>
+
+			</tr>
+
+			<tr th:each="vecino:${vecinos}">
+				<td th:text="${vecino.vive?.portal}"></td>
+				<td th:text="${vecino.username}"></td>
+				<td th:text="${vecino.password}"></td>
+				<td th:text="${vecino.nombre}"></td>
+				<td th:text="${vecino.email}"></td>
+				<td th:text="${vecino.estado}"></td>
+				<td class="row">
+					<form action="/vecino/u" method="get">
+						<input type="hidden" name="id" th:value="${vecino.id}" />
+						<button onclick="submit()">
+							<img src="/img/edit.png" height="20" width="20">
+						</button>
+					</form>
+				</td>
+			</tr>
+
+		</table>
+	</div>
 </div>
