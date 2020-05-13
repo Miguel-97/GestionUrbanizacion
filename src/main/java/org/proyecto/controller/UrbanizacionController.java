@@ -1,9 +1,16 @@
 package org.proyecto.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
+import org.proyecto.domain.Vecino;
+import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
+import org.proyecto.helper.helper;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,6 +86,29 @@ public class UrbanizacionController {
 		String nombreUrba = "----";
 		try {
 			Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
+
+			// ==========historico==========
+			// Guarda la urbanizacion, vecinos, edificios, zonas y las reservas de esta
+			// urbanizacion
+			ArrayList<Edificio> edificios = new ArrayList<>();
+			ArrayList<Vecino> vecinos = new ArrayList<>();
+			ArrayList<ZonaComun> zonas = new ArrayList<>();
+			ArrayList<Reserva> reservas = new ArrayList<>();
+			edificios.addAll(urbanizacion.getEdificios());
+			for (Edificio edificio : edificios) {
+				vecinos.addAll(edificio.getVecinos());
+			}
+			zonas.addAll(urbanizacion.getZonasComunes());
+			for (Vecino vecino : vecinos) {
+				reservas.addAll(vecino.getReservas());
+			}
+			helper.historicoUrbanizacion(urbanizacion, edificios, vecinos, zonas, reservas);
+			System.out.println(helper.leerArchivo("urbanizaciones"));
+			System.out.println(helper.leerArchivo("edificios"));
+			System.out.println(helper.leerArchivo("vecinos"));
+			System.out.println(helper.leerArchivo("zonas"));
+			System.out.println(helper.leerArchivo("reservas"));
+			// ==========historico==========
 			nombreUrba = urbanizacion.getNombre();
 			repoUrbanizacion.delete(urbanizacion);
 		} catch (Exception e) {

@@ -120,6 +120,8 @@ public class EdificioController {
 			}
 			helper.historicoEdificio(edificio, vecinos, reservas);
 			System.out.println(helper.leerArchivo("edificios"));
+			System.out.println(helper.leerArchivo("vecinos"));
+			System.out.println(helper.leerArchivo("reservas"));
 			// ==========historico==========
 
 			portalEdificio = edificio.getPortal();

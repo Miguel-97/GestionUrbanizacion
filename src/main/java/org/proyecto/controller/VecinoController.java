@@ -26,7 +26,7 @@ public class VecinoController {
 
 	@Autowired
 	private VecinoRepository repoVecino;
-	
+
 	// =========================================
 
 	@GetMapping("r")
@@ -78,4 +78,41 @@ public class VecinoController {
 		}
 		return "redirect:/vecino/r";
 	}
+
+	@GetMapping("ul")
+	public String ul(@RequestParam("idE") Long idEdificio, ModelMap m, HttpSession s) throws DangerException {
+		m.put("vecinos", repoVecino.findByViveId(idEdificio));
+		m.put("view", "/vecino/ul");
+		return "/_t/frame";
+	}
+
+	@PostMapping("ul")
+	public void ul(@RequestParam("ids[]") String[] ids, @RequestParam("nombres[]") String[] nombres,
+			@RequestParam("emails[]") String[] emails, HttpSession s) throws DangerException, InfoException {
+		try {
+			if (ids.length == 0 && nombres.length == 0 && emails.length == 0) {
+				throw new Exception("No hay vecinos para actualizar");
+			} else {
+				for (int i = 0; i < ids.length; i++) {
+					if (!nombres[i].isEmpty() || !emails[i].isEmpty()) {
+						Vecino v = repoVecino.getOne(ids[i]);
+						if (!nombres[i].isEmpty()) {
+							v.setNombre(nombres[i]);
+						}
+						if (!emails[i].isEmpty()) {
+							v.setEmail(emails[i]);
+						}
+						repoVecino.save(v);
+					} else {
+						throw new Exception("No hay datos de vecinos para actualizar");
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			PRG.error("Error al actualizar los vecinos", "/vecino/r");
+		}
+		PRG.info("Vecinos actualizados correctamente", "/vecino/r");
+	}
+
 }

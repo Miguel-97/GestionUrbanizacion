@@ -1,0 +1,17 @@
+<div class="container">
+	<h1>Editar Vecinos</h1>
+	<form method="post" action="/vecino/ul" class="form">
+		<fieldset th:each="vecino:${vecinos}">
+			<input type="hidden" th:name="ids[]" th:value="${vecino.id}">
+			<label th:for="|${vecino.id}_name|">Nombre</label>
+			<input type="text" th:name="nombres[]"
+				th:value="|${vecino.nombre}|" th:id="|${vecino.id}_name|">
+			<br>
+			<label th:for="|${vecino.id}_mail|">Email</label>
+			<input type="text" th:name="emails[]"
+				th:value="|${vecino.email}|" th:id="|${vecino.id}_mail|">
+			<br>
+		</fieldset>
+		<input type="submit" class="form-item" />
+	</form>
+</div>

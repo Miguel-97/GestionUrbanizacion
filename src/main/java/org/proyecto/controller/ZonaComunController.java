@@ -1,11 +1,14 @@
 package org.proyecto.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
+import org.proyecto.helper.helper;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.ZonaComunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/zonaComun")
 public class ZonaComunController {
-	
+
 	@Autowired
 	private ZonaComunRepository repoZonaComun;
-	
+
 	@Autowired
 	private UrbanizacionRepository repoUrbanizacion;
-	
-	//=========================================
+
+	// =========================================
 
 	@GetMapping("c")
 	public String c(ModelMap m) {
@@ -34,34 +37,31 @@ public class ZonaComunController {
 		m.put("view", "/zonaComun/c");
 		return "/_t/frame";
 	}
-	
+
 	@PostMapping("c")
-	public String cPost(
-			@RequestParam("nombre") String nombreZona,
-			@RequestParam("horario") String horario,
-			@RequestParam("tiempoMax") Integer tiempoMax,
-			@RequestParam("aforoMax") Integer aforoMax,
+	public String cPost(@RequestParam("nombre") String nombreZona, @RequestParam("horario") String horario,
+			@RequestParam("tiempoMax") Integer tiempoMax, @RequestParam("aforoMax") Integer aforoMax,
 			@RequestParam("urbaId") Long urbaId) throws DangerException {
-		
+
 		try {
 			ZonaComun zona = new ZonaComun(nombreZona, horario, tiempoMax, aforoMax);
-			
-			if(urbaId != null) {
+
+			if (urbaId != null) {
 				Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
-				
+
 				urbanizacion.getZonasComunes().add(zona);
 				zona.setCorresponde(urbanizacion);
 			}
 			repoZonaComun.save(zona);
-			
+
 		} catch (Exception e) {
 			PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
 		}
-		
+
 		return "redirect:/zonaComun/r";
 	}
-	
-	//=========================================
+
+	// =========================================
 
 	@GetMapping("r")
 	public String r(ModelMap m) {
@@ -70,60 +70,63 @@ public class ZonaComunController {
 		m.put("view", "/zonaComun/r");
 		return "/_t/frame";
 	}
-	
-	//=========================================
+
+	// =========================================
 
 	@GetMapping("u")
 	public String u(ModelMap m, @RequestParam("zonaComunId") Long zonaComunId) {
 		m.put("zonaComun", repoZonaComun.getOne(zonaComunId));
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		m.put("view", "/zonaComun/u");
-		return"/_t/frame";
+		return "/_t/frame";
 	}
-	
+
 	@PostMapping("u")
-	public String uPost(
-			@RequestParam("zonaComunId") Long zonaComunId, 
-			@RequestParam("nombre") String nombreZona,
-			@RequestParam("horario") String horario,
-			@RequestParam("tiempoMax") Integer tiempoMax,
-			@RequestParam("aforoMax") Integer aforoMax,
-			@RequestParam("urbaId") Long urbaId) throws DangerException {
-		
+	public String uPost(@RequestParam("zonaComunId") Long zonaComunId, @RequestParam("nombre") String nombreZona,
+			@RequestParam("horario") String horario, @RequestParam("tiempoMax") Integer tiempoMax,
+			@RequestParam("aforoMax") Integer aforoMax, @RequestParam("urbaId") Long urbaId) throws DangerException {
+
 		try {
 			ZonaComun zona = repoZonaComun.getOne(zonaComunId);
-			
-			//ATRIBUTOS NORMALES
+
+			// ATRIBUTOS NORMALES
 			zona.setNombre(nombreZona);
 			zona.setHorario(horario);
 			zona.setTiempoMax(tiempoMax);
 			zona.setAforoMax(aforoMax);
-			
-			//URBANIZACION CORRESPONDE
+
+			// URBANIZACION CORRESPONDE
 			Urbanizacion urbaCorresponde = repoUrbanizacion.getOne(urbaId);
 			Urbanizacion urbaCorrespondeAnt = zona.getCorresponde();
-			
+
 			urbaCorrespondeAnt.getZonasComunes().remove(zona);
 			zona.setCorresponde(null);
-			
+
 			urbaCorresponde.getZonasComunes().add(zona);
 			zona.setCorresponde(urbaCorresponde);
-			
+
 			repoZonaComun.save(zona);
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			PRG.error("La zona común no pudo ser actualizada.", "/zonaComun/r");
 		}
 		return "redirect:/zonaComun/r";
 	}
-	
-	//=========================================
+
+	// =========================================
 
 	@PostMapping("d")
 	public String dPost(@RequestParam("zonaComunId") Long zonaComunId) throws DangerException {
 		String nombreZona = "----";
 		try {
 			ZonaComun zona = repoZonaComun.getOne(zonaComunId);
+			// ==========historico==========
+			// Guarda la zona y las reservas realizadas en esta zona
+			ArrayList<Reserva> reservas = new ArrayList<>();
+			reservas.addAll(zona.getReservas());
+			helper.historicoZonaComun(zona, reservas);
+			System.out.println(helper.leerArchivo("zonas"));
+			System.out.println(helper.leerArchivo("reservas"));
+			// ==========historico==========
 			nombreZona = zona.getNombre();
 			repoZonaComun.delete(zona);
 		} catch (Exception e) {
@@ -131,5 +134,5 @@ public class ZonaComunController {
 		}
 		return "redirect:/zonaComun/r";
 	}
-	
+
 }

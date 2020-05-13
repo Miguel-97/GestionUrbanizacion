@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface VecinoRepository extends JpaRepository<Vecino, String> {
 	public Vecino getByUsername(String username);
 	public List<Vecino> findByEstado(String estado);
+	public List<Vecino> findByViveId(Long Edificioid);
+	
 }

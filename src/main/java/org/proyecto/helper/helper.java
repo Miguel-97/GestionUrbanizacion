@@ -43,10 +43,17 @@ public class helper {
 
 	// =================HISTORICO=================
 
+	// Aqui seria donde tendriais que poner vuestra ruta absoluta a la carpeta
+	// historicos, comentadla y poner vuestra ruta, asi no tenemos que cambiarla
+	// cada dos por tres, simplemente descomentar y comentar las otras
+	private static String RUTA = "C:/Users/Miguel/Documents/GitHub/GestionUrbanizacion/src/main/resources/static/historicos/";
+	// private static String RUTA =
+	// "C:/Users/Miguel/Documents/GitHub/GestionUrbanizacion/src/main/resources/static/historicos/";
+	// private static String RUTA =
+	// "C:/Users/Miguel/Documents/GitHub/GestionUrbanizacion/src/main/resources/static/historicos/";
+
 	public static String leerArchivo(String tipo) {
-		File file = new File(
-				"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/"
-						+ tipo + ".txt");
+		File file = new File(RUTA + tipo + ".txt");
 		String doc = "";
 		try {
 			FileReader fr = new FileReader(file);
@@ -68,8 +75,7 @@ public class helper {
 
 	public static void historicoReserva(Reserva reserva) {
 		try {
-			File fileR = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+			File fileR = new File(RUTA + "reservas.txt");
 
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
 			String agenda = reserva.getTiene().getId() + "," + reserva.getFecha() + "," + reserva.getInicio() + ","
@@ -95,10 +101,8 @@ public class helper {
 
 	public static void historicoVecino(Vecino vecino, ArrayList<Reserva> reservas) {
 		try {
-			File fileV = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/vecinos.txt");
-			File fileR = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+			File fileV = new File(RUTA + "vecinos.txt");
+			File fileR = new File(RUTA + "reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -144,10 +148,8 @@ public class helper {
 
 	public static void historicoZonaComun(ZonaComun zona, ArrayList<Reserva> reservas) {
 		try {
-			File fileZ = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/zonas.txt");
-			File fileR = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+			File fileZ = new File(RUTA + "zonas.txt");
+			File fileR = new File(RUTA + "reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -193,12 +195,9 @@ public class helper {
 
 	public static void historicoEdificio(Edificio edificio, ArrayList<Vecino> vecinos, ArrayList<Reserva> reservas) {
 		try {
-			File fileE = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/edificios.txt");
-			File fileV = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/vecinos.txt");
-			File fileR = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+			File fileE = new File(RUTA + "edificios.txt");
+			File fileV = new File(RUTA + "vecinos.txt");
+			File fileR = new File(RUTA + "reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -262,16 +261,11 @@ public class helper {
 	public static void historicoUrbanizacion(Urbanizacion urba, ArrayList<Edificio> edificios,
 			ArrayList<Vecino> vecinos, ArrayList<ZonaComun> zonas, ArrayList<Reserva> reservas) {
 		try {
-			File fileU = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/urbanizaciones.txt");
-			File fileE = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/edificios.txt");
-			File fileV = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/vecinos.txt");
-			File fileZ = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/zonas.txt");
-			File fileR = new File(
-					"https://github.com/Miguel-97/GestionUrbanizacion/tree/master/src/main/resources/static/historicos/reservas.txt");
+			File fileU = new File(RUTA + "urbanizaciones.txt");
+			File fileE = new File(RUTA + "edificios.txt");
+			File fileV = new File(RUTA + "vecinos.txt");
+			File fileZ = new File(RUTA + "zonas.txt");
+			File fileR = new File(RUTA + "reservas.txt");
 
 			LocalDate fechaNow = LocalDate.now();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/uu");
@@ -366,5 +360,41 @@ public class helper {
 
 	}
 
+	public static void borrarHistoricos() {
+		try {
+			File fileU = new File(RUTA + "urbanizaciones.txt");
+			File fileE = new File(RUTA + "edificios.txt");
+			File fileV = new File(RUTA + "vecinos.txt");
+			File fileZ = new File(RUTA + "zonas.txt");
+			File fileR = new File(RUTA + "reservas.txt");
+
+			FileWriter fwu = new FileWriter(fileU);
+			FileWriter fwe = new FileWriter(fileE);
+			FileWriter fwv = new FileWriter(fileV);
+			FileWriter fwz = new FileWriter(fileZ);
+			FileWriter fwr = new FileWriter(fileR);
+
+			BufferedWriter bwu = new BufferedWriter(fwu);
+			BufferedWriter bwe = new BufferedWriter(fwe);
+			BufferedWriter bwv = new BufferedWriter(fwv);
+			BufferedWriter bwz = new BufferedWriter(fwz);
+			BufferedWriter bwr = new BufferedWriter(fwr);
+
+			bwu.write("");
+			bwe.write("");
+			bwv.write("");
+			bwz.write("");
+			bwr.write("");
+
+			fwu.close();
+			fwe.close();
+			fwv.close();
+			fwz.close();
+			fwr.close();
+
+		} catch (IOException e) {
+			e.getMessage();
+		}
+	}
 	// =============FIN=HISTORICO=================
 }

@@ -30,6 +30,12 @@
 					<button onclick="submit()" class="btn btn-light">
 						<img src="/img/trash.png" width="20" height="20">
 					</button>
+				</form>
+				<form action="/vecino/ul" method="get">
+					<input type="hidden" name="idE" th:value="${edificio.id}">
+					<button onclick="submit()" class="btn btn-light">
+						<img src="/img/edit.png" width="20" height="20">
+					</button>
 				</form></td>
 		</tr>
 
