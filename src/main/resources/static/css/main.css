@@ -44,7 +44,9 @@
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
-
+#init{
+  background-color:grey;
+}
 
 #home{
   opacity: 0.1;
@@ -77,6 +79,22 @@ body, html {
 #aNAV{
   margin: 2px 20px;
 }
+
+#aNav2{
+  color: white;
+  align: center;
+  margin: 2px 20px;
+}
+
+#aNav1{
+  margin-left: 60px;
+}
+
+#aNav3{
+  margin-left: 25px;
+}
+
+
 a {
   font-family: Poppins-Regular;
   font-size: 11px;
