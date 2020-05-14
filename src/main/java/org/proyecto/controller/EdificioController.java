@@ -44,13 +44,14 @@ public class EdificioController {
 	@PostMapping("c")
 	public String crearPost(@RequestParam("portal") String portal, @RequestParam("pisos") Integer pisos,
 			@RequestParam("puertasXpiso") Integer puertasXpiso, @RequestParam("denominacion") String denominacion,
-			@RequestParam("urbaId") Long urbaId) throws DangerException, InfoException {
+			@RequestParam("bajo") String bajo, @RequestParam("urbaId") Long urbaId)
+			throws DangerException, InfoException {
 
-		Edificio edif = repoEdificio.getByPortal(portal);
-		if (edif != null) {
-			PRG.error("Portal ya existente", "/edificio/c");
+		if (repoEdificio.getByPortal(portal) != null) {// Comprueba que no exista el portal a crear
+			PRG.error("Portal " + portal + "ya existente en la urbanizacion", "/edificio/c");
 		} else {
-			if (portal == null || pisos == null || puertasXpiso == null || denominacion == null || urbaId == null) {
+			if (portal == null || pisos == null || puertasXpiso == null || urbaId == null) {// comprueba que no haya
+																							// campos vacios
 				PRG.error("Datos vacios, rellene todos los datos", "/edificio/c");
 			} else {
 				try {
@@ -67,25 +68,35 @@ public class EdificioController {
 						ArrayList<Character> letras = helper.denomPuerta(puertasXpiso);
 						String id = "", username = "", password = "";
 						ArrayList<Vecino> vecindad = new ArrayList<>();
-						for (int j = 0; j < pisos; j++) {
-							for (int i = 0; i < puertasXpiso; i++) {
-								if (denominacion.equals("numeros")) {
-									id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
-									username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + (i + 1);
-									password = helper.generadorPassword();
-
-								} else if (denominacion.equals("letras")) {
-									id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
-									username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
-											+ letras.get(i);
-									password = helper.generadorPassword();
-
+						for (int j = 0; j < pisos; j++) { // recorre los pisos
+							for (int i = 0; i < puertasXpiso; i++) { // recorre las puertas por piso
+								if (bajo.equals("si")) {// comprueba si hay bajo en el edificio o no
+									if (denominacion.equals("numeros")) {// comprueba si la denominacion de las puertas
+																			// por piso del edificio son letras o
+																			// numeros
+										id = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + (i + 1);
+										username = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + (i + 1);
+									} else {
+										id = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + letras.get(i);
+										username = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + letras.get(i);
+									}
+								} else {
+									if (denominacion.equals("numeros")) {
+										id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + (i + 1);
+										username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
+												+ (i + 1);
+									} else {
+										id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
+												+ letras.get(i);
+										username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
+												+ letras.get(i);
+									}
 								}
+								password = helper.generadorPassword();
 								Vecino vecino = new Vecino(id, username, password);
 								vecindad.add(vecino);
 								vecino.setVive(edi);
 								repoVecino.save(vecino);
-
 							}
 						}
 
