@@ -45,52 +45,61 @@ public class EdificioController {
 	public String crearPost(@RequestParam("portal") String portal, @RequestParam("pisos") Integer pisos,
 			@RequestParam("puertasXpiso") Integer puertasXpiso, @RequestParam("denominacion") String denominacion,
 			@RequestParam("urbaId") Long urbaId) throws DangerException, InfoException {
-		try {
-			Edificio edificio = new Edificio(portal, pisos, puertasXpiso);
-			Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
 
-			urbanizacion.getEdificios().add(edificio);
-			edificio.setPertenece(urbanizacion);
-			repoEdificio.save(edificio);
+		Edificio edif = repoEdificio.getByPortal(portal);
+		if (edif != null) {
+			PRG.error("Portal ya existente", "/edificio/c");
+		} else {
+			if (portal == null || pisos == null || puertasXpiso == null || denominacion == null || urbaId == null) {
+				PRG.error("Datos vacios, rellene todos los datos", "/edificio/c");
+			} else {
+				try {
+					Edificio edificio = new Edificio(portal, pisos, puertasXpiso);
+					Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
 
-			try {
-				Edificio edi = repoEdificio.getOne(edificio.getId());
+					urbanizacion.getEdificios().add(edificio);
+					edificio.setPertenece(urbanizacion);
+					repoEdificio.save(edificio);
 
-				ArrayList<Character> letras = helper.denomPuerta(puertasXpiso);
-				String id = "", username = "", password = "";
-				ArrayList<Vecino> vecindad = new ArrayList<>();
-				for (int j = 0; j < pisos; j++) {
-					for (int i = 0; i < puertasXpiso; i++) {
-						if (denominacion.equals("numeros")) {
-							id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
-							username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + (i + 1);
-							password = helper.generadorPassword();
+					try {
+						Edificio edi = repoEdificio.getOne(edificio.getId());
 
-						} else if (denominacion.equals("letras")) {
-							id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
-							username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
-							password = helper.generadorPassword();
+						ArrayList<Character> letras = helper.denomPuerta(puertasXpiso);
+						String id = "", username = "", password = "";
+						ArrayList<Vecino> vecindad = new ArrayList<>();
+						for (int j = 0; j < pisos; j++) {
+							for (int i = 0; i < puertasXpiso; i++) {
+								if (denominacion.equals("numeros")) {
+									id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + i;
+									username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + (i + 1);
+									password = helper.generadorPassword();
 
+								} else if (denominacion.equals("letras")) {
+									id = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_" + letras.get(i);
+									username = urbanizacion.getNombre() + "_" + portal + "_" + (j + 1) + "_"
+											+ letras.get(i);
+									password = helper.generadorPassword();
+
+								}
+								Vecino vecino = new Vecino(id, username, password);
+								vecindad.add(vecino);
+								vecino.setVive(edi);
+								repoVecino.save(vecino);
+
+							}
 						}
-						Vecino vecino = new Vecino(id, username, password);
-						vecindad.add(vecino);
-						vecino.setVive(edi);
-						repoVecino.save(vecino);
 
+						edi.getVecinos().addAll(vecindad);
+						repoEdificio.save(edi);
+					} catch (Exception e) {
+						PRG.error("Vecino no creado", "/edificio/c");
 					}
+
+				} catch (Exception e) {
+
+					PRG.error("Edificio no creado", "/edificio/c");
 				}
-
-				edi.getVecinos().addAll(vecindad);
-				repoEdificio.save(edi);
-			} catch (Exception e) {
-				PRG.error("Vecino no creado", "/edificio/c");
 			}
-
-		} catch (
-
-		Exception e) {
-
-			PRG.error("Edificio no creado", "/edificio/c");
 		}
 
 		return "redirect:/edificio/r";

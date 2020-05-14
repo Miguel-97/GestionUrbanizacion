@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EdificioRepository extends JpaRepository<Edificio, Long> {
-
+	public Edificio getByPortal(String portal);
+	
 }
