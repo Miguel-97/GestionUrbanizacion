@@ -50,9 +50,10 @@ public class EdificioController {
 		if (repoEdificio.getByPortal(portal) != null) {// Comprueba que no exista el portal a crear
 			PRG.error("Portal " + portal + "ya existente en la urbanizacion", "/edificio/c");
 		} else {
-			if (portal == null || pisos == null || puertasXpiso == null || urbaId == null) {// comprueba que no haya
-																							// campos vacios
-				PRG.error("Datos vacios, rellene todos los datos", "/edificio/c");
+			if (portal == null || pisos == null || pisos < 0 || puertasXpiso == null || puertasXpiso < 0
+					|| urbaId == null) {// comprueba que no haya
+				// campos vacios o negativos
+				PRG.error("Datos vacios y/o negativos, rellene los datos correctamente", "/edificio/c");
 			} else {
 				try {
 					Edificio edificio = new Edificio(portal, pisos, puertasXpiso);
@@ -74,11 +75,26 @@ public class EdificioController {
 									if (denominacion.equals("numeros")) {// comprueba si la denominacion de las puertas
 																			// por piso del edificio son letras o
 																			// numeros
-										id = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + (i + 1);
-										username = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + (i + 1);
+										if (j == 0) {// Comprueba si esta en la planta baja para añadir los datos como
+														// bajo
+											id = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + (i + 1);
+											username = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + (i + 1);
+										} else {
+											id = urbanizacion.getNombre() + "_" + portal + "_" + j + "_" + (i + 1);
+											username = urbanizacion.getNombre() + "_" + portal + "_" + j + "_"
+													+ (i + 1);
+										}
 									} else {
-										id = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + letras.get(i);
-										username = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + letras.get(i);
+										if (j == 0) {
+											id = urbanizacion.getNombre() + "_" + portal + "_Bajo_" + letras.get(i);
+											username = urbanizacion.getNombre() + "_" + portal + "_Bajo_"
+													+ letras.get(i);
+										} else {
+											id = urbanizacion.getNombre() + "_" + portal + "_" + j + "_"
+													+ letras.get(i);
+											username = urbanizacion.getNombre() + "_" + portal + "_" + j + "_"
+													+ letras.get(i);
+										}
 									}
 								} else {
 									if (denominacion.equals("numeros")) {
@@ -99,7 +115,6 @@ public class EdificioController {
 								repoVecino.save(vecino);
 							}
 						}
-
 						edi.getVecinos().addAll(vecindad);
 						repoEdificio.save(edi);
 					} catch (Exception e) {

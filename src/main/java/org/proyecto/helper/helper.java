@@ -43,14 +43,7 @@ public class helper {
 
 	// =================HISTORICO=================
 
-	// Aqui seria donde tendriais que poner vuestra ruta absoluta a la carpeta
-	// historicos, comentadla y poner vuestra ruta, asi no tenemos que cambiarla
-	// cada dos por tres, simplemente descomentar y comentar las otras
-	private static String RUTA = "C:/Users/Miguel/Documents/GitHub/GestionUrbanizacion/src/main/resources/static/historicos/";
-	// private static String RUTA =
-	// "C:/Users/Miguel/Documents/GitHub/GestionUrbanizacion/src/main/resources/static/historicos/";
-	// private static String RUTA =
-	// "C:/Users/Miguel/Documents/GitHub/GestionUrbanizacion/src/main/resources/static/historicos/";
+	private static String RUTA = "src/main/resources/static/historicos/";
 
 	public static String leerArchivo(String tipo) {
 		File file = new File(RUTA + tipo + ".txt");

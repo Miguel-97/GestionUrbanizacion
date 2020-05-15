@@ -13,8 +13,8 @@ public class UrbaCGetPage {
 	// ===== ELEMENTOS CLAVE de la PÁGINA ======
 	// =========================================
 	
-	@FindBy(name="nombre")
-	private WebElement nombreText;
+	@FindBy(id="nombre")
+	private WebElement nombreUrba;
 	
 	@FindBy(id="botonEnvio")
 	private WebElement botonDeEnviar;
@@ -32,7 +32,7 @@ public class UrbaCGetPage {
 	}
 
 	public void introducirNombre(String nombre) {
-		nombreText.sendKeys(nombre);
+		nombreUrba.sendKeys(nombre);
 	}
 	
 	public void enviarFormulario() {

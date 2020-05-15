@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.proyecto.helper.H;
+import org.proyecto.helper.H.OPTION;
 import org.proyecto.pages.UrbaCGetPage;
 import org.proyecto.pages.UrbaCPostPage;
 
@@ -13,9 +14,9 @@ private WebDriver navegador;
 	
 	@BeforeEach
 	public void setUp() {
-		navegador = H.inicializarNavegador("http://localhost:8080/urbanizacion/c");
+		navegador = H.inicializarNavegador("http://localhost:8080/urbanizacion/c",OPTION.NORMAL);
 	}
-	
+
 	@Test
 	public void testCUrbaPetunia() {
 		(new UrbaCGetPage(navegador)).introducirNombre("Petunia");
@@ -27,14 +28,14 @@ private WebDriver navegador;
 	public void testCUrbaPetuniaRepetida() {
 		(new UrbaCGetPage(navegador)).introducirNombre("Petunia");
 		(new UrbaCGetPage(navegador)).enviarFormulario();
-		(new UrbaCPostPage(navegador)).assertIrAListar("http://localhost:8080/urbanizacion/r");
+		(new UrbaCPostPage(navegador)).assertIrAListar("http://localhost:8080/info");
 	}
 	
 	@Test
 	public void testCUrbaVacia() {
 		(new UrbaCGetPage(navegador)).introducirNombre("");
 		(new UrbaCGetPage(navegador)).enviarFormulario();
-		(new UrbaCPostPage(navegador)).assertIrAListar("http://localhost:8080/urbanizacion/c");
+		(new UrbaCPostPage(navegador)).assertIrAListar("http://localhost:8080/info");
 	}
 	
 	@AfterEach
