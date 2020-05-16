@@ -44,6 +44,12 @@
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
+#vecino{
+	margin-left: 25%;
+	color: black;
+	font-weight: bold;
+}
+
 #init{
   background-color:grey;
 }

@@ -1,14 +1,35 @@
-<div class="container">
-	<h1>Editar Vecino</h1>
-	<form method="post" action="/vecino/u" class="form">
-		Nombre
-		<input type="text" name="nombre" th:value="${vecino.nombre}" autofocus="autofocus"><br>
-		Email
-		<input type="text" name="email" th:value="${vecino.email}"><br>
-	
-		<input type="hidden" name="id" th:value="${vecino.id}"/>
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<form action="/vecino/u" method="post"
+			class="contact100-form validate-form">
+			<span class="contact100-form-title"> Editar Vecino <img
+				id="logo" src="/img/LogoPagina.png" width="15%" height="25%"></span>
+			<br>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="Nombre requerido">
+				<label class="label-input100" for="nombre">Nombre</label>
+		<input class="input100" type="text" name="nombre" th:value="${vecino.nombre}" autofocus="autofocus"> <span
+					class="focus-input100"></span>
+				
+			</div>
+
+
+			<div class="wrap-input100 validate-input"
+				data-validate="Email requerido">
+				<label class="label-input100" for="email">Email</label>
+		<input class="input100" type="text" name="email" th:value="${vecino.email}"> <span
+					class="focus-input100"></span>
+				
+			</div>
 		
-		<input type="submit" class="form-item" />
+			<input type="hidden" name="id" th:value="${vecino.id}"/>
+			
+			<div class="container-contact100-form-btn">
+				<input type="submit" id="botonEnvio" class="contact100-form-btn"
+					value="Enviar">
+			</div>
+
 		
 	</form>
 </div>

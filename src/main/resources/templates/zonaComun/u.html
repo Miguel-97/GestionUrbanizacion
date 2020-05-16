@@ -1,56 +1,68 @@
-<div class="container">
-
-	<h1>Editar Zona Común</h1>
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<form action="/zonaComun/u" method="post"
+			class="contact100-form validate-form">
+			<span class="contact100-form-title"> Editar Zona Común <img
+				id="logo" src="/img/LogoPagina.png" width="15%" height="25%"></span>
+			<br>
 	
-	<a href="/zonaComun/r"><button class="btn btn-dark">Volver</button></a>
-	
-	<form action="/zonaComun/u" method="post">
-		<div class="mt-3">
    			<input type="hidden" name="zonaComunId" th:value="${zonaComun.id}"/>
+   			
+   			
+   			<div class="wrap-input100 validate-input"
+				data-validate="Nombre requerido">
+				<label class="label-input100" for="id-nombre">Nombre</label>
+		<input type="text" class="input100" id="id-nombre" name="nombre"  th:value="${zonaComun.nombre}"/> <span
+					class="focus-input100"></span>
+				
+			</div>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="Horario requerido">
+				<label class="label-input100" for="id-horario">Horario</label>
+		<input type="text" class="input100" id="id-horario" name="horario"  th:value="${zonaComun.horario}"/> <span
+					class="focus-input100"></span>
+				
+			</div>
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="Tiempo Max requerido">
+				<label class="label-input100" for="id-tiempoMax">Tiempo Max</label>
+		<input type="number" class="input100" id="id-tiempoMax" name="tiempoMax"  min="30" step="30" th:value="${zonaComun.tiempoMax}"/> <span
+					class="focus-input100"></span>
+				
+			</div>
         	
-        	<div class="form-group row">
-        		<label for="id-nombre" class="col-sm-1 col-form-label font-weight-bold">Nombre</label>
-        		<div class="col-sm-2">
-        			<input type="text" class="form-control" id="id-nombre" name="nombre"  th:value="${zonaComun.nombre}"/>
-        		</div>
-        	</div>
+        <div class="wrap-input100 validate-input"
+				data-validate="Aforo Max requerido">
+				<label class="label-input100" for="id-aforoMax">Aforo Max</label>
+		<input type="number" class="input100" id="id-aforoMax" name="aforoMax" min="1" th:value="${zonaComun.aforoMax}"/> <span
+					class="focus-input100"></span>
+				
+			</div>
 
-        	<div class="form-group row">
-        		<label for="id-horario" class="col-sm-1 col-form-label font-weight-bold">Horario</label>
-        		<div class="col-sm-2">
-        			<input type="text" class="form-control" id="id-horario" name="horario"  th:value="${zonaComun.horario}"/>
-        		</div>
-        	</div>
-
-        	<div class="form-group row">
-        		<label for="id-tiempoMax" class="col-sm-1 col-form-label font-weight-bold">Tiempo Max</label>
-        		<div class="col-sm-2">
-        			<input type="number" class="form-control" id="id-tiempoMax" name="tiempoMax"  min="30" step="30" th:value="${zonaComun.tiempoMax}"/>
-        		</div>
-        	</div>
-
-        	<div class="form-group row">
-        		<label for="id-aforoMax" class="col-sm-1 col-form-label font-weight-bold">Aforo Max</label>
-        		<div class="col-sm-2">
-        			<input type="number" class="form-control" id="id-aforoMax" name="aforoMax" min="1" th:value="${zonaComun.aforoMax}"/>
-        		</div>
-        	</div>
-
-			<div class="form-group row">
-        		<label for="id-urbaId" class="col-sm-2 col-form-label font-weight-bold">Urbanización</label>
-        		<div class="col-sm-2">
-        			<select class="custom-select" id="id-urbaId" name="urbaId">
+   
+   	<div class="wrap-input100">
+				<div class="label-input100">Urbanización</div>
+				<div></div>
+				<select class="js-select2" id="id-urbaId" name="urbaId">
     						<option th:each="urbanizacion:${urbanizaciones}" th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}" th:selected="${zonaComun.corresponde.id==urbanizacion.id}"></option>
         			</select>
-        		</div>
-        	</div>        	
+				<div class="dropDownSelect2"></div>
+
+				<span class="focus-input100"></span>
+			</div>
+   
         	
-        	<div class="form-group row">
-        	   	<div class="col-sm-4">
-        	   		<input type="submit" class="btn btn-dark">
-        	   		<input type="reset" class="btn btn-dark" value="Cancelar">
-        	   	</div>
-        	</div>
+        	<div class="container-contact100-form-btn">
+				<input type="submit" id="botonEnvio" class="contact100-form-btn"
+					value="Aceptar">
+			</div>
+
+			<div class="container-contact100-form-btn">
+				<a href="/" class="contact100-form-btn"><button
+						class="contact100-form-btn" id="botonVolver">Cancelar</button></a>
+			</div>
         	
 		</div>
 	</form>
