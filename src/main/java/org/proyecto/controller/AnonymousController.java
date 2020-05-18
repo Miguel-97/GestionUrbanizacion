@@ -1,17 +1,14 @@
 package org.proyecto.controller;
 
 import javax.servlet.http.HttpSession;
-import org.apache.naming.factory.SendMailFactory;
 import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.rol;
 import org.proyecto.repository.VecinoRepository;
-import org.proyecto.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +19,6 @@ public class AnonymousController {
 
 	@Autowired
 	VecinoRepository repoVecino;
-
-	@Autowired
-	private MailService mailService;
 
 	// =========================================
 
@@ -79,39 +73,6 @@ public class AnonymousController {
 		repoVecino.save(new Vecino("40m1n157r40or", "administrador", "40m1n157r40or"));
 		return "redirect:/";
 	}
-
-	// =========================================
-
-	// HAY QUE CAMBIARLO
-	/*
-	 * @GetMapping("/registro") public String registro(ModelMap m, HttpSession s)
-	 * throws DangerException { rol.isRolOK("anon", s); m.put("view",
-	 * "/anonymous/registro"); return "/_t/frame"; }
-	 * 
-	 * @PostMapping("registro") public String registroPost(
-	 * 
-	 * @RequestParam("urbaId") Long urbaId,
-	 * 
-	 * @RequestParam(value = "portal", required = false) Integer portal,
-	 * 
-	 * @RequestParam(value = "piso", required = false) String piso,
-	 * 
-	 * @RequestParam(value = "puerta", required = false) String puerta,
-	 * 
-	 * @RequestParam("nombre") String nombre,
-	 * 
-	 * @RequestParam("emailUsuario") String emailUsuario) throws DangerException{
-	 * try { //Enviar el email al usuario String asunto="App Gestión Urbanización";
-	 * String mensaje="Gracias por tu registro,\r\n" +
-	 * "Estas son tus credenciales para acceder a la app:\r\n" +
-	 * "Nombre de usuario:       Contraseña: \r\n" + "Gracias.\r\n";
-	 * 
-	 * mailService.sendMail("gestion.urbanizacion.2020@gmail.com",emailUsuario,
-	 * asunto,mensaje); //Guardar datos en la bbdd } catch(Exception e) {
-	 * PRG.error("Error al registrar el vecino", "/vecino/r"); }
-	 * 
-	 * return "redirect:/vecino/r"; }
-	 */
 
 	// =========================================
 

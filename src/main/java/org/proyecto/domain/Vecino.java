@@ -46,7 +46,7 @@ public class Vecino {
 		super();
 		this.id = id;
 		this.username = username;
-		this.password = (new BCryptPasswordEncoder()).encode(password);
+		this.password = password;
 		this.estado = "inactivo";
 		this.reservas = new ArrayList<Reserva>();
 	}

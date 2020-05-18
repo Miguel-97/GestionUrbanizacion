@@ -20,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class helper {
 
 	public static String generadorPassword() {
-		BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
 		char[] validas = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 		StringBuilder password = new StringBuilder(10);
 		Random random = new Random();
@@ -28,7 +27,7 @@ public class helper {
 			char c = validas[random.nextInt(validas.length)];
 			password.append(c);
 		}
-		return bpe.encode(password.toString());
+		return password.toString();
 	}
 
 	public static ArrayList<Character> denomPuerta(Integer puertasXpiso) {

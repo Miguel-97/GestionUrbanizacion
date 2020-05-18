@@ -37,10 +37,15 @@ public class UrbanizacionController {
 
 	@PostMapping("c")
 	public String cPost(@RequestParam("nombre") String nombreUrba) throws DangerException {
-		try {
-			repoUrbanizacion.save(new Urbanizacion(nombreUrba));
-		} catch (Exception e) {
-			PRG.error("Urbanización " + nombreUrba + " duplicada", "/urbanizacion/c");
+		if(nombreUrba.equals("")) {
+			PRG.error("Datos vacios, rellene todos los datos", "/urbanizacion/c");
+		}
+		else {
+			try {
+				repoUrbanizacion.save(new Urbanizacion(nombreUrba));
+			} catch (Exception e) {
+				PRG.error("Urbanización " + nombreUrba + " duplicada", "/urbanizacion/c");
+			}
 		}
 
 		return "redirect:/urbanizacion/r";

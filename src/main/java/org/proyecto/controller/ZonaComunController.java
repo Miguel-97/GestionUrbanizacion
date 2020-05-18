@@ -43,19 +43,26 @@ public class ZonaComunController {
 			@RequestParam("tiempoMax") Integer tiempoMax, @RequestParam("aforoMax") Integer aforoMax,
 			@RequestParam("urbaId") Long urbaId) throws DangerException {
 
-		try {
-			ZonaComun zona = new ZonaComun(nombreZona, horario, tiempoMax, aforoMax);
+		if(nombreZona == null || horario == null || tiempoMax == null || aforoMax == null || urbaId == null) {
+			PRG.error("Datos vacios y/o negativos, rellene los datos correctamente", "/zonaComun/c");
 
-			if (urbaId != null) {
-				Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
+		}
+		else {
+			try {
+				ZonaComun zona = new ZonaComun(nombreZona, horario, tiempoMax, aforoMax);
 
-				urbanizacion.getZonasComunes().add(zona);
-				zona.setCorresponde(urbanizacion);
+				if (urbaId != null) {
+					Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
+
+					urbanizacion.getZonasComunes().add(zona);
+					zona.setCorresponde(urbanizacion);
+				}
+				repoZonaComun.save(zona);
+
+			} catch (Exception e) {
+				PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
 			}
-			repoZonaComun.save(zona);
-
-		} catch (Exception e) {
-			PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
+			
 		}
 
 		return "redirect:/zonaComun/r";
