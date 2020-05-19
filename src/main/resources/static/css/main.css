@@ -45,7 +45,7 @@
 [ RESTYLE TAG ]*/
 
 #vecino{
-	margin-left: 25%;
+	text-align: center;
 	color: black;
 	font-weight: bold;
 }
@@ -64,6 +64,23 @@
   margin-left: 15%;
 }
 
+#float{
+	float:left; 
+	margin-left:12px;
+}
+
+
+#WidthForm{
+	margin-left:10%;
+	width:80%;
+}
+
+#boton{
+	clear: left;
+	width: 50%;
+	margin-left:25%;
+}
+
 * {
   margin: 0px; 
   box-sizing: border-box;
@@ -80,6 +97,9 @@ body, html {
   
 }
 
+#float{
+	  display: inline-block;
+}
 /*---------------------------------------------*/
 
 #aNAV{

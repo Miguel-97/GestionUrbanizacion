@@ -1,15 +1,15 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<form action="/vecino/ul" method="post"
+		<form id="WidthForm" action="/vecino/ul" method="post"
 			class="contact100-form validate-form">
 			<span class="contact100-form-title"> Editar vecinos del portal <span th:text="${portal}"></span>  <img
 				id="logo" src="/img/LogoPagina.png" width="15%" height="25%"></span>
 			<br>
 
 
-		<fieldset th:each="vecino:${vecinos}">
+		<fieldset id="float"  th:each="vecino:${vecinos}">
 		
-		<div class="wrap-input100 validate-input">
+		<div  class="wrap-input100 validate-input">
 			<input id="vecino" class="input100" type="text" th:value="|${vecino.id}" th:name="ids[]"
 				readonly="readonly">
 				
@@ -35,9 +35,16 @@
 		
 		<input type="hidden" th:value="${portal}" name="portal"> 
 		
-		<div class="container-contact100-form-btn">
+		<div id="boton"  class="container-contact100-form-btn">
 				<input type="submit" id="botonEnvio" class="contact100-form-btn"
 					value="Enviar">
+			</div>
+			
+			<div id="boton"  class="container-contact100-form-btn">
+				<button class="contact100-form-btn">
+					<a href="/edificio/r" class="contact100-form-btn">Volver</a>
+				</button>
+
 			</div>
 	</form>
 </div>
