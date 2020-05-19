@@ -47,7 +47,7 @@ public class EdificioController {
 			@RequestParam("bajo") String bajo, @RequestParam("urbaId") Long urbaId)
 			throws DangerException, InfoException {
 
-		if (repoEdificio.getByPortal(portal) != null) {// Comprueba que no exista el portal a crear
+		if (repoEdificio.getByPerteneceIdAndPortal(urbaId, portal) != null) {// Comprueba que no exista el portal a crear
 			PRG.error("Portal " + portal + "ya existente en la urbanizacion", "/edificio/c");
 		} else {
 			if (portal == null || pisos == null || pisos < 0 || puertasXpiso == null || puertasXpiso < 0

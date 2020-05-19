@@ -37,7 +37,7 @@ public class UrbanizacionController {
 
 	@PostMapping("c")
 	public String cPost(@RequestParam("nombre") String nombreUrba) throws DangerException {
-		if(nombreUrba.equals("")) {
+		if(nombreUrba.trim().equals("")) {
 			PRG.error("Datos vacios, rellene todos los datos", "/urbanizacion/c");
 		}
 		else {

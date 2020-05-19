@@ -3,8 +3,11 @@ package org.proyecto.controller;
 import javax.servlet.http.HttpSession;
 import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
+import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.rol;
+import org.proyecto.repository.EdificioRepository;
+import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,13 +15,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class AnonymousController {
 
 	@Autowired
 	VecinoRepository repoVecino;
+
+	@Autowired
+	EdificioRepository repoEdificio;
+
+	@Autowired
+	UrbanizacionRepository repoUrbanizacion;
 
 	// =========================================
 
@@ -101,6 +112,47 @@ public class AnonymousController {
 		return "redirect:" + view;
 	}
 
+	// =========================================
+
+	
+	@GetMapping("/registro")
+	public String registro(HttpSession s, ModelMap m) throws DangerException {
+		rol.isRolOK("anon", s);
+		m.put("view", "anonymous/registro");
+		m.put("urbas", repoUrbanizacion.findAll());
+		m.put("vecinos", repoVecino.findByEstado("pendiente"));
+		return "/_t/frame";
+	}
+	
+	@RequestMapping("/registro")
+	public @ResponseBody String registroPost(
+			@RequestParam("urbaId") Long urbaId,
+			@RequestParam("portal") String portal, 
+			@RequestParam("piso") String piso,
+			@RequestParam("puerta") String puerta,
+			@RequestParam("email") String email
+			) throws InfoException{
+	
+		String edificios = "", puertas="", pisos="";
+		
+		if(urbaId!=null) {
+			for(int i=0;i<repoEdificio.findByPerteneceId(urbaId).size();i++) {
+				edificios += repoEdificio.findByPerteneceId(urbaId).get(i).getPortal() + ",";
+			}
+			return edificios;
+		}
+		if(portal!=null) {
+			for(int i=0;i<repoEdificio.findByPerteneceIdAndPortal(urbaId, portal).size();i++) {
+				pisos += repoEdificio.findByPerteneceIdAndPortal(urbaId, portal).get(i).getPisos();
+			}
+			return pisos;
+		}
+		
+		return "redirect:/anonymous/login";
+	}
+
+	
+	
 	// =========================================
 
 	// Logout va en AuthController
