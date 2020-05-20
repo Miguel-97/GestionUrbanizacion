@@ -497,7 +497,8 @@ input.input100 {
 [ Responsive ]*/
 
 @media (max-width: 992px) {
-
+	
+	
   #login{
      width: 30%;
     padding: 110px 30px 55px 30px;

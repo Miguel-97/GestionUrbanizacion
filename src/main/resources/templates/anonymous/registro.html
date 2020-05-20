@@ -1,47 +1,55 @@
-<div class="container">
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<form action="/anonymous/registro" method="post"
+			class="contact100-form validate-form">
+			<span class="contact100-form-title"> Nueva Persona <img
+				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
+			</span>
+	
+		<div class="wrap-input100">
+				<div class="label-input100">Urbanizacion</div>
+				<div></div>
+				<select class="js-select2" id="id-urbaId" name="urbaId"  onchange="/anonymous/registroPost(urbaId)">
+						<option th:each="urba:${urbas}" th:text="${urba.nombre}" th:value="${urba.id}"></option>
+				</select>
+				<div class="dropDownSelect2"></div>
 
-	<h1>Nueva Persona</h1>
+				<span class="focus-input100"></span>
+			</div>
 	
-	<a href="/persona/r"><button class="btn btn-dark">Volver</button></a>
 	
-	<form action="/anonymous/registro" method="post">
-		<div class="mt-3">
-        	
-        	<div class="form-group row">
-        		<label for="id-urbaId" class="col-sm-2 col-form-label font-weight-bold">Urbanización</label>
-        		<div class="col-sm-2">
-        			<select class="custom-select" id="id-urbaId" name="urbaId" onchange="/anonymous/registroPost(urbaId)">
-    						<option th:each="urba:${urbas}" th:text="${urba.nombre}" th:value="${urba.id}"></option>
-        			</select>
-        		</div>
-        	</div>
-        	
-        	<div class="form-group row">
-        		<label for="id-portal" class="col-sm-2 col-form-label font-weight-bold">Portal</label>
-        		<div class="col-sm-2">
-        			<select class="custom-select" id="id-portal" name="portal">
-    						<option th:each="edificio:${edificios}" th:text="${edificio}" th:value="${portal}"></option>
-        			</select>
-        		</div>
-        	</div>
-        	
-        	<div class="form-group row">
-        		<label for="id-nombre" class="col-sm-2 col-form-label font-weight-bold">Nombre</label>
-        		<div class="col-sm-2">
-        			<input type="text" class="form-control" id="id-nombre" name="nombre" required="required"/>
-        		</div>
-        	</div>
+	<div class="wrap-input100">
+				<div class="label-input100">Portal</div>
+				<div></div>
+				<select class="js-select2" id="id-portal" name="portal">
+						<option th:each="edificio:${edificios}" th:text="${edificio}" th:value="${portal}"></option>
+				</select>
+				<div class="dropDownSelect2"></div>
+
+				<span class="focus-input100"></span>
+			</div>
         	
         	
-        	<div class="form-group row">
-        	   	<div class="col-sm-2">
-        	   		<input type="submit" class="btn btn-dark"/>
-        	   		<input type="reset" class="btn btn-dark" value="Cancelar"/>
-        	   	</div>
-        	</div>
+        	<div class="wrap-input100 validate-input"
+				data-validate="Nombre requerido">
+				<label class="label-input100" for="id-nombre">Nombre</label> <input type="text" class="input100" id="id-nombre" name="nombre" required="required" pattern="^[a-zñáéíóúç ü-]{3,30}$" title="Introduce un nombre válido"/> <span
+					class="focus-input100"></span>
+			</div>
         	
-		</div>
+        	
+        
+        	
+        	<div class="container-contact100-form-btn">
+				<input type="submit" id="botonEnvio" class="contact100-form-btn"
+					value="Crear">
+			</div>
+
+			<div class="container-contact100-form-btn">
+				<button class="contact100-form-btn" id="botonVolver"><a href="/" class="contact100-form-btn">Volver</a></button>
+			</div>
+        	
+		
 	</form>
-	
+	<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
 </div>
 

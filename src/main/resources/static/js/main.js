@@ -8,6 +8,13 @@
   
     /*==================================================================
     [ Validate ]*/
+    
+    
+    
+   
+    
+    
+    
     var input = $('.validate-input .input100');
 
     $('.validate-form').on('submit',function(){
@@ -30,6 +37,8 @@
         });
     });
 
+   
+    
     function validate (input) {
         if($(input).attr('type') == 'nombre' || $(input).attr('name') == 'nombre') {
             if($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
@@ -41,6 +50,11 @@
                 return false;
             }
         }
+    }
+    
+    valor = document.getElementById("nombre").value;
+    if( valor == null || valor.length == 0 ||/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/.test(valor) ) {
+      return false;
     }
 
     function showValidate(input) {
