@@ -1,6 +1,7 @@
 package org.proyecto.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.proyecto.domain.Reserva;
@@ -14,6 +15,7 @@ import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.proyecto.repository.ZonaComunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,4 +99,13 @@ public class ReservaController {
 		return "redirect:/reserva/r";
 	}
 
+	@Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
+	public void completarReservasPendientes() {
+		LocalDate fechaHoy = LocalDate.now();
+		List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(fechaHoy, "pendiente");
+		for (int i = 0; i < reservasPend.size(); i++) {
+			reservasPend.get(i).setEstado("completada");
+		}
+		
+	}
 }

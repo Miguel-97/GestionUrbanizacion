@@ -20,6 +20,8 @@ public class Reserva {
 	private String inicio;
 
 	private Integer nBloques;
+	
+	private String estado;
 
 	@ManyToOne
 	private ZonaComun tiene;
@@ -39,6 +41,7 @@ public class Reserva {
 		this.fecha = fecha;
 		this.inicio = inicio;
 		this.nBloques = nBloques;
+		this.estado = "pendiente";
 	}
 
 	// =========================================
@@ -89,6 +92,14 @@ public class Reserva {
 
 	public void setHace(Vecino hace) {
 		this.hace = hace;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 }

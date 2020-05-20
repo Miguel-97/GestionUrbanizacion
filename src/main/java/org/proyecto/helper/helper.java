@@ -15,7 +15,7 @@ import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class helper {
 
@@ -38,6 +38,51 @@ public class helper {
 		}
 		return letras;
 
+	}
+
+	@SuppressWarnings("null")
+	public static ArrayList<String> franjas(String horario) {
+		ArrayList<String> franjas = new ArrayList<>();
+
+		String temp[] = horario.split("-");// [10:00] - [21:00]
+
+		Integer[] franjaZ = null;
+		franjaZ[0] = Integer.parseInt(temp[0]);// [10:00]
+		franjaZ[1] = Integer.parseInt(temp[1]);// [21:00]
+		Integer[] horaminI = null; // [10:00]
+		Integer[] horaminF = null; // [21:00]
+
+		String temp1[] = franjaZ[0].toString().split(":");// [10]:[00]
+		horaminI[0] = Integer.parseInt(temp1[0]);// [10]
+		horaminI[1] = Integer.parseInt(temp1[1]);// [00]
+
+		String temp2[] = franjaZ[1].toString().split(":");// [21]:[00]
+		horaminF[0] = Integer.parseInt(temp2[0]);// [21]
+		horaminF[1] = Integer.parseInt(temp2[1]);// [00]
+		int franjas1 = 0;
+		if (horaminI[1] == horaminF[1]) {// 1
+			franjas1 = (horaminF[0] - horaminI[0]) * 2;
+		} else if (horaminI[1] == 00 && horaminF[1] == 30) {// 2
+			franjas1 = ((horaminF[0] - horaminI[0]) * 2) + 1;
+		} else if (horaminI[1] == 30 && horaminF[1] == 00) {// 3
+			franjas1 = ((horaminF[0] - horaminI[0]) * 2) - 1;
+		}
+		for (int i = 0; i < franjas1; i++) {
+			if (horaminI[1] == 00 && i % 2 == 0) {// a en puntos
+				int hora = horaminI[0] + (i / 2);
+				franjas.add((i / 2), "" + hora + "00");
+			} else if (horaminI[1] == 00 && i % 2 != 0) {// y medias
+				int hora = horaminI[0] + (i / 2);
+				franjas.add((i / 2), "" + hora + "30");
+			} else if (horaminI[1] == 30 && i % 2 == 0) {// a y medias
+				int hora = horaminI[0] + (i / 2);
+				franjas.add((i / 2), "" + hora + "30");
+			} else if (horaminI[1] == 30 && i % 2 != 0) {// en puntos
+				int hora = horaminI[0] + ((i / 2) + 1);
+				franjas.add((i / 2), "" + hora + "00");
+			}
+		}
+		return franjas;
 	}
 
 	// =================HISTORICO=================

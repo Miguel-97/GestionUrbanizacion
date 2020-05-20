@@ -2,6 +2,8 @@ package org.proyecto.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.proyecto.helper.helper;
 
 @Entity
 public class ZonaComun {
@@ -26,6 +30,8 @@ public class ZonaComun {
 	private Integer tiempoMax;
 
 	private Integer aforoMax;
+
+	private List<String> franjas;
 
 	@ManyToOne
 	private Urbanizacion corresponde;
@@ -108,6 +114,14 @@ public class ZonaComun {
 
 	public void setReservas(Collection<Reserva> reservas) {
 		this.reservas = reservas;
+	}
+
+	public List<String> getFranjas() {
+		return franjas;
+	}
+
+	public void setFranjas(List<String> franjas) {
+		this.franjas = helper.franjas(getHorario());
 	}
 
 }
