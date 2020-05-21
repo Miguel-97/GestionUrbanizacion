@@ -1,5 +1,6 @@
 package org.proyecto.pages;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.openqa.selenium.By;
@@ -14,12 +15,16 @@ public class UrbaCPostPage {
 		this.navegador = navegador;
 	}
 
-	public void assertIrAListar(String url) {
+	public void assertIrAListar(String estado, String url) {
 		String obtengo = navegador.getCurrentUrl();
-		assertTrue(obtengo.equals(url), "Espero " + url + " y obtengo " + obtengo);
-		
+		if (estado.equals("true")) {
+			assertTrue(obtengo.equals(url), "Espero " + url + " y obtengo " + obtengo);
+		} else {
+			assertFalse(obtengo.equals(url), "Espero " + url + " y obtengo " + obtengo);
+		}
+
 	}
-	
+
 	public void assertBannerContiene(String mensaje) {
 		String obtengo = navegador.findElement(By.id("banner")).getText();
 		assertTrue(obtengo.contains(mensaje), "Espero " + mensaje + " y obtengo " + obtengo);
