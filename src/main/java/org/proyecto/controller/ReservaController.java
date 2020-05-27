@@ -1,9 +1,8 @@
 package org.proyecto.controller;
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
-
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
@@ -47,7 +46,7 @@ public class ReservaController {
 	}
 
 	@PostMapping("c")
-	public String cPost(@RequestParam("fecha") Date fecha, @RequestParam("inicio") String inicio,
+	public String cPost(@RequestParam("fecha") Calendar fecha, @RequestParam("inicio") String inicio,
 			@RequestParam("nBloques") Integer nBloques, @RequestParam("vecinoId") String vecinoId,
 			@RequestParam("zonaId") Long zonaId) throws DangerException, InfoException {
 

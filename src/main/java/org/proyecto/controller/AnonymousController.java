@@ -114,7 +114,6 @@ public class AnonymousController {
 
 	// =========================================
 
-	
 	@GetMapping("/registro")
 	public String registro(HttpSession s, ModelMap m) throws DangerException {
 		rol.isRolOK("anon", s);
@@ -123,36 +122,29 @@ public class AnonymousController {
 		m.put("vecinos", repoVecino.findByEstado("pendiente"));
 		return "/_t/frame";
 	}
-	
+
 	@RequestMapping("/registro")
-	public @ResponseBody String registroPost(
-			@RequestParam("urbaId") Long urbaId,
-			@RequestParam("portal") String portal, 
-			@RequestParam("piso") String piso,
-			@RequestParam("puerta") String puerta,
-			@RequestParam("email") String email
-			) throws InfoException{
-	
-		String edificios = "", puertas="", pisos="";
-		
-		if(urbaId!=null) {
-			for(int i=0;i<repoEdificio.findByPerteneceId(urbaId).size();i++) {
+	public @ResponseBody String registroPost(@RequestParam("urbaId") Long urbaId, @RequestParam("portal") String portal,
+			@RequestParam("piso") String piso, @RequestParam("puerta") String puerta,
+			@RequestParam("email") String email) throws InfoException {
+
+		String edificios = "", puertas = "", pisos = "";
+
+		if (urbaId != null) {
+			for (int i = 0; i < repoEdificio.findByPerteneceId(urbaId).size(); i++) {
 				edificios += repoEdificio.findByPerteneceId(urbaId).get(i).getPortal() + ",";
 			}
 			return edificios;
 		}
-		if(portal!=null) {
-			for(int i=0;i<repoEdificio.findByPerteneceIdAndPortal(urbaId, portal).size();i++) {
-				pisos += repoEdificio.findByPerteneceIdAndPortal(urbaId, portal).get(i).getPisos();
-			}
+		if (portal != null) {
+			pisos += repoEdificio.getByPerteneceIdAndPortal(urbaId, portal).getPisos();
+
 			return pisos;
 		}
-		
+
 		return "redirect:/anonymous/login";
 	}
 
-	
-	
 	// =========================================
 
 	// Logout va en AuthController

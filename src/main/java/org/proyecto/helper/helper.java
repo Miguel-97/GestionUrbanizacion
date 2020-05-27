@@ -9,13 +9,15 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Random;
 import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class helper {
 
@@ -41,10 +43,10 @@ public class helper {
 	}
 
 	@SuppressWarnings("null")
-	public static ArrayList<String> franjas(String horario) {
-		ArrayList<String> franjas = new ArrayList<>();
-
-		String temp[] = horario.split("-");// [10:00] - [21:00]
+	public static Collection<Franja> inicializarFranjas(ZonaComun zona) {
+		Calendar fecha = Calendar.getInstance();
+		Collection<Franja> franjas = zona.getFranjas();
+		String temp[] = zona.getHorario().split("-");// [10:00] - [21:00]
 
 		Integer[] franjaZ = null;
 		franjaZ[0] = Integer.parseInt(temp[0]);// [10:00]
@@ -52,13 +54,69 @@ public class helper {
 		Integer[] horaminI = null; // [10:00]
 		Integer[] horaminF = null; // [21:00]
 
-		String temp1[] = franjaZ[0].toString().split(":");// [10]:[00]
-		horaminI[0] = Integer.parseInt(temp1[0]);// [10]
-		horaminI[1] = Integer.parseInt(temp1[1]);// [00]
+		temp = franjaZ[0].toString().split(":");// [10]:[00]
+		horaminI[0] = Integer.parseInt(temp[0]);// [10]
+		horaminI[1] = Integer.parseInt(temp[1]);// [00]
 
-		String temp2[] = franjaZ[1].toString().split(":");// [21]:[00]
-		horaminF[0] = Integer.parseInt(temp2[0]);// [21]
-		horaminF[1] = Integer.parseInt(temp2[1]);// [00]
+		temp = franjaZ[1].toString().split(":");// [21]:[00]
+		horaminF[0] = Integer.parseInt(temp[0]);// [21]
+		horaminF[1] = Integer.parseInt(temp[1]);// [00]
+		for (int dias = 0; dias < 14; dias++) {
+			fecha.add(Calendar.DAY_OF_YEAR, dias);
+			int franjasDiarias = 0;
+			if (horaminI[1] == horaminF[1]) {// 1
+				franjasDiarias = (horaminF[0] - horaminI[0]) * 2;
+			} else if (horaminI[1] == 00 && horaminF[1] == 30) {// 2
+				franjasDiarias = ((horaminF[0] - horaminI[0]) * 2) + 1;
+			} else if (horaminI[1] == 30 && horaminF[1] == 00) {// 3
+				franjasDiarias = ((horaminF[0] - horaminI[0]) * 2) - 1;
+			}
+			for (int i = 0; i < franjasDiarias; i++) {
+				Franja f = new Franja(fecha);
+				if (horaminI[1] == 00 && i % 2 == 0) {// a en puntos
+					int hora = horaminI[0] + (i / 2);
+					f.setHora("" + hora + ":00");
+				} else if (horaminI[1] == 00 && i % 2 != 0) {// y medias
+					int hora = horaminI[0] + (i / 2);
+					f.setHora("" + hora + ":30");
+				} else if (horaminI[1] == 30 && i % 2 == 0) {// a y medias
+					int hora = horaminI[0] + (i / 2);
+					f.setHora("" + hora + ":30");
+				} else if (horaminI[1] == 30 && i % 2 != 0) {// en puntos
+					int hora = horaminI[0] + ((i / 2) + 1);
+					f.setHora("" + hora + ":30");
+				}
+				franjas.add(f);
+			}
+		}
+		return franjas;
+	}
+
+	// TODO
+	/*
+	 * public static Collection<Franja> borrarFranja0(ZonaComun zona, Calendar
+	 * fecha) { Collection<Franja> franjas = zona.getFranjas(); franjas.remove(0);
+	 * return franjas; }
+	 */
+	@SuppressWarnings("null")
+	public static Collection<Franja> addFranja(ZonaComun zona, Calendar fecha, String horario) {
+
+		Collection<Franja> franjas = zona.getFranjas();
+
+		String temp[] = horario.split("-");// [10:00] - [21:00]
+		Integer[] franjaZ = null;
+		franjaZ[0] = Integer.parseInt(temp[0]);// [10:00]
+		franjaZ[1] = Integer.parseInt(temp[1]);// [21:00]
+		Integer[] horaminI = null; // [10:00]
+		Integer[] horaminF = null; // [21:00]
+
+		temp = franjaZ[0].toString().split(":");// [10]:[00]
+		horaminI[0] = Integer.parseInt(temp[0]);// [10]
+		horaminI[1] = Integer.parseInt(temp[1]);// [00]
+
+		temp = franjaZ[1].toString().split(":");// [21]:[00]
+		horaminF[0] = Integer.parseInt(temp[0]);// [21]
+		horaminF[1] = Integer.parseInt(temp[1]);// [00]
 		int franjas1 = 0;
 		if (horaminI[1] == horaminF[1]) {// 1
 			franjas1 = (horaminF[0] - horaminI[0]) * 2;
@@ -68,19 +126,21 @@ public class helper {
 			franjas1 = ((horaminF[0] - horaminI[0]) * 2) - 1;
 		}
 		for (int i = 0; i < franjas1; i++) {
+			Franja f = new Franja(fecha);
 			if (horaminI[1] == 00 && i % 2 == 0) {// a en puntos
 				int hora = horaminI[0] + (i / 2);
-				franjas.add((i / 2), "" + hora + "00");
+				f.setHora("" + hora + ":00");
 			} else if (horaminI[1] == 00 && i % 2 != 0) {// y medias
 				int hora = horaminI[0] + (i / 2);
-				franjas.add((i / 2), "" + hora + "30");
+				f.setHora("" + hora + ":30");
 			} else if (horaminI[1] == 30 && i % 2 == 0) {// a y medias
 				int hora = horaminI[0] + (i / 2);
-				franjas.add((i / 2), "" + hora + "30");
+				f.setHora("" + hora + ":30");
 			} else if (horaminI[1] == 30 && i % 2 != 0) {// en puntos
 				int hora = horaminI[0] + ((i / 2) + 1);
-				franjas.add((i / 2), "" + hora + "00");
+				f.setHora("" + hora + ":30");
 			}
+			franjas.add(f);
 		}
 		return franjas;
 	}

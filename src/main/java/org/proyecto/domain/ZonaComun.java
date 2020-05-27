@@ -2,8 +2,6 @@ package org.proyecto.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-
-import org.proyecto.helper.helper;
 
 @Entity
 public class ZonaComun {
@@ -31,18 +27,20 @@ public class ZonaComun {
 
 	private Integer aforoMax;
 
-	private List<String> franjas;
-
 	@ManyToOne
 	private Urbanizacion corresponde;
 
 	@OneToMany(mappedBy = "tiene", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<Reserva> reservas;
 
+	@OneToMany(mappedBy = "zona", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private Collection<Franja> franjas;
 	// =========================================
 
 	public ZonaComun(String nombre) {
 		this.nombre = nombre;
+		// this.franjas = helper.inicializarFranjas(this);
+		this.franjas = new ArrayList<Franja>();
 		this.reservas = new ArrayList<Reserva>();
 	}
 
@@ -51,11 +49,15 @@ public class ZonaComun {
 		this.horario = horario;
 		this.tiempoMax = tiempoMax;
 		this.aforoMax = aforoMax;
+		this.franjas = new ArrayList<Franja>();
+		// this.franjas = helper.inicializarFranjas(this);
 		this.reservas = new ArrayList<Reserva>();
 	}
 
 	public ZonaComun() {
 		this.reservas = new ArrayList<Reserva>();
+		this.franjas = new ArrayList<Franja>();
+		// this.franjas = helper.inicializarFranjas(this);
 	}
 
 	// =========================================
@@ -116,12 +118,12 @@ public class ZonaComun {
 		this.reservas = reservas;
 	}
 
-	public List<String> getFranjas() {
+	public Collection<Franja> getFranjas() {
 		return franjas;
 	}
 
-	public void setFranjas(List<String> franjas) {
-		this.franjas = helper.franjas(getHorario());
+	public void setFranjas(Collection<Franja> franjas) {
+		this.franjas = franjas;
 	}
 
 }
