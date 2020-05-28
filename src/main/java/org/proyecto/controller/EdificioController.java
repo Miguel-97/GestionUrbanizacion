@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.openqa.selenium.support.ui.Sleeper;
 import org.proyecto.domain.Edificio;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
@@ -50,13 +51,13 @@ public class EdificioController {
 		if (repoEdificio.getByPerteneceIdAndPortal(urbaId, portal) != null) {// Comprueba que no exista el portal a crear
 			PRG.error("Portal " + portal + "ya existente en la urbanizacion", "/edificio/c");
 		} else {
-			if (portal == null || pisos == null || pisos < 0 || puertasXpiso == null || puertasXpiso < 0
+			if (portal == null || portal.trim().equals("") || pisos == null || pisos < 0 || puertasXpiso == null || puertasXpiso < 0
 					|| urbaId == null) {// comprueba que no haya
 				// campos vacios o negativos
 				PRG.error("Datos vacios y/o negativos, rellene los datos correctamente", "/edificio/c");
 			} else {
 				try {
-					Edificio edificio = new Edificio(portal, pisos, puertasXpiso);
+					Edificio edificio = new Edificio(helper.cadenaLetrasMayMin(portal), pisos, puertasXpiso);
 					Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
 
 					urbanizacion.getEdificios().add(edificio);

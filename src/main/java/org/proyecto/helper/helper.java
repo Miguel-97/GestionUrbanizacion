@@ -19,6 +19,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class helper {
 
+	public static String cadenaLetrasMayMin(String cadena) {
+		String nuevaCadena = "";
+        for (String palabra : cadena.split(" "))
+        {
+            nuevaCadena += palabra.substring(0, 1).toUpperCase() + palabra.substring(1, palabra.length()).toLowerCase() + " ";
+        }
+        nuevaCadena = nuevaCadena.trim();
+        return nuevaCadena;
+	}
+	
+	// ==================================================
+	
 	public static String generadorPassword() {
 		char[] validas = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 		StringBuilder password = new StringBuilder(10);

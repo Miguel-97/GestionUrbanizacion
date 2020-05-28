@@ -42,7 +42,7 @@ public class UrbanizacionController {
 		}
 		else {
 			try {
-				repoUrbanizacion.save(new Urbanizacion(nombreUrba));
+				repoUrbanizacion.save(new Urbanizacion(helper.cadenaLetrasMayMin(nombreUrba)));
 			} catch (Exception e) {
 				PRG.error("Urbanización " + nombreUrba + " duplicada", "/urbanizacion/c");
 			}
@@ -76,7 +76,7 @@ public class UrbanizacionController {
 
 		try {
 			Urbanizacion urba = repoUrbanizacion.getOne(urbaId);
-			urba.setNombre(nombreUrba);
+			urba.setNombre(helper.cadenaLetrasMayMin(nombreUrba));
 			repoUrbanizacion.save(urba);
 		} catch (Exception e) {
 			PRG.error("La urbanización no pudo ser actualizada.", "/urbanizacion/r");

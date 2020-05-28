@@ -1,29 +1,43 @@
 
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<form action="/urbanizacion/c" method="post"
-			class="contact100-form validate-form">
-			<span class="contact100-form-title"> Nueva Urbanización <img
-				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
+		<form action="/urbanizacion/c" method="post" class="contact100-form validate-form" name="miForm" onsubmit="return validacion()">
+			<span class="contact100-form-title"> Nueva Urbanización 
+			<img id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
 			</span>
-
 
 			<div class="wrap-input100 validate-input"
 				data-validate="Nombre requerido">
-				<label class="label-input100" for="nombre">Nombre</label> <input
-					id="nombre" class="input100" type="text" name="nombre" pattern="[a-z ñáéíóúçü-]{3,30}$" title="Introduce un nombre válido"> <span
-					class="focus-input100"></span>
+				<label class="label-input100" for="nombre">Nombre</label> 
+				<input id="nombre" class="input100" type="text" name="nombre"><div id="errNombre"></div>
+				<span class="focus-input100"></span>
 			</div>
 
 			<div class="container-contact100-form-btn">
-				<input type="submit" id="botonEnvio" class="contact100-form-btn"
-					value="Crear">
+				<input type="submit" id="botonEnvio" class="contact100-form-btn" value="Crear">
 			</div>
 
 			<div class="container-contact100-form-btn">
-				<button class="contact100-form-btn" id="botonVolver"><a href="/" class="contact100-form-btn">Volver</a></button>
+				<button class="contact100-form-btn" id="botonVolver">
+					<a href="/" class="contact100-form-btn">Volver</a>
+				</button>
 			</div>
 		</form>
 		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
 	</div>
 </div>
+
+<script>
+	function validacion() {
+		var expNombre = /[a-z ñáéíóúçü-]{3,30}$/;
+
+		if (!expNombre.test(miForm.nombre.value.toLowerCase())) {
+			document.getElementById("errNombre").innerHTML = "<font color='red'>El nombre no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errNombre").innerHTML = "";
+			return true;
+		}
+	}
+
+</script>

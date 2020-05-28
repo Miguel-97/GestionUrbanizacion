@@ -1,6 +1,12 @@
 package org.proyecto.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
+
+import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
@@ -14,7 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +38,7 @@ public class AnonymousController {
 
 	@Autowired
 	UrbanizacionRepository repoUrbanizacion;
+	
 
 	// =========================================
 
@@ -114,45 +123,24 @@ public class AnonymousController {
 
 	// =========================================
 
-	
 	@GetMapping("/registro")
-	public String registro(HttpSession s, ModelMap m) throws DangerException {
-		rol.isRolOK("anon", s);
+	public String registro(ModelMap m) {
 		m.put("view", "anonymous/registro");
-		m.put("urbas", repoUrbanizacion.findAll());
-		m.put("vecinos", repoVecino.findByEstado("pendiente"));
+		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		return "/_t/frame";
 	}
 	
-	@RequestMapping("/registro")
-	public @ResponseBody String registroPost(
-			@RequestParam("urbaId") Long urbaId,
-			@RequestParam("portal") String portal, 
-			@RequestParam("piso") String piso,
-			@RequestParam("puerta") String puerta,
-			@RequestParam("email") String email
-			) throws InfoException{
-	
-		String edificios = "", puertas="", pisos="";
-		
+	@RequestMapping(path="/getPortales",produces = {"application/json"})
+	public @ResponseBody List<Edificio> portalUrba(@RequestParam("urbaId") Long urbaId) {
+		List<Edificio> edificios = new ArrayList<>();
 		if(urbaId!=null) {
 			for(int i=0;i<repoEdificio.findByPerteneceId(urbaId).size();i++) {
-				edificios += repoEdificio.findByPerteneceId(urbaId).get(i).getPortal() + ",";
+				edificios.add(new Edificio(repoEdificio.findByPerteneceId(urbaId).get(i).getPortal()));
 			}
-			return edificios;
 		}
-		if(portal!=null) {
-			for(int i=0;i<repoEdificio.findByPerteneceIdAndPortal(urbaId, portal).size();i++) {
-				pisos += repoEdificio.findByPerteneceIdAndPortal(urbaId, portal).get(i).getPisos();
-			}
-			return pisos;
-		}
-		
-		return "redirect:/anonymous/login";
+		return edificios;
 	}
 
-	
-	
 	// =========================================
 
 	// Logout va en AuthController

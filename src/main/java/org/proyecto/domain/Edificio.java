@@ -36,6 +36,11 @@ public class Edificio {
 		super();
 		this.vecinos = new ArrayList<Vecino>();
 	}
+	
+	public Edificio(String portal) {
+		super();
+		this.portal = portal;
+	}
 
 	public Edificio(String portal, Integer pisos, Integer puertasXpiso) {
 		super();

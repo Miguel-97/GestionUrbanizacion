@@ -1,75 +1,80 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<form action="/edificio/c" method="post"
-			class="contact100-form validate-form">
-			<span class="contact100-form-title"> Nuevo Edificio <img
-				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
+		<form action="/edificio/c" method="post" class="contact100-form validate-form" name="miForm" onsubmit="return validarPortal()">
+			<span class="contact100-form-title"> Nuevo Edificio 
+				<img id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
 			</span>
-
 
 			<div class="wrap-input100">
 				<div class="label-input100">Urbanizacion</div>
-				<div></div>
 				<select class="js-select2" name="urbaId">
-					<option th:each="urbanizacion:${urbanizaciones}"
-						th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}">
-					</option>
+					<option th:each="urbanizacion:${urbanizaciones}" th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}"></option>
 				</select>
 				<div class="dropDownSelect2"></div>
-
 				<span class="focus-input100"></span>
 			</div>
 
 
-			<div class="wrap-input100 validate-input"
-				data-validate="portal requerido">
-				<label class="label-input100" for="nombre">Portal</label> <input
-					id="portal" class="input100" type="text" name="portal" pattern="^(([1-9][0-9]{0,3}[ ]?[a-z]?)|([a-z]{1,3})|([a-z]{2,30}))$" title="Introduce un portal válido"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="portal requerido">
+				<label class="label-input100" for="id-portal">Portal</label>
+				<input id="id-portal" class="input100" type="text" name="portal"><div id="errPortal"></div>
+				<span class="focus-input100"></span>
 			</div>
 
-			<div class="wrap-input100 validate-input"
-				data-validate="pisos requerido">
-				<label class="label-input100" for="nombre">Pisos</label> <input
-					id="pisos" class="input100" type="number" name="pisos" pattern="^[1-9][0-9]{0,1}$"  title="Introduce un piso válido"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="pisos requerido">
+				<label class="label-input100" for="id-pisos">Pisos</label> 
+				<input id="id-pisos" class="input100" type="number" name="pisos" min="1"><div id="errPisos"></div>
+				<span class="focus-input100"></span>
 			</div>
+			
 			<div class="wrap-input100">
-
-				<label class="label-input100">¿Hay Bajo?</label> <label
-					class="label-input100" for="si">SI</label>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" type="radio"
-					name="bajo" value="si" id="si" checked="checked"> <label
-					class="label-input100" for="no">NO </label>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" type="radio"
-					name="bajo" value="no" id="no">
+				<label class="label-input100">¿Hay Bajo?</label> 
+				<label class="label-input100" for="si">SI</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input class="" type="radio" name="bajo" value="si" id="si" checked="checked"> 
+				<label class="label-input100" for="no">NO </label>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input class="" type="radio" name="bajo" value="no" id="no">
 			</div>
 
-			<div class="wrap-input100 validate-input"
-				data-validate="puertasXpiso requerido">
-				<label class="label-input100" for="nombre">Puertas por piso</label>
-				<input id="puertasXpiso" class="input100" type="number"
-					name="puertasXpiso"> <span class="focus-input100"  pattern="^[1-9][0-9]{0,1}$" title="Introduce unas puertas válidas"></span>
+			<div class="wrap-input100 validate-input" data-validate="puertasXpiso requerido">
+				<label class="label-input100" for="id-puertasXpiso">Puertas por piso</label>
+				<input id="id-puertasXpiso" class="input100" type="number" name="puertasXpiso" min="1"><div id="errPuertas"></div> 
+				<span class="focus-input100"></span>
 			</div>
-
 
 			<div class="wrap-input100">
-
-				<label class="label-input100">Denominacion</label> <label
-					class="label-input100" for="letra">Letras:</label>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" type="radio"
-					name="denominacion" value="letras" id="letra" checked="checked">
+				<label class="label-input100">Denominación</label> 
+				<label class="label-input100" for="letra">Letras:</label>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input class="" type="radio" name="denominacion" value="letras" id="letra" checked="checked">
 				<label class="label-input100" for="numero">Números:</label>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="" type="radio"
-					name="denominacion" value="numeros" id="numero">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input class="" type="radio" name="denominacion" value="numeros" id="numero">
 			</div>
-			<br> <input type="submit" class="contact100-form-btn" />
+			<br> <input type="submit" class="contact100-form-btn"/>
 			<div class="container-contact100-form-btn">
 				<button class="contact100-form-btn">
 					<a href="/" class="contact100-form-btn">Volver</a>
 				</button>
-
 			</div>
-
 		</form>
 		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
+	</div>
+</div>
+
+<script>
+
+	function validarPortal() {
+		var expPortal = /^(([1-9][0-9]{0,3}[ ]?[a-z]?)|([a-z]{1,3})|([a-z]{2,30}))$/;
+
+		if (!expPortal.test(miForm.portal.value.toLowerCase())) {
+			document.getElementById("errPortal").innerHTML = "<font color='red'>El portal no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errPortal").innerHTML = "";
+			return true;
+		}		
+	}
+
+</script>
