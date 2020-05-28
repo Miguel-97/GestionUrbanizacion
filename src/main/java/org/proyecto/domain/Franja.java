@@ -1,7 +1,7 @@
 package org.proyecto.domain;
 
-import java.util.Calendar;
-
+import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +15,13 @@ public class Franja {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Calendar fecha;
+	private Date fecha;
 
 	private String hora;
 
 	private String estado;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private ZonaComun zona;
 
 	// =========================================
@@ -30,13 +30,13 @@ public class Franja {
 		this.estado = "libre";
 	}
 
-	public Franja(Calendar fecha) {
+	public Franja(Date fecha) {
 		super();
 		this.fecha = fecha;
 		this.estado = "libre";
 	}
 
-	public Franja(Calendar fecha, String hora) {
+	public Franja(Date fecha, String hora) {
 		super();
 		this.fecha = fecha;
 		this.hora = hora;
@@ -45,12 +45,12 @@ public class Franja {
 
 	// =========================================
 
-	public Calendar getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
-		this.fecha = fecha;
+	public void setFecha(Date date) {
+		this.fecha = date;
 	}
 
 	public String getHora() {

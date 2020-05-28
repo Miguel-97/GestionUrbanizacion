@@ -1,14 +1,16 @@
 package org.proyecto.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
+import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.repository.FranjaRepository;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.ZonaComunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping(value = "/zonaComun")
 public class ZonaComunController {
+
+	@Autowired
+	private FranjaRepository repoFranja;
 
 	@Autowired
 	private ZonaComunRepository repoZonaComun;
@@ -43,26 +48,34 @@ public class ZonaComunController {
 			@RequestParam("tiempoMax") Integer tiempoMax, @RequestParam("aforoMax") Integer aforoMax,
 			@RequestParam("urbaId") Long urbaId) throws DangerException {
 
-		if(nombreZona == null || horario == null || tiempoMax == null || aforoMax == null || urbaId == null) {
+		if (nombreZona == null || horario == null || tiempoMax == null || aforoMax == null || urbaId == null) {
 			PRG.error("Datos vacios y/o negativos, rellene los datos correctamente", "/zonaComun/c");
 
-		}
-		else {
+		} else {
 			try {
 				ZonaComun zona = new ZonaComun(nombreZona, horario, tiempoMax, aforoMax);
 
+				// ========================Franjas=================================
+
+				Collection<Franja> franjas = helper.inicializarFranjas(zona);
+				for (Franja f : franjas) {
+					repoFranja.save(f);
+				}
+				zona.getFranjas().addAll(franjas);
+
+				// ========================Franjas=================================
 				if (urbaId != null) {
 					Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
-
 					urbanizacion.getZonasComunes().add(zona);
 					zona.setCorresponde(urbanizacion);
 				}
 				repoZonaComun.save(zona);
 
 			} catch (Exception e) {
-				PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
+				// PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
+				PRG.error(e.getMessage(), "/zonaComun/c");
 			}
-			
+
 		}
 
 		return "redirect:/zonaComun/r";

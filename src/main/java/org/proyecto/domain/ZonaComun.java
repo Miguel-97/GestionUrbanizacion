@@ -39,7 +39,6 @@ public class ZonaComun {
 
 	public ZonaComun(String nombre) {
 		this.nombre = nombre;
-		// this.franjas = helper.inicializarFranjas(this);
 		this.franjas = new ArrayList<Franja>();
 		this.reservas = new ArrayList<Reserva>();
 	}
@@ -50,14 +49,12 @@ public class ZonaComun {
 		this.tiempoMax = tiempoMax;
 		this.aforoMax = aforoMax;
 		this.franjas = new ArrayList<Franja>();
-		// this.franjas = helper.inicializarFranjas(this);
 		this.reservas = new ArrayList<Reserva>();
 	}
 
 	public ZonaComun() {
 		this.reservas = new ArrayList<Reserva>();
 		this.franjas = new ArrayList<Franja>();
-		// this.franjas = helper.inicializarFranjas(this);
 	}
 
 	// =========================================

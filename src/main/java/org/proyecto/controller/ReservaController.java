@@ -2,7 +2,10 @@ package org.proyecto.controller;
 
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
@@ -10,6 +13,7 @@ import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.repository.FranjaRepository;
 import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.proyecto.repository.ZonaComunRepository;
@@ -34,6 +38,9 @@ public class ReservaController {
 
 	@Autowired
 	private VecinoRepository repoVecino;
+
+	@Autowired
+	private FranjaRepository repoFranja;
 
 	// =========================================
 
@@ -99,12 +106,22 @@ public class ReservaController {
 	}
 
 	@Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
-	public void completarReservasPendientes() {
+	public void funcionAuto2350() {
 		LocalDate fechaHoy = LocalDate.now();
+		Date dateHoy = new Date();
+		// =================Reservas pendientes-->completadas=====================
 		List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(fechaHoy, "pendiente");
 		for (int i = 0; i < reservasPend.size(); i++) {
 			reservasPend.get(i).setEstado("completada");
+			repoReserva.save(reservasPend.get(i));
 		}
+		// =================Borrar Franjas de hoy=====================
+
+		List<Franja> franjasHoy = repoFranja.findByFechaAndEstado(dateHoy, "libre");
+		repoFranja.deleteAll(franjasHoy);
+
+		// =================Añadir Franjas dia pasadas 2 semanas=====================
+	
 		
 	}
 }
