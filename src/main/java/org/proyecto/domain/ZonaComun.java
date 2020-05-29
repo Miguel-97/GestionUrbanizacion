@@ -33,10 +33,13 @@ public class ZonaComun {
 	@OneToMany(mappedBy = "tiene", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Collection<Reserva> reservas;
 
+	@OneToMany(mappedBy = "zona", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private Collection<Franja> franjas;
 	// =========================================
 
 	public ZonaComun(String nombre) {
 		this.nombre = nombre;
+		this.franjas = new ArrayList<Franja>();
 		this.reservas = new ArrayList<Reserva>();
 	}
 
@@ -45,11 +48,13 @@ public class ZonaComun {
 		this.horario = horario;
 		this.tiempoMax = tiempoMax;
 		this.aforoMax = aforoMax;
+		this.franjas = new ArrayList<Franja>();
 		this.reservas = new ArrayList<Reserva>();
 	}
 
 	public ZonaComun() {
 		this.reservas = new ArrayList<Reserva>();
+		this.franjas = new ArrayList<Franja>();
 	}
 
 	// =========================================
@@ -108,6 +113,14 @@ public class ZonaComun {
 
 	public void setReservas(Collection<Reserva> reservas) {
 		this.reservas = reservas;
+	}
+
+	public Collection<Franja> getFranjas() {
+		return franjas;
+	}
+
+	public void setFranjas(Collection<Franja> franjas) {
+		this.franjas = franjas;
 	}
 
 }

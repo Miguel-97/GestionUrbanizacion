@@ -9,13 +9,16 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Random;
 import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class helper {
 
@@ -58,6 +61,7 @@ public class helper {
 		return password.toString();
 	}
 
+	// =================DENOMINACION PUERTA=================
 	public static ArrayList<Character> denomPuerta(Integer puertasXpiso) {
 
 		ArrayList<Character> letras = new ArrayList<Character>();
@@ -68,6 +72,105 @@ public class helper {
 
 	}
 
+	// =================FRANJAS=================
+	public static Collection<Franja> inicializarFranjas(ZonaComun zona) {
+		// TODO comprobar tema de la hora 00:00
+
+		Date dateAc = new Date();
+		Calendar fecha = Calendar.getInstance();
+		Collection<Franja> franjas = new ArrayList<>();
+		String temp[] = zona.getHorario().split("-");// {temp[0]--> [hh:mm] temp[1]-->[hh:mm]}-->String
+
+		String[] horaminI = temp[0].split(":"); // [hh:mm]
+		String[] horaminF = temp[1].split(":"); // [hh:mm]
+
+		int horaI = Integer.parseInt(horaminI[0]);// [hh]
+		int minI = Integer.parseInt(horaminI[1]);// [mm]
+		int horaF = Integer.parseInt(horaminF[0]);// [hh]
+		int minF = Integer.parseInt(horaminF[1]);// [mm]
+		for (int dias = 0; dias < 14; dias++) {
+			fecha.setTime(dateAc);
+			fecha.add(Calendar.DAY_OF_YEAR, dias);
+			int franjasDiarias = 0;
+			if (minI == minF) {// 1
+				franjasDiarias = (horaF - horaI) * 2;
+			} else if (minI == 00 && minF == 30) {// 2
+				franjasDiarias = ((horaF - horaI) * 2) + 1;
+			} else if (minI == 30 && minF == 00) {// 3
+				franjasDiarias = ((horaF - horaI) * 2) - 1;
+			}
+			for (int i = 0; i <= franjasDiarias; i++) {
+				Franja f = new Franja();
+				if (minI == 00 && i % 2 == 0) {// a en puntos minI ==0
+					int hora = horaI + (i / 2);
+					f.setHora("" + hora + ":00");
+				} else if (minI == 00 && i % 2 != 0) {// y medias minI ==0
+					int hora = horaI + (i / 2);
+					f.setHora("" + hora + ":30");
+				} else if (minI == 30 && i % 2 == 0) {// a y medias minI ==30
+					int hora = horaI + (i / 2);
+					f.setHora("" + hora + ":30");
+				} else if (minI == 30 && i % 2 != 0) {// en puntos minI ==30
+					int hora = horaI + ((i / 2) + 1);
+					f.setHora("" + hora + ":00");
+				}
+				f.setFecha(fecha.getTime());
+				f.setZona(zona);
+				franjas.add(f);
+			}
+		}
+		return franjas;
+	}
+
+	public static Collection<Franja> addFranja2sem(ZonaComun zona) {
+
+		Calendar fecha2sem = Calendar.getInstance();
+		Collection<Franja> franjas2sem = new ArrayList<>();
+
+		fecha2sem.add(Calendar.DAY_OF_YEAR, 14);
+
+		String temp[] = zona.getHorario().split("-");// {temp[0]--> [hh:mm] temp[1]-->[hh:mm]}-->String
+
+		String[] horaminI = temp[0].split(":"); // [hh:mm]
+		String[] horaminF = temp[1].split(":"); // [hh:mm]
+
+		int horaI = Integer.parseInt(horaminI[0]);// [hh]
+		int minI = Integer.parseInt(horaminI[1]);// [mm]
+		int horaF = Integer.parseInt(horaminF[0]);// [hh]
+		int minF = Integer.parseInt(horaminF[1]);// [mm]
+		int franjasDiarias = 0;
+
+		if (minI == minF) {// 1
+			franjasDiarias = (horaF - horaI) * 2;
+		} else if (minI == 00 && minF == 30) {// 2
+			franjasDiarias = ((horaF - horaI) * 2) + 1;
+		} else if (minI == 30 && minF == 00) {// 3
+			franjasDiarias = ((horaF - horaI) * 2) - 1;
+		}
+		for (int i = 0; i <= franjasDiarias; i++) {
+			Franja f = new Franja();
+			if (minI == 00 && i % 2 == 0) {// a en puntos minI ==0
+				int hora = horaI + (i / 2);
+				f.setHora("" + hora + ":00");
+			} else if (minI == 00 && i % 2 != 0) {// y medias minI ==0
+				int hora = horaI + (i / 2);
+				f.setHora("" + hora + ":30");
+			} else if (minI == 30 && i % 2 == 0) {// a y medias minI ==30
+				int hora = horaI + (i / 2);
+				f.setHora("" + hora + ":30");
+			} else if (minI == 30 && i % 2 != 0) {// en puntos minI ==30
+				int hora = horaI + ((i / 2) + 1);
+				f.setHora("" + hora + ":00");
+			}
+			f.setFecha(fecha2sem.getTime());
+			f.setZona(zona);
+			franjas2sem.add(f);
+		}
+		return franjas2sem;
+	}
+
+	
+	
 	// =================HISTORICO=================
 
 	private static String RUTA = "src/main/resources/static/historicos/";
@@ -416,5 +519,4 @@ public class helper {
 			e.getMessage();
 		}
 	}
-	// =============FIN=HISTORICO=================
 }

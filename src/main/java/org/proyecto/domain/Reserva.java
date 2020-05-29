@@ -1,7 +1,6 @@
 package org.proyecto.domain;
 
-import java.sql.Date;
-
+import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,11 +14,13 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date fecha;
+	private Calendar fecha;
 
 	private String inicio;
 
 	private Integer nBloques;
+
+	private String estado;
 
 	@ManyToOne
 	private ZonaComun tiene;
@@ -34,11 +35,12 @@ public class Reserva {
 
 	}
 
-	public Reserva(Date fecha, String inicio, Integer nBloques) {
+	public Reserva(Calendar fecha, String inicio, Integer nBloques) {
 		super();
 		this.fecha = fecha;
 		this.inicio = inicio;
 		this.nBloques = nBloques;
+		this.estado = "pendiente";
 	}
 
 	// =========================================
@@ -51,11 +53,11 @@ public class Reserva {
 		this.id = id;
 	}
 
-	public Date getFecha() {
+	public Calendar getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
 
@@ -89,6 +91,14 @@ public class Reserva {
 
 	public void setHace(Vecino hace) {
 		this.hace = hace;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 }

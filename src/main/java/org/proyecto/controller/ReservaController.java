@@ -1,8 +1,11 @@
 package org.proyecto.controller;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
 import org.proyecto.domain.ZonaComun;
@@ -10,10 +13,12 @@ import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.repository.FranjaRepository;
 import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.proyecto.repository.ZonaComunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +39,9 @@ public class ReservaController {
 	@Autowired
 	private VecinoRepository repoVecino;
 
+	@Autowired
+	private FranjaRepository repoFranja;
+
 	// =========================================
 
 	@GetMapping("c")
@@ -45,7 +53,7 @@ public class ReservaController {
 	}
 
 	@PostMapping("c")
-	public String cPost(@RequestParam("fecha") Date fecha, @RequestParam("inicio") String inicio,
+	public String cPost(@RequestParam("fecha") Calendar fecha, @RequestParam("inicio") String inicio,
 			@RequestParam("nBloques") Integer nBloques, @RequestParam("vecinoId") String vecinoId,
 			@RequestParam("zonaId") Long zonaId) throws DangerException, InfoException {
 
@@ -97,4 +105,23 @@ public class ReservaController {
 		return "redirect:/reserva/r";
 	}
 
+	@Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
+	public void funcionAuto2350() {
+		LocalDate fechaHoy = LocalDate.now();
+		Date dateHoy = new Date();
+		// =================Reservas pendientes-->completadas=====================
+		List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(fechaHoy, "pendiente");
+		for (int i = 0; i < reservasPend.size(); i++) {
+			reservasPend.get(i).setEstado("completada");
+			repoReserva.save(reservasPend.get(i));
+		}
+		// =================Borrar Franjas de hoy=====================
+
+		List<Franja> franjasHoy = repoFranja.findByFechaAndEstado(dateHoy, "libre");
+		repoFranja.deleteAll(franjasHoy);
+
+		// =================Añadir Franjas dia pasadas 2 semanas=====================
+	
+		
+	}
 }
