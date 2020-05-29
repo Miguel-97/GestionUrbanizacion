@@ -20,6 +20,8 @@ public class Edificio {
 
 	private String portal;
 
+	private boolean bajo;
+
 	private Integer pisos;
 
 	private Integer puertasXpiso;
@@ -42,9 +44,10 @@ public class Edificio {
 		this.portal = portal;
 	}
 
-	public Edificio(String portal, Integer pisos, Integer puertasXpiso) {
+	public Edificio(String portal, boolean bajo, Integer pisos, Integer puertasXpiso) {
 		super();
 		this.portal = portal;
+		this.bajo = bajo;
 		this.pisos = pisos;
 		this.puertasXpiso = puertasXpiso;
 		this.vecinos = new ArrayList<Vecino>();
@@ -66,6 +69,15 @@ public class Edificio {
 
 	public void setPortal(String portal) {
 		this.portal = portal;
+	}
+
+	
+	public boolean getBajo() {
+		return bajo;
+	}
+
+	public void setBajo(boolean bajo) {
+		this.bajo = bajo;
 	}
 
 	public Integer getPisos() {

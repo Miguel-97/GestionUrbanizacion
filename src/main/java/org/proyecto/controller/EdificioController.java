@@ -45,7 +45,7 @@ public class EdificioController {
 	@PostMapping("c")
 	public String crearPost(@RequestParam("portal") String portal, @RequestParam("pisos") Integer pisos,
 			@RequestParam("puertasXpiso") Integer puertasXpiso, @RequestParam("denominacion") String denominacion,
-			@RequestParam("bajo") String bajo, @RequestParam("urbaId") Long urbaId)
+			@RequestParam("bajo") boolean bajo, @RequestParam("urbaId") Long urbaId)
 			throws DangerException, InfoException {
 
 		if (repoEdificio.getByPerteneceIdAndPortal(urbaId, portal) != null) {// Comprueba que no exista el portal a crear
@@ -57,7 +57,7 @@ public class EdificioController {
 				PRG.error("Datos vacios y/o negativos, rellene los datos correctamente", "/edificio/c");
 			} else {
 				try {
-					Edificio edificio = new Edificio(helper.cadenaLetrasMayMin(portal), pisos, puertasXpiso);
+					Edificio edificio = new Edificio(helper.cadenaLetrasMayMin(portal), bajo, pisos, puertasXpiso);
 					Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);
 
 					urbanizacion.getEdificios().add(edificio);
@@ -72,7 +72,7 @@ public class EdificioController {
 						ArrayList<Vecino> vecindad = new ArrayList<>();
 						for (int j = 0; j < pisos; j++) { // recorre los pisos
 							for (int i = 0; i < puertasXpiso; i++) { // recorre las puertas por piso
-								if (bajo.equals("si")) {// comprueba si hay bajo en el edificio o no
+								if (bajo) {// comprueba si hay bajo en el edificio o no
 									if (denominacion.equals("numeros")) {// comprueba si la denominacion de las puertas
 																			// por piso del edificio son letras o
 																			// numeros

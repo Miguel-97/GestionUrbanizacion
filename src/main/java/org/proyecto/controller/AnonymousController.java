@@ -11,6 +11,7 @@ import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
+import org.proyecto.helper.helper;
 import org.proyecto.helper.rol;
 import org.proyecto.repository.EdificioRepository;
 import org.proyecto.repository.UrbanizacionRepository;
@@ -38,7 +39,6 @@ public class AnonymousController {
 
 	@Autowired
 	UrbanizacionRepository repoUrbanizacion;
-	
 
 	// =========================================
 
@@ -129,16 +129,68 @@ public class AnonymousController {
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		return "/_t/frame";
 	}
-	
-	@RequestMapping(path="/getPortales",produces = {"application/json"})
+
+	@RequestMapping(path = "/getPortales", produces = { "application/json" })
 	public @ResponseBody List<Edificio> portalUrba(@RequestParam("urbaId") Long urbaId) {
 		List<Edificio> edificios = new ArrayList<>();
-		if(urbaId!=null) {
-			for(int i=0;i<repoEdificio.findByPerteneceId(urbaId).size();i++) {
+		if (urbaId != null) {
+			for (int i = 0; i < repoEdificio.findByPerteneceId(urbaId).size(); i++) {
 				edificios.add(new Edificio(repoEdificio.findByPerteneceId(urbaId).get(i).getPortal()));
 			}
 		}
 		return edificios;
+	}
+
+	@RequestMapping(path = "/getPisosPuertas", produces = { "application/json" })
+	public @ResponseBody List<String> pisosPortal(@RequestParam("portal") String portal) {
+		List<String> pisosPuertas = new ArrayList<String>();
+		if (portal != null) {
+			String vecinoId = repoVecino.findByVivePortal(portal).get(0).getId();
+			String puerta = vecinoId.substring((vecinoId.length() - 1));
+			String nombreUrba [] = vecinoId.split("_");
+			Edificio edificio = repoEdificio.getByPerteneceIdAndPortal(repoUrbanizacion.getByNombre(nombreUrba[0]).getId(), portal);
+			// EN CASO DE QUE SEAN LETRAS
+			ArrayList<Character> letras = helper.denomPuerta(edificio.getPuertasXpiso());
+			// EN CASO DE QUE TENGA BAJO Y SEA NUMÉRICO
+			if (edificio.getBajo() && helper.isNumeric(puerta)) {
+				for (int i = 0; i < edificio.getPisos(); i++) {
+					for (int j = 0; j < edificio.getPuertasXpiso(); j++) {
+						if (i == 0) {
+							pisosPuertas.add("Bajo " + (j + 1));
+						} else {
+							pisosPuertas.add(i + "º " + (j + 1));
+						}
+					}
+				}
+			} 
+			else if (!edificio.getBajo() && helper.isNumeric(puerta)) {
+				for (int i = 0; i < edificio.getPisos(); i++) {
+					for (int j = 0; j < edificio.getPuertasXpiso(); j++) {
+						pisosPuertas.add(i + 1 + "º " + (j + 1));
+					}
+				}
+			}
+			else if (edificio.getBajo() && !helper.isNumeric(puerta)) {
+				for (int i = 0; i < edificio.getPisos(); i++) {
+					for (int j = 0; j < edificio.getPuertasXpiso(); j++) {
+						if (i == 0) {
+							pisosPuertas.add("Bajo " + letras.get(j));
+						} else {
+							pisosPuertas.add(i + "º " + letras.get(j));
+						}					}
+				}
+			}
+			else if (!edificio.getBajo() && !helper.isNumeric(puerta)) {
+				for (int i = 0; i < edificio.getPisos(); i++) {
+					for (int j = 0; j < edificio.getPuertasXpiso(); j++) {
+						pisosPuertas.add(i + 1 + "º " + letras.get(j));
+					}
+				}
+			}
+	}
+
+	return pisosPuertas;
+
 	}
 
 	// =========================================

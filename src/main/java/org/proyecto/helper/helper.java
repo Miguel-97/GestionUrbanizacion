@@ -19,6 +19,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class helper {
 
+	public static boolean isNumeric(String cadena) {
+
+        boolean resultado;
+
+        try {
+            Integer.parseInt(cadena);
+            resultado = true;
+        } catch (NumberFormatException excepcion) {
+            resultado = false;
+        }
+
+        return resultado;
+    }
+
+	// ==================================================
+
 	public static String cadenaLetrasMayMin(String cadena) {
 		String nuevaCadena = "";
         for (String palabra : cadena.split(" "))

@@ -9,10 +9,10 @@
 			<div class="wrap-input100">
 				<div class="label-input100">Urbanizacion</div>
 				<select class="js-select2" id="id-urbaId" name="urbaId">
+						<option>Selecciona Urbanización</option>
 						<option th:each="urba:${urbanizaciones}" th:text="${urba.nombre}" th:value="${urba.id}"></option>
 				</select>
 				<div class="dropDownSelect2"></div>
-
 				<span class="focus-input100"></span>
 			</div>
 	
@@ -22,7 +22,14 @@
 				<select class="js-select2" id="id-portal" name="portal">
 				</select>
 				<div class="dropDownSelect2"></div>
+				<span class="focus-input100"></span>
+			</div>
 
+			<div class="wrap-input100">
+				<div class="label-input100">Pisos/Puertas</div>
+				<select class="js-select2" id="id-pisosPuertas" name="pisosPuertas">
+				</select>
+				<div class="dropDownSelect2"></div>
 				<span class="focus-input100"></span>
 			</div>
         	
@@ -61,6 +68,23 @@ $(document).ready(function() {
 						$('#id-portal').append(html);
 					});
 			});
+	
+	$('#id-portal').on('change',
+			function() {
+				$.getJSON('getPisosPuertas', 
+						'portal='+$(this).val(),
+					function(valor) {
+						$('#id-pisosPuertas').empty();
+						var html = '<option>Selecciona Piso/Puerta</option>';
+						var len = valor.length;
+						for(var i=0; i<len;i++) {
+							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
+						}
+						$('#id-pisosPuertas').append(html);
+					});
+			});
+	
+	
 });
 
 </script>
