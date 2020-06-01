@@ -45,9 +45,9 @@
 [ RESTYLE TAG ]*/
 
 #vecino{
-	text-align: center;
-	color: black;
-	font-weight: bold;
+  text-align: center;
+  color: black;
+  font-weight: bold;
 }
 
 #init{
@@ -65,20 +65,20 @@
 }
 
 #float{
-	float:left; 
-	margin-left:12px;
+  float:left; 
+  margin-left:12px;
 }
 
 
 #WidthForm{
-	margin-left:10%;
-	width:80%;
+  margin-left:10%;
+  width:80%;
 }
 
 #boton{
-	clear: left;
-	width: 50%;
-	margin-left:25%;
+  clear: left;
+  width: 50%;
+  margin-left:25%;
 }
 
 * {
@@ -98,7 +98,7 @@ body, html {
 }
 
 #float{
-	  display: inline-block;
+    display: inline-block;
 }
 /*---------------------------------------------*/
 
@@ -497,8 +497,8 @@ input.input100 {
 [ Responsive ]*/
 
 @media (max-width: 992px) {
-	
-	
+  
+  
   #login{
      width: 30%;
     padding: 110px 30px 55px 30px;
@@ -620,6 +620,8 @@ input.input100 {
 /*==================================================================
 [ Social ]*/
 
+ 
+
 #social{
  margin-top: -110px;
  margin-left: 100px;
@@ -650,11 +652,17 @@ input.input100 {
 
 .site-footer
 {
-  
+ width: 100%;
+    height: 81px;
+    position: absolute;
+  position:absolute;
+  width: 100%;
+  height: 40px;
   padding:45px 20 20px 20px;
   font-size:7px;
   line-height:24px;
   color:#737373;
+  
 }
 .site-footer hr
 {

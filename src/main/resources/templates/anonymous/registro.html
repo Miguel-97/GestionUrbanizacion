@@ -6,85 +6,51 @@
 				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
 			</span>
 	
-			<div class="wrap-input100">
+		<div class="wrap-input100">
 				<div class="label-input100">Urbanizacion</div>
-				<select class="js-select2" id="id-urbaId" name="urbaId">
-						<option>Selecciona Urbanización</option>
-						<option th:each="urba:${urbanizaciones}" th:text="${urba.nombre}" th:value="${urba.id}"></option>
+				<div></div>
+				<select class="js-select2" id="id-urbaId" name="urbaId"  onchange="/anonymous/registroPost(urbaId)">
+						<option th:each="urba:${urbas}" th:text="${urba.nombre}" th:value="${urba.id}"></option>
 				</select>
 				<div class="dropDownSelect2"></div>
-				<span class="focus-input100"></span>
-			</div>
-	
-	
-			<div class="wrap-input100">
-				<div class="label-input100">Portal</div>
-				<select class="js-select2" id="id-portal" name="portal">
-				</select>
-				<div class="dropDownSelect2"></div>
-				<span class="focus-input100"></span>
-			</div>
 
-			<div class="wrap-input100">
-				<div class="label-input100">Pisos/Puertas</div>
-				<select class="js-select2" id="id-pisosPuertas" name="pisosPuertas">
+				<span class="focus-input100"></span>
+			</div>
+	
+	
+	<div class="wrap-input100">
+				<div class="label-input100">Portal</div>
+				<div></div>
+				<select class="js-select2" id="id-portal" name="portal">
+						<option th:each="edificio:${edificios}" th:text="${edificio}" th:value="${portal}"></option>
 				</select>
 				<div class="dropDownSelect2"></div>
+
 				<span class="focus-input100"></span>
 			</div>
         	
         	
-        	<div class="wrap-input100 validate-input" data-validate="Correo requerido">
-				<label class="label-input100" for="id-correo">Correo</label> 
-				<input type="text" class="input100" id="id-correo" name="correo"/> 
-				<span class="focus-input100"></span>
+        	<div class="wrap-input100 validate-input"
+				data-validate="Nombre requerido">
+				<label class="label-input100" for="id-nombre">Nombre</label> <input type="text" class="input100" id="id-nombre" name="nombre" required="required" pattern="^[a-zñáéíóúç ü-]{3,30}$" title="Introduce un nombre válido"/> <span
+					class="focus-input100"></span>
 			</div>
+        	
+        	
+        
         	
         	<div class="container-contact100-form-btn">
-				<input type="submit" id="botonEnvio" class="contact100-form-btn" value="Crear">
+				<input type="submit" id="botonEnvio" class="contact100-form-btn"
+					value="Crear">
 			</div>
 
 			<div class="container-contact100-form-btn">
 				<button class="contact100-form-btn" id="botonVolver"><a href="/" class="contact100-form-btn">Volver</a></button>
 			</div>
         	
+		
 	</form>
 	<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
 </div>
-<script type="text/javascript">
+</div>
 
-$(document).ready(function() {
-	$('#id-urbaId').on('change',
-			function() {
-				$.getJSON('getPortales', 
-					'urbaId='+$(this).val(),
-					function(valor) {
-						$('#id-portal').empty();
-						var html = '<option>Selecciona Portal</option>';
-						var len = valor.length;
-						for(var i=0; i<len;i++) {
-							html+='<option value="' + valor[i].portal + '">' + valor[i].portal + '</option>';
-						}
-						$('#id-portal').append(html);
-					});
-			});
-	
-	$('#id-portal').on('change',
-			function() {
-				$.getJSON('getPisosPuertas', 
-						'portal='+$(this).val(),
-					function(valor) {
-						$('#id-pisosPuertas').empty();
-						var html = '<option>Selecciona Piso/Puerta</option>';
-						var len = valor.length;
-						for(var i=0; i<len;i++) {
-							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
-						}
-						$('#id-pisosPuertas').append(html);
-					});
-			});
-	
-	
-});
-
-</script>
