@@ -1,10 +1,15 @@
 package org.proyecto.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.proyecto.domain.Edificio;
 import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/reserva")
@@ -80,6 +86,22 @@ public class ReservaController {
 		return "redirect:/reserva/r";
 	}
 
+	@RequestMapping(path = "/getFranjas", produces = { "application/json" })
+	public @ResponseBody List<Franja> franjasFecha(@RequestParam("fecha") String fecha) {
+		Date date = new Date(fecha);
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		String strDate = sdf.format(fecha);
+		try {
+			date = dateFormat.parse(strDate);
+		} catch (ParseException e) {
+		
+		}
+
+		List<Franja> franjas = repoFranja.findByFechaAndEstado(date, "libre");
+	return franjas;
+
+	}
 	// =========================================
 
 	@GetMapping("r")
@@ -121,7 +143,6 @@ public class ReservaController {
 		repoFranja.deleteAll(franjasHoy);
 
 		// =================Añadir Franjas dia pasadas 2 semanas=====================
-	
-		
+
 	}
 }

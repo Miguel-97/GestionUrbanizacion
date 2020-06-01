@@ -38,6 +38,17 @@
 					class="focus-input100"></span>
 			</div>
 
+			
+			<div class="wrap-input100 validate-input"
+				data-validate="inicio requerido">
+				<label class="label-input100" for="franjas">Franjas</label> <select
+					id="franjas" class="input100" multiple="multiple" name="inicio"> 
+					<option th:each="franja:${franjas}" th:text="${franja.hora}"
+						th:value="${zona.id}"></option>
+					</select> <span
+					class="focus-input100"></span>
+			</div>
+			
 			<div class="wrap-input100 validate-input"
 				data-validate="inicio requerido">
 				<label class="label-input100" for="inicio">Inicio</label> <input
@@ -64,3 +75,23 @@
 		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
 	</div>
 </div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$('#fecha').on('change',
+			function() {
+				$.getJSON('getFranjas', 
+					'fecha='+$(this).val(),
+					function(valor) {
+						$('#franjas').empty();
+						var html = '<option>Selecciona Franja</option>';
+						var len = valor.length;
+						for(var i=0; i<len;i++) {
+							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
+						}
+						$('#franjas').append(html);
+					});
+			});	
+});
+
+</script>
