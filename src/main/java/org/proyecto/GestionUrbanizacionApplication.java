@@ -9,5 +9,4 @@ public class GestionUrbanizacionApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GestionUrbanizacionApplication.class, args);
 	}
-
 }

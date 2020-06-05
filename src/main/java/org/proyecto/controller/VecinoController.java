@@ -36,6 +36,7 @@ public class VecinoController {
 
 	@GetMapping("r")
 	public String r(ModelMap m) {
+		
 		List<Vecino> vecinos = repoVecino.findAll();
 		m.put("vecinos", vecinos);
 		m.put("view", "/vecino/r");
