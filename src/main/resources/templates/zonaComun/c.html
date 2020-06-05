@@ -1,72 +1,89 @@
  <div class="container-contact100">
 	<div class="wrap-contact100">
-		<form action="/zonaComun/c" method="post"
-			class="contact100-form validate-form">
-			<span class="contact100-form-title"> Nueva Zona Común <img
-				id="logo" src="/img/LogoPagina.png" width="15%"
-				height="25%">
+		<form action="/zonaComun/c" method="post" class="contact100-form validate-form" name="miForm" onsubmit="return validacion()">
+			<span class="contact100-form-title"> Nueva Zona Común 
+				<img id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
 			</span>
 			
-			<div class="wrap-input100 validate-input"
-				data-validate="Nombre requerido">
-				<label class="label-input100" for="id-nombre">Nombre</label> <input
-					id="id-nombre" class="input100" type="text" name="nombre" title="Introduce un nombre válido"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="Nombre requerido">
+				<label class="label-input100" for="id-nombre">Nombre</label> 
+				<input id="id-nombre" class="input100" type="text" name="nombre"><div id="errNombre"></div>
+				<span class="focus-input100"></span>
 			</div>
 			
-			<div class="wrap-input100 validate-input"
-				data-validate="Horario requerido">
-				<label class="label-input100" for="id-horario">Horario</label> <input
-					id="id-horario" class="input100" type="text" name="horario" pattern="^(0?[0-9]|1[0-9]|2[0-3]):(0?[0-9]|[1-5][0-9])-(0?[0-9]|1[0-9]|2[0-3]):(0?[0-9]|[1-5][0-9])$" title="Introduce un horario válido"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="Horario requerido">
+				<label class="label-input100" for="id-horario">Horario</label> 
+				<input id="id-horario" class="input100" type="text" name="horario"><div id="errHorario"></div>
+				<span class="focus-input100"></span>
 			</div>
         	
-        	
-			<div class="wrap-input100 validate-input"
-				data-validate="TiempoMAX requerido">
-				<label class="label-input100" for="id-tiempoMax">Tiempo Max</label> <input
-					id="id-tiempoMax" class="input100" type="number"  min="30" step="30" name="tiempoMax"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="TiempoMAX requerido">
+				<label class="label-input100" for="id-tiempoMax">Tiempo Max</label> 
+				<input id="id-tiempoMax" class="input100" type="number"  min="30" step="30" name="tiempoMax"> 
+				<span class="focus-input100"></span>
 			</div>
 
-
-			<div class="wrap-input100 validate-input"
-				data-validate="aforoMAX requerido">
-				<label class="label-input100" for="id-aforoMax">Aforo Max</label> <input
-					id="id-aforoMax" class="input100" type="number"  min="1" name="aforoMax"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="aforoMAX requerido">
+				<label class="label-input100" for="id-aforoMax">Aforo Max</label> 
+				<input id="id-aforoMax" class="input100" type="number"  min="1" name="aforoMax"> 
+				<span class="focus-input100"></span>
 			</div>
         	
         	<div class="wrap-input100">
-					<div class="label-input100">Urbanizacion</div>
-					<div></div>
-				 <select class="js-select2" name="urbaId">
-			<option th:each="urbanizacion:${urbanizaciones}"
-				th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}">
-				</option>
-		</select>
-		<div class="dropDownSelect2"></div>
-					
-					<span class="focus-input100"></span>
-				</div>
+				<div class="label-input100">Urbanizacion</div>
+				<div></div>
+				<select class="js-select2" name="urbaId">
+					<option th:each="urbanizacion:${urbanizaciones}" th:text="${urbanizacion.nombre}" th:value="${urbanizacion.id}"></option>
+				</select>
+				<div class="dropDownSelect2"></div>
+				<span class="focus-input100"></span>
+			</div>
         	
-				<input type="submit" class="contact100-form-btn" />
-			
+			<input type="submit" class="contact100-form-btn"/>
 
 			<div class="container-contact100-form-btn">
-			<button class="contact100-form-btn"><a href="/" class="contact100-form-btn">Volver</a></button>
-				
+				<button class="contact100-form-btn"><a href="/" class="contact100-form-btn">Volver</a></button>
 			</div>
 			
-			</form>
+		</form>
 			
-			<img id="home" src="/img/LogoPagina.png" width="55%" height="55%"/>
-        	   		
+		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%"/>
+	</div>
+</div>  	   		
+<script>
 
-		</div>
-		</div>
+	function validarNombre() {
+		var expNombre = /^[a-zñáéíóúçü]{1}[ a-zñáéíóúç1-9ü-]{3,30}$/;
+		if (!expNombre.test(miForm.nombre.value.toLowerCase())) {
+			document.getElementById("errNombre").innerHTML = "<font color='red'>El nombre no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errNombre").innerHTML = "";
+			return true;
+		}
+	}
 	
+	function validarHorario() {
+		var expHorario = /^(0?[0-9]|1[0-9]|2[0-3]):(0?[0-9]|[1-5][0-9])-(0?[0-9]|1[0-9]|2[0-3]):(0?[0-9]|[1-5][0-9])$/;
+
+		if (!expHorario.test(miForm.horario.value.toLowerCase())) {
+			document.getElementById("errHorario").innerHTML = "<font color='red'>El horario no es correcto. (hh:mm-hh:mm)</font>";
+			return false;
+		} else {
+			document.getElementById("errHorario").innerHTML = "";
+			return true;
+		}
+	}
+	
+	function validacion() {
+		if(validarNombre() && validarHorario()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 		
-	
-	
-	
+	}
+
+
+</script>

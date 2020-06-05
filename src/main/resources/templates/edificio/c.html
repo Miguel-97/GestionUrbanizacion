@@ -28,11 +28,10 @@
 					class="focus-input100"></span>
 			</div>
 
-			<div class="wrap-input100 validate-input"
-				data-validate="pisos requerido">
-				<label class="label-input100" for="nombre">Pisos</label> <input
-					id="pisos" class="input100" type="number" name="pisos" pattern="^[1-9][0-9]{0,1}$"  title="Introduce un piso válido"> <span
-					class="focus-input100"></span>
+			<div class="wrap-input100 validate-input" data-validate="pisos requerido">
+				<label class="label-input100" for="id-pisos">Pisos</label> 
+				<input id="id-pisos" class="input100" type="number" name="pisos" min="1">
+				<span class="focus-input100"></span>
 			</div>
 			<div class="wrap-input100">
 
@@ -45,11 +44,10 @@
 					name="bajo" value="false" id="no">
 			</div>
 
-			<div class="wrap-input100 validate-input"
-				data-validate="puertasXpiso requerido">
-				<label class="label-input100" for="nombre">Puertas por piso</label>
-				<input id="puertasXpiso" class="input100" type="number"
-					name="puertasXpiso"> <span class="focus-input100"  pattern="^[1-9][0-9]{0,1}$" title="Introduce unas puertas válidas"></span>
+			<div class="wrap-input100 validate-input" data-validate="puertasXpiso requerido">
+				<label class="label-input100" for="id-puertasXpiso">Puertas por piso</label>
+				<input id="id-puertasXpiso" class="input100" type="number" name="puertasXpiso" min="1">
+				<span class="focus-input100"></span>
 			</div>
 
 

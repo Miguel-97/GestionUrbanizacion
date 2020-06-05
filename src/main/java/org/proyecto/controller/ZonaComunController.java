@@ -48,12 +48,12 @@ public class ZonaComunController {
 			@RequestParam("tiempoMax") Integer tiempoMax, @RequestParam("aforoMax") Integer aforoMax,
 			@RequestParam("urbaId") Long urbaId) throws DangerException {
 
-		if (nombreZona == null || horario == null || tiempoMax == null || aforoMax == null || urbaId == null) {
+		if(nombreZona == null || nombreZona.trim().equals("") || horario == null || horario.trim().equals("") || tiempoMax == null || aforoMax == null || urbaId == null) {
 			PRG.error("Datos vacios y/o negativos, rellene los datos correctamente", "/zonaComun/c");
 
 		} else {
 			try {
-				ZonaComun zona = new ZonaComun(nombreZona, horario, tiempoMax, aforoMax);
+				ZonaComun zona = new ZonaComun(helper.cadenaLetrasMayMin(nombreZona), horario, tiempoMax, aforoMax);
 
 				// ========================Franjas=================================
 

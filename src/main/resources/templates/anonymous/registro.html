@@ -1,10 +1,10 @@
 
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<form action="/anonymous/registro" method="post"
-			class="contact100-form validate-form">
-			<span class="contact100-form-title"> Nueva Persona <img
-				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
+		<form action="/registro" method="post" class="contact100-form validate-form" id="registro">
+			<span class="contact100-form-title"> 
+				Nuevo Vecino
+				<img id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
 			</span>
 	
 			<div class="wrap-input100">
@@ -34,27 +34,28 @@
 				<span class="focus-input100"></span>
 			</div>
         	
-        	
-        	<div class="wrap-input100 validate-input" data-validate="Correo requerido">
-				<label class="label-input100" for="id-correo">Correo</label> 
-				<input type="text" class="input100" id="id-correo" name="correo"/> 
+        	<div class="wrap-input100 validate-input" data-validate="Email requerido">
+				<label class="label-input100" for="id-email">Email</label> 
+				<input type="text" class="input100" id="id-email" name="email"/> 
 				<span class="focus-input100"></span>
 			</div>
         	
         	<div class="container-contact100-form-btn">
-				<input type="submit" id="botonEnvio" class="contact100-form-btn" value="Crear">
+				<input type="submit" id="botonEnvio" class="contact100-form-btn" value="Registrar">
 			</div>
 
 			<div class="container-contact100-form-btn">
 				<button class="contact100-form-btn" id="botonVolver"><a href="/" class="contact100-form-btn">Volver</a></button>
 			</div>
         	
-	</form>
-	<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
+		</form>
+		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
+	</div>
 </div>
 <script type="text/javascript">
 
 $(document).ready(function() {
+	//FUNCIÓN QUE CARGA LOS PORTALES DESPUÉS DE HABER ELEGIDO URBANIZACIÓN
 	$('#id-urbaId').on('change',
 			function() {
 				$.getJSON('getPortales', 
@@ -70,10 +71,11 @@ $(document).ready(function() {
 					});
 			});
 	
+	//FUNCIÓN QUE CARGA LOS PISOS Y LAS PUERTAS DESPUÉS DE HABER ELEGIDO PORTAL
 	$('#id-portal').on('change',
 			function() {
 				$.getJSON('getPisosPuertas', 
-						'portal='+$(this).val(),
+						'algo='+$(this).val()+'Y'+$('#id-urbaId').val(),
 					function(valor) {
 						$('#id-pisosPuertas').empty();
 						var html = '<option>Selecciona Piso/Puerta</option>';
@@ -85,6 +87,22 @@ $(document).ready(function() {
 					});
 			});
 	
+	/*$('#registro').submit(function() {
+		$.ajax({
+			url: '/registro',
+			type: 'POST',
+			contentType: "application/x-www-form-urlencoded",
+			data: JSON.stringify({
+				nombre: $('#id-urbaId').val(),
+				vive: $('#id-portal').val(),
+				username: $('#id-pisosPuertas').val(),
+				email: $('#id-email').val()
+			}),
+			error: function() {
+				alert("Error - Datos no enviados");
+			}
+		})
+	});*/
 	
 });
 
