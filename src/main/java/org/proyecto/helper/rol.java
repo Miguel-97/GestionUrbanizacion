@@ -27,7 +27,7 @@ public class rol {
 				PRG.error("Rol inadecuado");
 			}
 		} else { // Auth o admin
-			if (!vecino.getUsername().equals("admin") && rol.equals("admin")) { // anon
+			if (!vecino.getUsername().equals("administrador") && rol.equals("administrador")) { // anon
 				PRG.error("Rol inadecuado");
 			}
 		}
