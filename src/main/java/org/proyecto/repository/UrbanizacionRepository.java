@@ -15,6 +15,5 @@ public interface UrbanizacionRepository extends JpaRepository<Urbanizacion, Long
 
 	public Urbanizacion getByNombre(String nombre);
 
-	public Urbanizacion getByNombre(String nombre);
 
 }
