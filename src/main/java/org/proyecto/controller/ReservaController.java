@@ -1,15 +1,14 @@
 package org.proyecto.controller;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.proyecto.domain.Edificio;
+import javax.servlet.http.HttpSession;
+
 import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
@@ -51,10 +50,22 @@ public class ReservaController {
 	// =========================================
 
 	@GetMapping("c")
-	public String c(ModelMap m) {
-		m.put("zonas", repoZonaComun.findAll());
-		m.put("vecinos", repoVecino.findAll());
-		m.put("view", "/reserva/c");
+	public String c(@RequestParam("zonaId") Long zonaId, @RequestParam("vecinoId") String vecinoId, ModelMap m,
+			HttpSession s) throws DangerException {
+
+		if (zonaId == null && vecinoId == null) {// Admin
+			// rol.isRolOK("admin", s);
+			m.put("zonas", repoZonaComun.findAll());
+			m.put("vecinos", repoVecino.findAll());
+			m.put("view", "/reserva/c");
+		} else {// Usuario
+
+			// rol.isRolOK("auth", s);
+			m.put("zona", repoZonaComun.getOne(zonaId));
+			m.put("vecino", repoVecino.getOne(vecinoId));
+			m.put("view", "/reserva/cU");
+		}
+
 		return "/_t/frame";
 	}
 
@@ -87,19 +98,33 @@ public class ReservaController {
 	}
 
 	@RequestMapping(path = "/getFranjas", produces = { "application/json" })
-	public @ResponseBody List<Franja> franjasFecha(@RequestParam("fecha") String fecha) {
-		Date date = new Date(fecha);
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		String strDate = sdf.format(fecha);
-		try {
-			date = dateFormat.parse(strDate);
-		} catch (ParseException e) {
+	public @ResponseBody List<String> franjasFecha(@RequestParam("datos") String datos) {
 		
-		}
+		String[] dato=datos.split("Y");
+		String fecha=dato[1];
+		System.out.println(fecha);
+		List<String> fs = new ArrayList<String>();
+		List<Franja> franjas = new ArrayList<Franja>();
 
-		List<Franja> franjas = repoFranja.findByFechaAndEstado(date, "libre");
-	return franjas;
+		try {
+
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String dateInString = fecha;
+
+			Date date = formatter.parse(dateInString);
+			System.out.println(date);
+			System.out.println(formatter.format(date));
+			franjas = repoFranja.findByZonaAndFechaAndEstado(repoZonaComun.getOne(Long.parseLong(dato[0])), date, "libre");
+			System.out.println("==========================");
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		 for (Franja franja : franjas) { fs.add(franja.getHora()); }
+		 
+
+		return fs;
 
 	}
 	// =========================================
@@ -129,20 +154,25 @@ public class ReservaController {
 
 	@Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
 	public void funcionAuto2350() {
-		LocalDate fechaHoy = LocalDate.now();
-		Date dateHoy = new Date();
+		Calendar cal = Calendar.getInstance();
+		int dia = cal.get(Calendar.DATE);
+		int mes = cal.get(Calendar.MONTH);
+		int anio = cal.get(Calendar.YEAR);
+		cal.set(anio, mes, dia, 0, 0, 0);
 		// =================Reservas pendientes-->completadas=====================
-		List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(fechaHoy, "pendiente");
+		List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(cal.getTime(), "pendiente");
 		for (int i = 0; i < reservasPend.size(); i++) {
 			reservasPend.get(i).setEstado("completada");
 			repoReserva.save(reservasPend.get(i));
 		}
 		// =================Borrar Franjas de hoy=====================
 
-		List<Franja> franjasHoy = repoFranja.findByFechaAndEstado(dateHoy, "libre");
+		List<Franja> franjasHoy = repoFranja.findByFechaAndEstado(cal.getTime(), "libre");
 		repoFranja.deleteAll(franjasHoy);
 
-		// =================Añadir Franjas dia pasadas 2 semanas=====================
+		// =================Añadir Franjas dia pasadas 2 semanas===================== en
+		// el controller de zc
+		// List<Franja> franjas2Sem= helper.addFranja2sem(zona);
 
 	}
 }

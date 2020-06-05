@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Random;
 import org.proyecto.domain.Edificio;
 import org.proyecto.domain.Franja;
@@ -24,32 +23,32 @@ public class helper {
 
 	public static boolean isNumeric(String cadena) {
 
-        boolean resultado;
+		boolean resultado;
 
-        try {
-            Integer.parseInt(cadena);
-            resultado = true;
-        } catch (NumberFormatException excepcion) {
-            resultado = false;
-        }
+		try {
+			Integer.parseInt(cadena);
+			resultado = true;
+		} catch (NumberFormatException excepcion) {
+			resultado = false;
+		}
 
-        return resultado;
-    }
+		return resultado;
+	}
 
 	// ==================================================
 
 	public static String cadenaLetrasMayMin(String cadena) {
 		String nuevaCadena = "";
-        for (String palabra : cadena.split(" "))
-        {
-            nuevaCadena += palabra.substring(0, 1).toUpperCase() + palabra.substring(1, palabra.length()).toLowerCase() + " ";
-        }
-        nuevaCadena = nuevaCadena.trim();
-        return nuevaCadena;
+		for (String palabra : cadena.split(" ")) {
+			nuevaCadena += palabra.substring(0, 1).toUpperCase() + palabra.substring(1, palabra.length()).toLowerCase()
+					+ " ";
+		}
+		nuevaCadena = nuevaCadena.trim();
+		return nuevaCadena;
 	}
-	
+
 	// ==================================================
-	
+
 	public static String generadorPassword() {
 		char[] validas = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 		StringBuilder password = new StringBuilder(10);
@@ -76,8 +75,11 @@ public class helper {
 	public static Collection<Franja> inicializarFranjas(ZonaComun zona) {
 		// TODO comprobar tema de la hora 00:00
 
-		Date dateAc = new Date();
-		Calendar fecha = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
+		int dia = cal.get(Calendar.DATE);
+		int mes = cal.get(Calendar.MONTH);
+		int anio = cal.get(Calendar.YEAR);
+
 		Collection<Franja> franjas = new ArrayList<>();
 		String temp[] = zona.getHorario().split("-");// {temp[0]--> [hh:mm] temp[1]-->[hh:mm]}-->String
 
@@ -89,8 +91,8 @@ public class helper {
 		int horaF = Integer.parseInt(horaminF[0]);// [hh]
 		int minF = Integer.parseInt(horaminF[1]);// [mm]
 		for (int dias = 0; dias < 14; dias++) {
-			fecha.setTime(dateAc);
-			fecha.add(Calendar.DAY_OF_YEAR, dias);
+			cal.set(anio, mes, dia, 0, 0, 0);
+			cal.add(Calendar.DAY_OF_YEAR, dias);
 			int franjasDiarias = 0;
 			if (minI == minF) {// 1
 				franjasDiarias = (horaF - horaI) * 2;
@@ -114,7 +116,7 @@ public class helper {
 					int hora = horaI + ((i / 2) + 1);
 					f.setHora("" + hora + ":00");
 				}
-				f.setFecha(fecha.getTime());
+				f.setFecha(cal.getTime());
 				f.setZona(zona);
 				franjas.add(f);
 			}
@@ -125,8 +127,13 @@ public class helper {
 	public static Collection<Franja> addFranja2sem(ZonaComun zona) {
 
 		Calendar fecha2sem = Calendar.getInstance();
+		int dia = fecha2sem.get(Calendar.DATE);
+		int mes = fecha2sem.get(Calendar.MONTH);
+		int anio = fecha2sem.get(Calendar.YEAR);
+
 		Collection<Franja> franjas2sem = new ArrayList<>();
 
+		fecha2sem.set(anio, mes, dia, 0, 0, 0);
 		fecha2sem.add(Calendar.DAY_OF_YEAR, 14);
 
 		String temp[] = zona.getHorario().split("-");// {temp[0]--> [hh:mm] temp[1]-->[hh:mm]}-->String
@@ -169,8 +176,6 @@ public class helper {
 		return franjas2sem;
 	}
 
-	
-	
 	// =================HISTORICO=================
 
 	private static String RUTA = "src/main/resources/static/historicos/";

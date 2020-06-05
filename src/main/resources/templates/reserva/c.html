@@ -38,30 +38,23 @@
 					class="focus-input100"></span>
 			</div>
 
-			
-			<div class="wrap-input100 validate-input"
-				data-validate="inicio requerido">
-				<label class="label-input100" for="franjas">Franjas</label> <select
-					id="franjas" class="input100" multiple="multiple" name="inicio"> 
-					<option th:each="franja:${franjas}" th:text="${franja.hora}"
-						th:value="${zona.id}"></option>
-					</select> <span
-					class="focus-input100"></span>
-			</div>
-			
-			<div class="wrap-input100 validate-input"
-				data-validate="inicio requerido">
-				<label class="label-input100" for="inicio">Inicio</label> <input
-					id="inicio" class="input100" type="text" name="inicio"> <span
-					class="focus-input100"></span>
-			</div>
-
 			<div class="wrap-input100 validate-input"
 				data-validate="nBloques requerido">
 				<label class="label-input100" for="nBloques">Numero Bloques</label>
-				<input id="nBloques" class="input100" type="number" name="nBloques">
+				<input id="nBloques" class="input100" type="number" min="1"  name="nBloques">
 				<span class="focus-input100"></span>
 			</div>
+
+			<div class="wrap-input100 validate-input"
+				data-validate="inicio requerido">
+				<label class="label-input100" for="franjas">Franjas</label> <select
+					id="franjas" class="input100" multiple="multiple" name="franjas[]">
+					<option th:each="franja:${franjas}" th:text="${franja.hora}"
+						th:value="${zona.id}"></option>
+				</select> <span class="focus-input100"></span>
+			</div>
+
+
 
 			<br> <input type="submit" class="contact100-form-btn" />
 			<div class="container-contact100-form-btn">
@@ -76,22 +69,33 @@
 	</div>
 </div>
 <script type="text/javascript">
-
-$(document).ready(function() {
-	$('#fecha').on('change',
-			function() {
-				$.getJSON('getFranjas', 
-					'fecha='+$(this).val(),
-					function(valor) {
-						$('#franjas').empty();
-						var html = '<option>Selecciona Franja</option>';
-						var len = valor.length;
-						for(var i=0; i<len;i++) {
-							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
-						}
-						$('#franjas').append(html);
+	$(document)
+			.ready(
+					function() {
+						$('#fecha')
+								.on(
+										'change',
+										function() {
+											$
+													.getJSON(
+															'getFranjas',
+															'fecha='
+																	+ $(this)
+																			.val(),
+															function(valor) {
+																$('#franjas')
+																		.empty();
+																var html = '<option>Selecciona Franja</option>';
+																var len = valor.length;
+																for (var i = 0; i < len; i++) {
+																	html += '<option value="' + valor[i] + '">'
+																			+ valor[i]
+																			+ '</option>';
+																}
+																$('#franjas')
+																		.append(
+																				html);
+															});
+										});
 					});
-			});	
-});
-
 </script>

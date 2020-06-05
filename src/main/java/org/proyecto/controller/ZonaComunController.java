@@ -72,8 +72,8 @@ public class ZonaComunController {
 				repoZonaComun.save(zona);
 
 			} catch (Exception e) {
-				// PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
-				PRG.error(e.getMessage(), "/zonaComun/c");
+				 PRG.error("Zona común " + nombreZona + " duplicada", "/zonaComun/c");
+				//PRG.error(e.getMessage(), "/zonaComun/c");
 			}
 
 		}
