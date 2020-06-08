@@ -44,7 +44,7 @@ public class VecinoController {
 	}
 
 	// =========================================
-
+	//PERFIL USUARIO
 	@GetMapping("u")
 	public String u(@RequestParam("id") String id, ModelMap m, HttpSession s) throws DangerException {
 		m.put("vecino", repoVecino.getOne(id));
@@ -53,34 +53,18 @@ public class VecinoController {
 	}
 
 	@PostMapping("u")
-	public void u(@RequestParam("nombre") String nombre, @RequestParam("email") String email,
+	public void u(@RequestParam(value = "username", required = false) String username, @RequestParam("password") String pwd,
 			@RequestParam("id") String id, HttpSession s) throws DangerException, InfoException {
 		try {
 			Vecino v = repoVecino.getOne(id);
-			v.setNombre(nombre);
-			v.setEmail(email);
-			v.setEstado("pendiente");
+			v.setUsername(username);
+			v.setPassword(pwd);
 			repoVecino.save(v);
 			
-			//Envía Correo
-			if(v.getEstado().equals("inactivo")) {
-				String asunto="Login UrbaZone";
-				String mensaje = "¡Hola vecino!\n"
-						+ "Estamos encantados de darte la bienvenida a UrbaZone.\n\n"
-						+ "Si no enviaste la solicitud, no es necesario que realices ninguna acción. Simplemente, omite el mensaje; no se verificará la cuenta.\n"
-						+ "Recuerda cambiar el nombre de usuario y la contraseña en el primer inicio.\n"
-						+ "Estas son sus credenciales para acceder:\n"
-						+ "           Usuario: " + email + "           Contraseña: " + v.getPassword() + "\n\n"
-						+ "Gracias por unirse a nosotros.\n"
-						+ "Su equipo de UrbaZone.\n\n"
-						+ "Este mensaje va dirigido, de manera exclusiva, a su destinatario y puede contener información confidencial y sujeta al secreto profesional, cuya divulgación no está permitida por Ley. En caso de haber recibido este mensaje por error, le rogamos que de forma inmediata, nos lo comunique mediante correo electrónico remitido a nuestra atención y proceda a su eliminación, así como a la de cualquier documento adjunto al mismo. Asimismo, le comunicamos que la distribución, copia o utilización de este mensaje, o de cualquier documento adjunto al mismo, cualquiera que fuera su finalidad, están prohibidas por la ley. En aras del cumplimiento del Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016, puede ejercer los derechos de acceso, rectificación, cancelación, limitación, oposición y portabilidad de manera gratuita mediante correo electrónico a: gestion.urbanizacion.2020@gmail.com";
-				}
-			
-			
 		} catch (Exception e) {
-			PRG.error("Vecino con email " + email + " ya existente", "/vecino/r");
+			PRG.error("Vecino no actualizado", "/vecino/r");
 		}
-		PRG.info("Vecino " + nombre + " actualizado correctamente", "/vecino/r");
+		PRG.info("Vecino actualizado correctamente", "/vecino/r");
 	}
 
 	@GetMapping("ul")
@@ -161,4 +145,14 @@ public class VecinoController {
 		return "redirect:/vecino/r";
 	}
 
+	// =========================================
+
+	@GetMapping("/home")
+	public String homeUsuario(ModelMap m) {
+		m.put("view", "/vecino/homeUsuario");
+		return "/_t/frame";
+	}
+
+	
+	
 }
