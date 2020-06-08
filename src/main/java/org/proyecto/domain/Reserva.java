@@ -1,6 +1,5 @@
 package org.proyecto.domain;
 
-import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,11 +13,11 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Calendar fecha;
+	private String fecha;
 
 	private String inicio;
 
-	private Integer nBloques;
+	private Integer tReserva;
 
 	private String estado;
 
@@ -35,11 +34,11 @@ public class Reserva {
 
 	}
 
-	public Reserva(Calendar fecha, String inicio, Integer nBloques) {
+	public Reserva(String fecha, String inicio, Integer tReserva) {
 		super();
 		this.fecha = fecha;
 		this.inicio = inicio;
-		this.nBloques = nBloques;
+		this.tReserva = tReserva;
 		this.estado = "pendiente";
 	}
 
@@ -53,11 +52,11 @@ public class Reserva {
 		this.id = id;
 	}
 
-	public Calendar getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Calendar fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 
@@ -69,12 +68,12 @@ public class Reserva {
 		this.inicio = inicio;
 	}
 
-	public Integer getnBloques() {
-		return nBloques;
+	public Integer gettReserva() {
+		return tReserva;
 	}
 
-	public void setnBloques(Integer nBloques) {
-		this.nBloques = nBloques;
+	public void settReserva(Integer tReserva) {
+		this.tReserva = tReserva;
 	}
 
 	public ZonaComun getTiene() {

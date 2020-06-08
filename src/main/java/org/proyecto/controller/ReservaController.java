@@ -70,38 +70,55 @@ public class ReservaController {
 	}
 
 	@PostMapping("c")
-	public String cPost(@RequestParam("fecha") Calendar fecha, @RequestParam("inicio") String inicio,
-			@RequestParam("nBloques") Integer nBloques, @RequestParam("vecinoId") String vecinoId,
+	public String cPost(@RequestParam("fecha") String fecha, @RequestParam("franjas[]") String comienzos[],
+			@RequestParam("tReserva") Integer tReserva, @RequestParam("vecinoId") String vecinoId,
 			@RequestParam("zonaId") Long zonaId) throws DangerException, InfoException {
 
-		try {
-			Reserva reserva = new Reserva(fecha, inicio, nBloques);
+		if (comienzos.length <= tReserva / 30) {
+			try {
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				Date date = formatter.parse(fecha);
 
-			if (vecinoId != null && zonaId != null) {
-				Vecino vecino = repoVecino.getOne(vecinoId);
-				ZonaComun zona = repoZonaComun.getOne(zonaId);
+				String inicios = "";
+				for (int i = 0; i < comienzos.length; i++) {
+					inicios += comienzos[i] + ",";
+					Franja franja = repoFranja.getByFechaAndHora(date, comienzos[i]);
+					franja.setEstado("reservado");
+					repoFranja.save(franja);
 
-				vecino.getReservas().add(reserva);
-				zona.getReservas().add(reserva);
+				}
 
-				reserva.setHace(vecino);
-				reserva.setTiene(zona);
+				Reserva reserva = new Reserva(fecha, inicios.substring(0, inicios.length() - 1), comienzos.length*30);
+
+				if (vecinoId != null && zonaId != null) {
+
+					Vecino vecino = repoVecino.getOne(vecinoId);
+					ZonaComun zona = repoZonaComun.getOne(zonaId);
+
+					vecino.getReservas().add(reserva);
+					zona.getReservas().add(reserva);
+
+					reserva.setHace(vecino);
+					reserva.setTiene(zona);
+				}
+				repoReserva.save(reserva);
+
+			} catch (Exception e) {
+				PRG.error("Reserva no realizada ", "/reserva/c");
 			}
-			repoReserva.save(reserva);
-
-		} catch (Exception e) {
-			PRG.error("Reserva no realizada ", "/reserva/c");
+			PRG.info("Reserva realizada correctamente", "/reserva/r");
+		} else {
+			PRG.error("Limite de tiempo para la reserva excedido ", "/reserva/r");
 		}
-		PRG.info("Reserva realizada correctamente", "/reserva/r");
 
 		return "redirect:/reserva/r";
 	}
 
 	@RequestMapping(path = "/getFranjas", produces = { "application/json" })
 	public @ResponseBody List<String> franjasFecha(@RequestParam("datos") String datos) {
-		
-		String[] dato=datos.split("Y");
-		String fecha=dato[1];
+
+		String[] dato = datos.split("Y");
+		String fecha = dato[1];
 		System.out.println(fecha);
 		List<String> fs = new ArrayList<String>();
 		List<Franja> franjas = new ArrayList<Franja>();
@@ -112,17 +129,16 @@ public class ReservaController {
 			String dateInString = fecha;
 
 			Date date = formatter.parse(dateInString);
-			System.out.println(date);
-			System.out.println(formatter.format(date));
-			franjas = repoFranja.findByZonaAndFechaAndEstado(repoZonaComun.getOne(Long.parseLong(dato[0])), date, "libre");
-			System.out.println("==========================");
+			franjas = repoFranja.findByZonaAndFechaAndEstado(repoZonaComun.getOne(Long.parseLong(dato[0])), date,
+					"libre");
 
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		 for (Franja franja : franjas) { fs.add(franja.getHora()); }
-		 
+
+		for (Franja franja : franjas) {
+			fs.add(franja.getHora());
+		}
 
 		return fs;
 

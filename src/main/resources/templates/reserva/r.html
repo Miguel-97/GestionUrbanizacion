@@ -14,8 +14,8 @@
 				<th>Vecino</th>
 				<th>Zona Comun</th>
 				<th>Fecha</th>
-				<th>Inicio</th>
-				<th>Numero Bloques</th>
+				<th>Inicios</th>
+				<th>Tiempo</th>
 				<th>Acciones</th>
 			</tr>
 
@@ -24,7 +24,7 @@
 				<td th:text="${reserva.tiene?.nombre}"></td>
 				<td th:text="${reserva.fecha}"></td>
 				<td th:text="${reserva.inicio}"></td>
-				<td th:text="${reserva.nBloques}"></td>
+				<td th:text="${reserva.tReserva}"></td>
 				<td><form action="/reserva/d" method="post">
 						<input type="hidden" name="idR" th:value="${reserva.id}">
 						<button onclick="submit()" class="btn btn-light">

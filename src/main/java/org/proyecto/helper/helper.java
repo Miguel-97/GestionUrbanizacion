@@ -207,7 +207,7 @@ public class helper {
 
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
 			String agenda = reserva.getTiene().getId() + "," + reserva.getFecha() + "," + reserva.getInicio() + ","
-					+ reserva.getnBloques() + "," + reserva.getHace().getId() + "|";
+					+ reserva.gettReserva() + "," + reserva.getHace().getId() + "|";
 
 			String docR = leerArchivo("reservas");
 			docR += agenda;
@@ -243,7 +243,7 @@ public class helper {
 			ArrayList<String> agenda = new ArrayList<String>();
 			for (int i = 0; i < reservas.size(); i++) {
 				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
-						+ reservas.get(i).getInicio() + "," + reservas.get(i).getnBloques() + ","
+						+ reservas.get(i).getInicio() + "," + reservas.get(i).gettReserva() + ","
 						+ reservas.get(i).getHace().getId() + "|");
 			}
 
@@ -291,7 +291,7 @@ public class helper {
 			ArrayList<String> agenda = new ArrayList<String>();
 			for (int i = 0; i < reservas.size(); i++) {
 				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
-						+ reservas.get(i).getnBloques() + "," + reservas.get(i).getHace().getId() + "|");
+						+ reservas.get(i).gettReserva() + "," + reservas.get(i).getHace().getId() + "|");
 			}
 
 			String docZ = leerArchivo("zonas");
@@ -345,7 +345,7 @@ public class helper {
 			ArrayList<String> agenda = new ArrayList<String>();
 			for (int i = 0; i < reservas.size(); i++) {
 				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
-						+ reservas.get(i).getnBloques() + "," + reservas.get(i).getHace().getId() + "|");
+						+ reservas.get(i).gettReserva() + "," + reservas.get(i).getHace().getId() + "|");
 			}
 
 			String docE = leerArchivo("edificios");
@@ -426,7 +426,7 @@ public class helper {
 			ArrayList<String> agenda = new ArrayList<String>();
 			for (int i = 0; i < reservas.size(); i++) {
 				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
-						+ reservas.get(i).getnBloques() + "," + reservas.get(i).getHace().getId() + "|");
+						+ reservas.get(i).gettReserva() + "," + reservas.get(i).getHace().getId() + "|");
 			}
 
 			String docU = leerArchivo("urbanizaciones");

@@ -25,7 +25,7 @@ public class Vecino {
 
 	private String password;
 
-	@Column(unique=true)
+	@Column(unique = true)
 	private String email;
 
 	private String estado;
@@ -49,6 +49,16 @@ public class Vecino {
 		this.username = username;
 		this.password = password;
 		this.estado = "inactivo";
+		this.reservas = new ArrayList<Reserva>();
+	}
+
+	public Vecino(String id, String username, String password, String email, String estado) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.estado = estado;
 		this.reservas = new ArrayList<Reserva>();
 	}
 
