@@ -120,9 +120,11 @@ public class AnonymousController {
 				view = "/homeAdmin";
 
 			} else {
+				BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
 				if (vecino.getEstado().equals("pendiente")) {
 					if (vecino.getPassword().equals(password)) {
 						vecino.setEstado("activo");
+						vecino.setPassword(password);
 						repoVecino.save(vecino);
 						s.setAttribute("vecino", vecino);
 						s.setAttribute("inicio", "primero");
@@ -131,8 +133,7 @@ public class AnonymousController {
 						PRG.error("Email o Contraseña incorrecta", "/login");
 						view = "/info";
 					}
-				} else if (vecino.getEstado().equals("activo")) {
-					BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
+				} else if (vecino.getEstado().equals("activo")) {				
 					if ((bpe.matches(password, vecino.getPassword()))) {
 						s.setAttribute("vecino", vecino);
 						s.setAttribute("inicio", "multiple");

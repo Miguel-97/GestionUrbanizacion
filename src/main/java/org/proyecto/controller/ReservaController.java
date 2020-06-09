@@ -17,6 +17,7 @@ import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.helper.rol;
 import org.proyecto.repository.FranjaRepository;
 import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.VecinoRepository;
@@ -50,17 +51,16 @@ public class ReservaController {
 	// =========================================
 
 	@GetMapping("c")
-	public String c(@RequestParam("zonaId") Long zonaId, @RequestParam("vecinoId") String vecinoId, ModelMap m,
+	public String c(@RequestParam(value="zonaId", required=false) Long zonaId, @RequestParam(value="vecinoId", required=false) String vecinoId, ModelMap m,
 			HttpSession s) throws DangerException {
-
 		if (zonaId == null && vecinoId == null) {// Admin
-			// rol.isRolOK("admin", s);
+			rol.isRolOK("admin", s);
 			m.put("zonas", repoZonaComun.findAll());
 			m.put("vecinos", repoVecino.findAll());
 			m.put("view", "/reserva/c");
 		} else {// Usuario
 
-			// rol.isRolOK("auth", s);
+			rol.isRolOK("auth", s);
 			m.put("zona", repoZonaComun.getOne(zonaId));
 			m.put("vecino", repoVecino.getOne(vecinoId));
 			m.put("view", "/reserva/cU");
@@ -88,7 +88,7 @@ public class ReservaController {
 
 				}
 
-				Reserva reserva = new Reserva(fecha, inicios.substring(0, inicios.length() - 1), comienzos.length*30);
+				Reserva reserva = new Reserva(fecha, inicios.substring(0, inicios.length() - 1), comienzos.length * 30);
 
 				if (vecinoId != null && zonaId != null) {
 

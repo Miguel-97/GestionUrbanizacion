@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.proyecto.domain.Reserva;
+import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
+import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
 import org.proyecto.repository.EdificioRepository;
+import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.VecinoRepository;
+import org.proyecto.repository.ZonaComunRepository;
 import org.proyecto.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +32,10 @@ public class VecinoController {
 	private VecinoRepository repoVecino;
 	@Autowired
 	private EdificioRepository repoEdificio;
+	@Autowired
+	private ZonaComunRepository repoZona;
+	@Autowired
+	private UrbanizacionRepository repoUrba;
 
 	@Autowired
 	private MailService mailService;
@@ -158,15 +166,19 @@ public class VecinoController {
 
 	@GetMapping("/home")
 	public String homeUsuario(ModelMap m, HttpSession s) {
+		Vecino vecino = (Vecino) s.getAttribute("vecino");
+		String idVecino[] = vecino.getId().split("_");
+		Urbanizacion urba = repoUrba.getByNombre(idVecino[0]);
+		m.put("zonas", repoZona.findByCorresponde(urba));
 		m.put("view", "/vecino/homeUsuario");
+
 		return "/_t/frame";
 	}
-	
+
 	@GetMapping("/perfil")
 	public String miPerfil(ModelMap m, HttpSession s) {
 		m.put("view", "/vecino/perfilUsuario");
 		return "/_t/frame";
 	}
-	
 
 }

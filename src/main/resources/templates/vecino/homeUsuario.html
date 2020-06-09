@@ -1,130 +1,40 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<span class="contact100-form-titleHome"> Bienvenido a UrbaZone <img
-				id="logo" href="img/LogoPaginaNegroSinsombra.png" width="15%"
-				height="25%">
+		<span class="contact100-form-titleHome"> Bienvenido a UrbaZone
+			<img id="logo" href="img/LogoPaginaNegroSinsombra.png" width="15%"
+			height="25%">
 
 		</span>
+
+
+
+		<div class="container-contact100-form-btn">
+			<form action="/vecino/perfil" method="get">
+				<input type="hidden" name="id" th:value="${session.vecino.id}">
+				<button onclick="submit()" class="btn btn-dark">Mi Perfil</button>
+			</form>
+		</div>
+
+
+		<div class="container-contact100-form-btn">
+			<button class="">Mis reservas</button>
+		</div>
+
+		<div class="container-contact100-form-btn">
+			<span th:each="zona:${zonas}">			
+			<form action="/reserva/c" method="get">
+				<input type="hidden" name="zonaId" th:value="${zona.id}">
+				<input type="hidden" name="vecinoId" th:value="${session.vecino.id}">			
+				<button onclick="submit()" class="btn btn-dark" th:text="${zona.nombre}"></button>
+			</form>
+			</span>
 			
-			
-			
-			<div class="container-contact100-form-btn">
-				<form action="/vecino/perfil" method="get">
-					<input type="hidden" name="id" th:value="${session.vecino.id}">
-					<button onclick="submit()" class="btn btn-dark">Mi Perfil</button>
-				</form>
-			</div>
-				
-
-				<div class="container-contact100-form-btn">
-					<button class="">
-						Mis reservas
-					</button>
-				</div>
-
-
-		<form action="" method="post"
-			class="contact100-formHome validate-form">
-			
-
-	    
+		</div>
 
 
 
-			<div class="container-contact100-form-btn">
-					<button class="contact100-form-btnHome">
-						Padel
-					</button>
-				</div>
 
 
-				&nbsp;&nbsp;<div class="container-contact100-form-btn">
-					<button class="contact100-form-btnHome">
-						Sala multiusos
-					</button>
-				</div>
-
-				&nbsp;&nbsp;<div class="container-contact100-form-btn">
-					<button class="contact100-form-btnHome">
-						Piscina
-					</button>
-				</div>
-
-				&nbsp;&nbsp;<div class="container-contact100-form-btn">
-					<button class="contact100-form-btnHome">
-						Opcion 4
-					</button>
-				</div>
-
-
-
-		
-
-			</div>
-
-
-	</form>
-			
-			
-			
-
-<!--  			<div class="wrap-input100 validate-input">
-				<label class="label-input100" for="id-username">Nombre de usuario</label> <input
-					class="input100" type="text" id="id-username" name="username"
-					autofocus="autofocus">
-				<div id="errUsername"></div>
-				<span class="focus-input100"></span>
-			</div>
-
-			<div class="wrap-input100 validate-input">
-				<label class="label-input100" for="id-password">Password</label> <input
-					class="input100" type="text" id="id-password" name="password">
-				<div id="errPwd"></div>
-				<span class="focus-input100"></span>
-			</div>
-			-->
-<!-- 
-			<input type="hidden" name="id" th:value="${vecino.id}" />
- -->
-			<div class="container-contact100-form-btn">
-				<input type="submit" id="botonEnvio" class="contact100-form-btn"
-					value="Enviar">
-			</div>
-
-		</form>
 	</div>
 </div>
-<script>
-	/*function validarNombre() {
-		var expNombre = /[a-z ñáéíóúçü-]{3,30}$/;
 
-		if (!expNombre.test(miForm.nombre.value.toLowerCase())) {
-			document.getElementById("errNombre").innerHTML = "<font color='red'>El nombre no es correcto.</font>";
-			return false;
-		} else {
-			document.getElementById("errNombre").innerHTML = "";
-			return true;
-		}
-	}
-
-	function validarEmail() {
-		var expEmail = /[a-z0-9ñç](\.?[a-z_0-9-ñç]){2,40}@[a-zñç]{2,20}.[a-zñç]{2,5}$/;
-
-		if (!expEmail.test(miForm.email.value.toLowerCase())) {
-			document.getElementById("errEmail").innerHTML = "<font color='red'>El email no es correcto.</font>";
-			return false;
-		} else {
-			document.getElementById("errEmail").innerHTML = "";
-			return true;
-		}
-	}
-
-	function validacion() {
-		if (validarNombre() && validarEmail()) {
-			return true;
-		} else {
-			return false;
-		}
-	}*/
-	
-</script>
