@@ -4,14 +4,17 @@
 				id="logo" href="img/LogoPaginaNegroSinsombra.png" width="15%"
 				height="25%">
 
-			</span>
+		</span>
+			
 			
 			
 			<div class="container-contact100-form-btn">
-					<button class="">
-						Mi cuenta
-					</button>
-				</div>
+				<form action="/vecino/perfil" method="get">
+					<input type="hidden" name="id" th:value="${session.vecino.id}">
+					<button onclick="submit()" class="btn btn-dark">Mi Perfil</button>
+				</form>
+			</div>
+				
 
 				<div class="container-contact100-form-btn">
 					<button class="">
