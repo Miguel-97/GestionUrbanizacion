@@ -15,6 +15,6 @@ public class AuthController {
 		public String logout(HttpSession s) throws DangerException {
 			rol.isRolOK("auth", s);
 			s.invalidate();
-			return "redirect:/";
+			return "redirect:/login";
 		}
 }
