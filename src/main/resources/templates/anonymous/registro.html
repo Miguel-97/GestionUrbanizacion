@@ -1,7 +1,7 @@
 
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<form action="/registro" method="post" class="contact100-form validate-form" id="registro">
+		<form action="/registro" method="post" class="contact100-form validate-form" id="registro" name="miForm" onsubmit="return validarEmail()">
 			<span class="contact100-form-title"> 
 				Nuevo Vecino
 				<img id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
@@ -36,7 +36,8 @@
         	
         	<div class="wrap-input100 validate-input" data-validate="Email requerido">
 				<label class="label-input100" for="id-email">Email</label> 
-				<input type="text" class="input100" id="id-email" name="email"/> 
+				<input type="text" class="input100" id="id-email" name="email"/>
+				<div id="errEmail"></div>
 				<span class="focus-input100"></span>
 			</div>
         	
@@ -53,57 +54,52 @@
 	</div>
 </div>
 <script type="text/javascript">
+	
+	function validarEmail() {
+		var expEmail = /[a-z0-9ñç](\.?[a-z_0-9-ñç]){2,40}@[a-zñç]{2,20}.[a-zñç]{2,5}$/;
 
-$(document).ready(function() {
-	//FUNCIÓN QUE CARGA LOS PORTALES DESPUÉS DE HABER ELEGIDO URBANIZACIÓN
-	$('#id-urbaId').on('change',
-			function() {
-				$.getJSON('getPortales', 
-					'urbaId='+$(this).val(),
-					function(valor) {
-						$('#id-portal').empty();
-						var html = '<option>Selecciona Portal</option>';
-						var len = valor.length;
-						for(var i=0; i<len;i++) {
-							html+='<option value="' + valor[i].portal + '">' + valor[i].portal + '</option>';
-						}
-						$('#id-portal').append(html);
-					});
-			});
+		if (!expEmail.test(miForm.email.value.toLowerCase())) {
+			document.getElementById("errEmail").innerHTML = "<font color='red'>El email no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errEmail").innerHTML = "";
+			return true;
+		}
+	}
 	
-	//FUNCIÓN QUE CARGA LOS PISOS Y LAS PUERTAS DESPUÉS DE HABER ELEGIDO PORTAL
-	$('#id-portal').on('change',
-			function() {
-				$.getJSON('getPisosPuertas', 
-						'algo='+$(this).val()+'Y'+$('#id-urbaId').val(),
-					function(valor) {
-						$('#id-pisosPuertas').empty();
-						var html = '<option>Selecciona Piso/Puerta</option>';
-						var len = valor.length;
-						for(var i=0; i<len;i++) {
-							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
-						}
-						$('#id-pisosPuertas').append(html);
-					});
-			});
-	
-	/*$('#registro').submit(function() {
-		$.ajax({
-			url: '/registro',
-			type: 'POST',
-			contentType: "application/x-www-form-urlencoded",
-			data: JSON.stringify({
-				nombre: $('#id-urbaId').val(),
-				vive: $('#id-portal').val(),
-				username: $('#id-pisosPuertas').val(),
-				email: $('#id-email').val()
-			}),
-			error: function() {
-				alert("Error - Datos no enviados");
-			}
-		})
-	});*/
-	
-});
+	$(document).ready(function() {
+		//FUNCIÓN QUE CARGA LOS PORTALES DESPUÉS DE HABER ELEGIDO URBANIZACIÓN
+		$('#id-urbaId').on('change',
+				function() {
+					$.getJSON('getPortales', 
+						'urbaId='+$(this).val(),
+						function(valor) {
+							$('#id-portal').empty();
+							var html = '<option>Selecciona Portal</option>';
+							var len = valor.length;
+							for(var i=0; i<len;i++) {
+								html+='<option value="' + valor[i].portal + '">' + valor[i].portal + '</option>';
+							}
+							$('#id-portal').append(html);
+						});
+		});
+		
+		//FUNCIÓN QUE CARGA LOS PISOS Y LAS PUERTAS DESPUÉS DE HABER ELEGIDO PORTAL
+		$('#id-portal').on('change',
+				function() {
+					$.getJSON('getPisosPuertas', 
+							'dato='+$(this).val()+'Y'+$('#id-urbaId').val(),
+						function(valor) {
+							$('#id-pisosPuertas').empty();
+							var html = '<option>Selecciona Piso/Puerta</option>';
+							var len = valor.length;
+							for(var i=0; i<len;i++) {
+								html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
+							}
+							$('#id-pisosPuertas').append(html);
+						});
+				
+		});
+	});
 
 </script>

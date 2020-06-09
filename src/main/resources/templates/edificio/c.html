@@ -1,7 +1,8 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
 		<form action="/edificio/c" method="post"
-			class="contact100-form validate-form">
+			class="contact100-form validate-form" name="miForm"
+			onsubmit="return validarPortal()">
 			<span class="contact100-form-title"> Nuevo Edificio <img
 				id="logo" src="/img/LogoPagina.png" width="15%" height="25%">
 			</span>
@@ -20,17 +21,18 @@
 				<span class="focus-input100"></span>
 			</div>
 
-
 			<div class="wrap-input100 validate-input"
 				data-validate="portal requerido">
 				<label class="label-input100" for="nombre">Portal</label> <input
-					id="portal" class="input100" type="text" name="portal" pattern="^(([1-9][0-9]{0,3}[ ]?[a-z]?)|([a-z]{1,3})|([a-z]{2,30}))$" title="Introduce un portal válido"> <span
-					class="focus-input100"></span>
+					id="portal" class="input100" type="text" name="portal">
+				<div id="errPortal"></div>
+				<span class="focus-input100"></span>
 			</div>
 
-			<div class="wrap-input100 validate-input" data-validate="pisos requerido">
-				<label class="label-input100" for="id-pisos">Pisos</label> 
-				<input id="id-pisos" class="input100" type="number" name="pisos" min="1">
+			<div class="wrap-input100 validate-input"
+				data-validate="pisos requerido">
+				<label class="label-input100" for="id-pisos">Pisos</label> <input
+					id="id-pisos" class="input100" type="number" name="pisos" min="1">
 				<span class="focus-input100"></span>
 			</div>
 			<div class="wrap-input100">
@@ -44,10 +46,11 @@
 					name="bajo" value="false" id="no">
 			</div>
 
-			<div class="wrap-input100 validate-input" data-validate="puertasXpiso requerido">
-				<label class="label-input100" for="id-puertasXpiso">Puertas por piso</label>
-				<input id="id-puertasXpiso" class="input100" type="number" name="puertasXpiso" min="1">
-				<span class="focus-input100"></span>
+			<div class="wrap-input100 validate-input"
+				data-validate="puertasXpiso requerido">
+				<label class="label-input100" for="id-puertasXpiso">Puertas
+					por piso</label> <input id="id-puertasXpiso" class="input100" type="number"
+					name="puertasXpiso" min="1"> <span class="focus-input100"></span>
 			</div>
 
 
@@ -71,5 +74,19 @@
 
 		</form>
 		<img id="home" src="/img/LogoPagina.png" width="55%" height="55%" />
-		</div>
-		</div>
+	</div>
+</div>
+
+<script>
+	function validarPortal() {
+		var expPortal = /^(([1-9][0-9]{0,3}[ ]?[a-z]?)|([a-z]{1,3})|([a-z]{2,30}))$/;
+
+		if (!expPortal.test(miForm.portal.value.toLowerCase())) {
+			document.getElementById("errPortal").innerHTML = "<font color='red'>El portal no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errPortal").innerHTML = "";
+			return true;
+		}
+	}
+</script>

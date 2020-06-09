@@ -1,51 +1,84 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
 		<form id="WidthForm" action="/vecino/ul" method="post"
-			class="contact100-form validate-form">
-			<span class="contact100-form-title"> Editar vecinos del portal <span th:text="${portal}"></span>  <img
-				id="logo" src="/img/LogoPagina.png" width="15%" height="25%"></span>
-			<br>
+			class="contact100-form validate-form" name="miForm"
+			onsubmit="return validacion()">
+			<span class="contact100-form-title"> Editar vecinos del portal
+				<span th:text="${portal}"></span> <img id="logo"
+				src="/img/LogoPagina.png" width="15%" height="25%">
+			</span> <br>
 
 
-		<fieldset id="float"  th:each="vecino:${vecinos}">
-		
-		<div  class="wrap-input100 validate-input">
-			<input id="vecino" class="input100" type="text" th:value="|${vecino.id}" th:name="ids[]"
-				readonly="readonly">
-				
+			<fieldset id="float" th:each="vecino:${vecinos}">
+
 				<div class="wrap-input100 validate-input">
-				&nbsp;<span th:for="|${vecino.id}_name|">Nombre</span>
-				
-				
-				
-			<input class="input100" type="text" th:name="nombres[]" th:value="|${vecino.nombre}|"
-				th:id="|${vecino.id}_name|">
+					<input id="vecino" class="input100" type="text"
+						th:value="|${vecino.id}" th:name="ids[]" readonly="readonly">
+
+					<div class="wrap-input100 validate-input">
+						&nbsp;<span th:for="|${vecino.id}_name|">Nombre</span> <input
+							class="input100" type="text" th:name="nombres[]"
+							th:value="|${vecino.nombre}|" th:id="|${vecino.id}_name|">
+							<div id="errNombre"></div>
+					</div>
+
+					<div class="wrap-input100 validate-input">
+						&nbsp;<span th:for="|${vecino.id}_mail|">Email</span> <input
+							class="input100" type="text" th:name="emails[]"
+							th:value="|${vecino.email}|" th:id="|${vecino.id}_mail|">
+							<div id="errEmail"></div>
+					</div>
 				</div>
-				
-				<div class="wrap-input100 validate-input">
-				&nbsp;<span th:for="|${vecino.id}_mail|">Email</span> 
-				
-				
-				<input class="input100" type="text"
-				th:name="emails[]" th:value="|${vecino.email}|"
-				th:id="|${vecino.id}_mail|"> 
-				</div>
-			</div>
-		</fieldset>
-		
-		<input type="hidden" th:value="${portal}" name="portal"> 
-		
-		<div id="boton"  class="container-contact100-form-btn">
+			</fieldset>
+
+			<input type="hidden" th:value="${portal}" name="portal">
+
+			<div id="boton" class="container-contact100-form-btn">
 				<input type="submit" id="botonEnvio" class="contact100-form-btn"
 					value="Enviar">
 			</div>
-			
-			<div id="boton"  class="container-contact100-form-btn">
+
+			<div id="boton" class="container-contact100-form-btn">
 				<button class="contact100-form-btn">
 					<a href="/edificio/r" class="contact100-form-btn">Volver</a>
 				</button>
 
 			</div>
-	</form>
+		</form>
+	</div>
 </div>
-</div>
+<script>
+
+	function validarNombre() {
+		var expNombre = /[a-z ñáéíóúçü-]{3,30}$/;
+
+		if (!expNombre.test(miForm.nombre.value.toLowerCase())) {
+			document.getElementById("errNombre").innerHTML = "<font color='red'>El nombre no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errNombre").innerHTML = "";
+			return true;
+		}
+	}
+	
+	function validarEmail() {
+		var expEmail = /[a-z0-9ñç](\.?[a-z_0-9-ñç]){2,40}@[a-zñç]{2,20}.[a-zñç]{2,5}$/;
+
+		if (!expEmail.test(miForm.email.value.toLowerCase())) {
+			document.getElementById("errEmail").innerHTML = "<font color='red'>El email no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errEmail").innerHTML = "";
+			return true;
+		}
+	}
+
+	function validacion() {
+		if (validarNombre() && validarEmail()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+</script>

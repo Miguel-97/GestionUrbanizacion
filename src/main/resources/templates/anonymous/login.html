@@ -1,46 +1,55 @@
 
 
-	<div class="container-contact100">
-		<div class="wrap-contact100">
+<div class="container-contact100">
+	<div class="wrap-contact100">
 
-			<form class="contact100-form validate-form" method="post">
-				<span class="contact100-form-title">
-					Introduce los credenciales para entrar a tu comunidad.
-				</span>
+		<form class="contact100-form validate-form" method="post"
+			name="miForm" onsubmit="return validarEmail()">
+			<span class="contact100-form-title"> Introduce los
+				credenciales para entrar a tu comunidad. </span>
 
-				<div class="wrap-input100 validate-input" data-validate="Nombre requerido">
-					<label class="label-input100" for="id-email">Email</label>
-					<input id="id-email" class="input100" type="text" name="email">
-					<span class="focus-input100"></span>
-				</div>
+			<div class="wrap-input100 validate-input"
+				data-validate="Nombre requerido">
+				<label class="label-input100" for="id-email">Email</label> <input
+					id="id-email" class="input100" type="text" name="email">
+				<div id="errEmail"></div>
+				<span class="focus-input100"></span>
+			</div>
 
-				<div class="wrap-input100 validate-input" data-validate="Contraseña requerida">
-					<label class="label-input100" for="id-password">contraseña</label>
-					<input id="id-password" class="input100" type="password" name="password">
-					<span class="focus-input100"></span>
-				</div>
+			<div class="wrap-input100 validate-input"
+				data-validate="Contraseña requerida">
+				<label class="label-input100" for="id-password">contraseña</label> <input
+					id="id-password" class="input100" type="password" name="password">
+				<span class="focus-input100"></span>
+			</div>
 
-				<div class="container-contact100-form-btn">
-					<button class="contact100-form-btn">
-						Entrar 
-					</button>
-				</div>
-				
-				<div class="container-contact100-form-btn">
-					<a id="aPass" href="#"></a> <p>Olvidaste tu contraseña?</p>
-				</div>
+			<div class="container-contact100-form-btn">
+				<button class="contact100-form-btn">Entrar</button>
+			</div>
 
-			</form>
+			<div class="container-contact100-form-btn">
+				<a id="aPass" href="#"></a>
+				<p>Olvidaste tu contraseña?</p>
+			</div>
 
-			<img id="login" src="/img/LogoPagina.png" width="20%" height="20%">
+		</form>
 
-			
-		</div>
+		<img id="login" src="/img/LogoPagina.png" width="20%" height="20%">
+
+
 	</div>
+</div>
 
+<script>
+	function validarEmail() {
+		var expEmail = /[a-z0-9ñç](\.?[a-z_0-9-ñç]){2,40}@[a-zñç]{2,20}.[a-zñç]{2,5}$/;
 
-
-
-
-	
-
+		if (!expEmail.test(miForm.email.value.toLowerCase())) {
+			document.getElementById("errEmail").innerHTML = "<font color='red'>El email no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errEmail").innerHTML = "";
+			return true;
+		}
+	}
+</script>

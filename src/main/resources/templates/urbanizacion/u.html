@@ -2,19 +2,19 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
 		<form action="/urbanizacion/u" method="post"
-			class="contact100-form validate-form">
+			class="contact100-form validate-form" name="miForm"
+			onsubmit="return validacion()">
 			<span class="contact100-form-title"> Editar Urbanización <img
 				id="logo" src="/img/LogoPagina.png" width="15%" height="25%"></span>
-			<br>
-			
-		<input type="hidden" name="urbaId"  th:value="${urbanizacion.id}"/>
+			<br> <input type="hidden" name="urbaId"
+				th:value="${urbanizacion.id}" />
 
 			<div class="wrap-input100 validate-input"
 				data-validate="Nombre requerido">
-				<label class="label-input100" for="id-nombre">Nombre</label>
-		<input type="text" class="input100" id="id-nombre" name="nombre"  th:value="${urbanizacion.nombre}"/> <span
-					class="focus-input100"></span>
-				
+				<label class="label-input100" for="id-nombre">Nombre</label> <input
+					type="text" class="input100" id="id-nombre" name="nombre"
+					th:value="${urbanizacion.nombre}" /> <span class="focus-input100"></span>
+
 			</div>
 
 			<div class="container-contact100-form-btn">
@@ -27,15 +27,20 @@
 						class="contact100-form-btn" id="botonVolver">Cancelar</button></a>
 			</div>
 		</form>
-		
+
 	</div>
 </div>
 
+<script>
+	function validacion() {
+		var expNombre = /[a-z ñáéíóúçü-]{3,30}$/;
 
-
-
-
-
-
-
-
+		if (!expNombre.test(miForm.nombre.value.toLowerCase())) {
+			document.getElementById("errNombre").innerHTML = "<font color='red'>El nombre no es correcto.</font>";
+			return false;
+		} else {
+			document.getElementById("errNombre").innerHTML = "";
+			return true;
+		}
+	}
+</script>

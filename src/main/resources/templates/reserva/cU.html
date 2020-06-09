@@ -1,3 +1,9 @@
+<style>
+	table, th, td {
+		text-align: center;
+		
+	}
+</style>
 <div class="container-contact100">
 	<div class="wrap-contact100">
 		<form action="/reserva/c" method="post"
@@ -22,7 +28,7 @@
 			</div>
 
 			<div class="wrap-input100 validate-input"
-				data-validate="inicio requerido">
+				data-validate="franjas requerido">
 				<label class="label-input100" for="franjas">Franjas</label> <select
 					id="franjas" class="input100" multiple="multiple" name="franjas[]">
 					<option th:each="franja:${franjas}" th:text="${franja.hora}"
@@ -30,6 +36,8 @@
 				</select> <span class="focus-input100"></span>
 			</div>
 
+				<div id="tablaFranjas" class="form-inline"></div>
+			
 			<input type="hidden" id="zonaId" name="zonaId" th:value="${zona.id}"> <input
 				type="hidden" id="vecinoId" name="vecinoId" th:value="${vecino.id}"> <br>
 			<input type="submit" class="contact100-form-btn" />
@@ -37,7 +45,6 @@
 				<button class="contact100-form-btn">
 					<a href="/" class="contact100-form-btn">Volver</a>
 				</button>
-
 			</div>
 
 		</form>
@@ -46,58 +53,43 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {	
-	
+		//SACA LAS FRANJAS EN UN SELECT MULTIPLE
+		$('#fecha').on('change',
+			function() {
+				$.getJSON('getFranjas',
+					'datos='+$('#zonaId').val()+'Y'+$(this).val(),
+					function(valor) {
+						$('#franjas').empty();
+						var html = '<option>Selecciona Franjas</option>';
+						var len = valor.length;
+						for(var i=0; i<len;i++) {
+							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
+						}
+						$('#franjas').append(html);
+					});
+							
+		});
+		
+		//SACA LAS FRANJAS EN UNA TABLA
 		$('#fecha').on('change',
 				function() {
-				$.getJSON('getFranjas','datos='+$('#zonaId').val()+'Y'+$(this).val(),
-							
-							
-										function(valor) {
-					console.log(valor);
-					
-										$('#franjas').empty();
-										var html = '<option>Selecciona Franjas</option>';
-										var len = valor.length;
-										console.log(len);
-										for(var i=0; i<len;i++) {
-											html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
-										}
-										$('#franjas').append(html);
-									});
-							});
+					$.getJSON('getFranjas',
+						'datos='+$('#zonaId').val()+'Y'+$(this).val(),
+						function(valor) {
+							$('#tablaFranjas').empty();//VACÍA EL DIV DONDE ESTÁ LA TABLA
+							var tabla = '<table class="table table-lm table-striped">';
+							tabla += '<tr><th colspan="2">FRANJAS</th></tr></tr>'
+							tabla += '<tr><td>Acción</td><td>Hora</td></tr>';
+							var len = valor.length;
+							for(var i=0; i<len;i++) {
+								tabla += '<tr><td><input type="checkbox" name="horasSeleccionadas[]" value="' + valor[i] + '"/></td>'
+								tabla += '<td>' + valor[i] + '</td></tr>';
+							}
+							tabla+='</tabla>';
+							$('#tablaFranjas').append(tabla);
+						});
+								
+			});
 		
-		
-		
-		
-		/*$('#fecha').on('change', function() {
-			$.ajax({
-				url : '/getFranjas',
-				type : 'POST',
-				contentType : "application/json",
-				data : JSON.stringify({
-					fecha : $('#fecha').val(),
-					zona : $('#zonaId').val()
-				})				
-			})
-		});
-
-		$('#fecha').on('change',
-					function() {
-					$.getJSON('getFranjas', 
-											'fecha='+$(this).val(),
-											'zonaId=1',
-											function(valor) {
-						console.log(valor);
-						
-											$('#franjas').empty();
-											var html = '<option>Selecciona Franjas</option>';
-											var len = valor.length;
-											console.log(len);
-											for(var i=0; i<len;i++) {
-												html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
-											}
-											$('#franjas').append(html);
-										});
-								});*/
 	});
 </script>
