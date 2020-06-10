@@ -27,6 +27,7 @@
 				<span class="focus-input100"></span>
 			</div>
 
+<!-- 
 			<div class="wrap-input100 validate-input"
 				data-validate="franjas requerido">
 				<label class="label-input100" for="franjas">Franjas</label> <select
@@ -35,7 +36,7 @@
 						th:value="${zona.id}"></option>
 				</select> <span class="focus-input100"></span>
 			</div>
-
+ -->
 				<div id="tablaFranjas" class="form-inline"></div>
 			
 			<input type="hidden" id="zonaId" name="zonaId" th:value="${zona.id}"> <input
@@ -54,7 +55,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {	
 		//SACA LAS FRANJAS EN UN SELECT MULTIPLE
-		$('#fecha').on('change',
+	/*	$('#fecha').on('change',
 			function() {
 				$.getJSON('getFranjas',
 					'datos='+$('#zonaId').val()+'Y'+$(this).val(),
@@ -68,7 +69,7 @@
 						$('#franjas').append(html);
 					});
 							
-		});
+		});*/
 		
 		//SACA LAS FRANJAS EN UNA TABLA
 		$('#fecha').on('change',
@@ -76,13 +77,13 @@
 					$.getJSON('getFranjas',
 						'datos='+$('#zonaId').val()+'Y'+$(this).val(),
 						function(valor) {
-							$('#tablaFranjas').empty();//VACÃ�A EL DIV DONDE ESTÃ� LA TABLA
+							$('#tablaFranjas').empty();//VACÍA EL DIV DONDE ESTÁ LA TABLA
 							var tabla = '<table class="table table-lm table-striped">';
 							tabla += '<tr><th colspan="2">FRANJAS</th></tr></tr>'
-							tabla += '<tr><td>AcciÃ³n</td><td>Hora</td></tr>';
+							tabla += '<tr><td>Acción</td><td>Hora</td></tr>';
 							var len = valor.length;
 							for(var i=0; i<len;i++) {
-								tabla += '<tr><td><input type="checkbox" name="horasSeleccionadas[]" value="' + valor[i] + '"/></td>'
+								tabla += '<tr><td><input type="checkbox" name="franjas[]" value="' + valor[i] + '"/></td>'
 								tabla += '<td>' + valor[i] + '</td></tr>';
 							}
 							tabla+='</tabla>';

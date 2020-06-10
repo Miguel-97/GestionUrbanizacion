@@ -51,22 +51,21 @@ public class ReservaController {
 	// =========================================
 
 	@GetMapping("c")
-	public String c(@RequestParam(value="zonaId", required=false) Long zonaId, @RequestParam(value="vecinoId", required=false) String vecinoId, ModelMap m,
+	public String c(@RequestParam("zonaId") Long zonaId, @RequestParam("vecinoId") String vecinoId, ModelMap m,
 			HttpSession s) throws DangerException {
-		if (zonaId == null && vecinoId == null) {// Admin
+		/*if (zonaId == null && vecinoId == null) {// Admin
 			rol.isRolOK("admin", s);
 			m.put("zonas", repoZonaComun.findAll());
 			m.put("vecinos", repoVecino.findAll());
 			m.put("view", "/reserva/c");
 		} else {// Usuario
-
+	}*/
 			rol.isRolOK("auth", s);
 			m.put("zona", repoZonaComun.getOne(zonaId));
 			m.put("vecino", repoVecino.getOne(vecinoId));
 			m.put("view", "/reserva/cU");
-		}
 
-		return "/_t/frame";
+			return "/_t/frame";
 	}
 
 	@PostMapping("c")
@@ -104,14 +103,15 @@ public class ReservaController {
 				repoReserva.save(reserva);
 
 			} catch (Exception e) {
-				PRG.error("Reserva no realizada ", "/reserva/c");
+				PRG.error("Reserva no realizada ", "/vecino/home");
+		
 			}
-			PRG.info("Reserva realizada correctamente", "/reserva/r");
+			PRG.info("Reserva realizada correctamente", "/vecino/home");
 		} else {
-			PRG.error("Limite de tiempo para la reserva excedido ", "/reserva/r");
+			PRG.error("Limite de tiempo para la reserva excedido ", "/vecino/home");
 		}
 
-		return "redirect:/reserva/r";
+		return "redirect:/vecino/home";
 	}
 
 	@RequestMapping(path = "/getFranjas", produces = { "application/json" })
@@ -119,7 +119,6 @@ public class ReservaController {
 
 		String[] dato = datos.split("Y");
 		String fecha = dato[1];
-		System.out.println(fecha);
 		List<String> fs = new ArrayList<String>();
 		List<Franja> franjas = new ArrayList<Franja>();
 
@@ -146,26 +145,46 @@ public class ReservaController {
 	// =========================================
 
 	@GetMapping("r")
-	public String r(ModelMap m) {
-		List<Reserva> reservas = repoReserva.findAll();
-		m.put("reservas", reservas);
-		m.put("view", "/reserva/r");
-		return "/_t/frame";
+	public String rA(ModelMap m,
+			HttpSession s) throws DangerException {
+			rol.isRolOK("admin", s);
+			List<Reserva> reservas = repoReserva.findAll();
+			m.put("reservas", reservas);
+			m.put("view", "/reserva/rA");
+			return "/_t/frame";
+	}
+	@GetMapping("rU")
+	public String rU(@RequestParam("vecinoId") String vecinoId, ModelMap m,
+			HttpSession s) throws DangerException {
+			rol.isRolOK("auth", s);
+			Vecino v = (Vecino) s.getAttribute("vecino");
+			List<Reserva> reservas = repoReserva.findByHace(v);
+			m.put("vecino", v);
+			m.put("reservas", reservas);
+			m.put("view", "/reserva/rU");
+			return "/_t/frame";
 	}
 
 	@PostMapping("d")
 	public String d(@RequestParam("idR") Long idR) throws DangerException {
 		try {
 			Reserva reserva = repoReserva.getOne(idR);
+			String [] inicios = reserva.getInicio().split(",");
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+			Date date = formatter.parse(reserva.getFecha());
+			for(String inicio : inicios) {
+				Franja f = repoFranja.getByFechaAndHora(date, inicio);
+				f.setEstado("libre");
+			}
 			// ==========historico========== Guarda la reserva seleccionada
 			helper.historicoReserva(reserva);
-			System.out.println(helper.leerArchivo("reservas"));
 			// ==========historico==========
 			repoReserva.delete(reserva);
 		} catch (Exception e) {
-			PRG.error("Error al borrar reserva", "/reserva/r");
+			PRG.error("Error al borrar reserva", "/vecino/home");
 		}
-		return "redirect:/reserva/r";
+		return "redirect:/vecino/home";
 	}
 
 	@Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")

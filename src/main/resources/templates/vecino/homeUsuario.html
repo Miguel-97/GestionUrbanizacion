@@ -60,14 +60,14 @@
 	<div class="container-contact100">
 		<img id="logoHomeUsu" src="/img/LogoPaginaHome.png" width="8%" height="15%" /> 
 		<ul class="navbar-nav">
-			<form  id="" data-toggle="dropdown" action="/vecino/perfil" method="get">
+			<form data-toggle="dropdown" action="/vecino/perfil" method="get">
 				<input type="hidden" name="id" th:value="${session.vecino.id}">
 				<button onclick="submit()" class="dropdown-item">Mi Perfil</button>
 			</form>
 		</ul>
 		<ul class="navbar-nav">
-			<form  id="" data-toggle="dropdown" action="" method="get">
-				<input type="hidden" name="id" th:value="${session.vecino.id}">
+			<form data-toggle="dropdown" action="/reserva/rU" method="get">
+				<input type="hidden" name="vecinoId" th:value="${session.vecino.id}">
 				<button onclick="submit()" class="dropdown-item">Mis Reservas</button>
 			</form>
 		</ul>
