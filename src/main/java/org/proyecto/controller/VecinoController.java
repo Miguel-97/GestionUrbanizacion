@@ -12,6 +12,7 @@ import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
 import org.proyecto.repository.EdificioRepository;
+import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.proyecto.repository.ZonaComunRepository;
@@ -36,6 +37,8 @@ public class VecinoController {
 	private ZonaComunRepository repoZona;
 	@Autowired
 	private UrbanizacionRepository repoUrba;
+	@Autowired
+	private ReservaRepository repoReserva;
 
 	@Autowired
 	private MailService mailService;
@@ -178,6 +181,47 @@ public class VecinoController {
 	@GetMapping("/perfil")
 	public String miPerfil(ModelMap m, HttpSession s) {
 		m.put("view", "/vecino/perfilUsuario");
+		return "/_t/frame";
+	}
+
+	@GetMapping("/estadistica")
+	public String estadistica(ModelMap m, HttpSession s) {
+		Vecino vecino = (Vecino) s.getAttribute("vecino");
+		// Reservas realizadas
+		List<Reserva> resVecino = repoReserva.findByHace(vecino);
+		m.put("nReservas", resVecino.size());
+
+		// Minutos reservados totales
+		int tResTot = 0;
+		for (Reserva res : resVecino) {
+			tResTot += (res.gettReserva());
+		}
+		m.put("tResTot", tResTot);
+		// Franjas reservadas totales
+	
+		m.put("fResTot", tResTot / 30);
+
+	//TODO
+		
+		List<ZonaComun> zonas = new ArrayList<ZonaComun>();	
+		List<Reserva> resZona = new ArrayList<>();
+		List<String> zonaMin = new ArrayList<String>();
+		int numResZ = 0;
+		for (Reserva res : resVecino) {
+			zonas.add(res.getTiene());
+			resZona.addAll(repoReserva.findByTiene(res.getTiene()));
+		}
+		// zonaMin.add(zona.getNombre()+"nres");
+
+		// Zona más reservada
+		// Horas reservada en zonas
+
+		// zonaMr=repoZona.getOne(repoReserva.).getNombre; m.put("zn", value);
+
+		// m.put("nBloquesT", );
+
+		m.put("reservas", resVecino);
+		m.put("view", "/vecino/estadistica");
 		return "/_t/frame";
 	}
 

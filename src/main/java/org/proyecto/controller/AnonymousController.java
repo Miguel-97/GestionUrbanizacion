@@ -114,7 +114,7 @@ public class AnonymousController {
 		String view = "/";
 		try {
 			Vecino vecino = repoVecino.getByEmail(email);
-			if (vecino.getEmail().equals("gestion.urbanizacion.2020@gmail.com")) {
+			if (vecino.getEmail().equals("gestion.urbanizacion.2020@gmail.com")&& vecino.getPassword().equals(password)) {
 				vecino.setEstado("activo");
 				s.setAttribute("vecino", vecino);
 				view = "/homeAdmin";
