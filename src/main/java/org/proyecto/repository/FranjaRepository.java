@@ -2,7 +2,6 @@ package org.proyecto.repository;
 
 import java.util.Date;
 import java.util.List;
-
 import org.proyecto.domain.Franja;
 import org.proyecto.domain.ZonaComun;
 import org.springframework.data.jpa.repository.JpaRepository;

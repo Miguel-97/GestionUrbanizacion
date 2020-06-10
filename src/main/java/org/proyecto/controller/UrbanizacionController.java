@@ -3,6 +3,8 @@ package org.proyecto.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.proyecto.domain.Edificio;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
@@ -11,6 +13,7 @@ import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.helper.rol;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +33,8 @@ public class UrbanizacionController {
 	// =========================================
 
 	@GetMapping("c")
-	public String c(ModelMap m) {
+	public String c(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		m.put("view", "/urbanizacion/c");
 		return "/_t/frame";
 	}
@@ -54,7 +58,8 @@ public class UrbanizacionController {
 	// =========================================
 
 	@GetMapping("r")
-	public String r(ModelMap m) {
+	public String r(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		List<Urbanizacion> urbanizaciones = repoUrbanizacion.findAll();
 		m.put("urbanizaciones", urbanizaciones);
 		m.put("view", "/urbanizacion/r");
@@ -64,7 +69,8 @@ public class UrbanizacionController {
 	// =========================================
 
 	@GetMapping("u")
-	public String u(ModelMap m, @RequestParam("urbaId") Long urbaId) {
+	public String u(ModelMap m, @RequestParam("urbaId") Long urbaId, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		m.put("urbanizacion", repoUrbanizacion.getOne(urbaId));
 		m.put("view", "/urbanizacion/u");
 		return "/_t/frame";
@@ -87,7 +93,8 @@ public class UrbanizacionController {
 	// =========================================
 
 	@PostMapping("d")
-	public String dPost(@RequestParam("urbaId") Long urbaId) throws DangerException {
+	public String dPost(@RequestParam("urbaId") Long urbaId, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		String nombreUrba = "----";
 		try {
 			Urbanizacion urbanizacion = repoUrbanizacion.getOne(urbaId);

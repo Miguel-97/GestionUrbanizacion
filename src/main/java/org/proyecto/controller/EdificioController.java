@@ -2,10 +2,7 @@ package org.proyecto.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
-
-import org.openqa.selenium.support.ui.Sleeper;
 import org.proyecto.domain.Edificio;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
@@ -14,6 +11,7 @@ import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.helper.rol;
 import org.proyecto.repository.EdificioRepository;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.VecinoRepository;
@@ -37,6 +35,7 @@ public class EdificioController {
 
 	@GetMapping("c")
 	public String crearGet(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		m.put("view", "/edificio/c");
 		return "/_t/frame";
@@ -133,7 +132,8 @@ public class EdificioController {
 	}
 
 	@GetMapping("r")
-	public String r(ModelMap m) {
+	public String r(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		List<Edificio> edificios = repoEdificio.findAll();
 		m.put("edificios", edificios);
 		m.put("view", "/edificio/r");
@@ -141,7 +141,8 @@ public class EdificioController {
 	}
 
 	@PostMapping("d")
-	public String d(@RequestParam("idE") Long idE) throws DangerException {
+	public String d(@RequestParam("idE") Long idE, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		String portalEdificio = "";
 		try {
 			Edificio edificio = repoEdificio.getOne(idE);

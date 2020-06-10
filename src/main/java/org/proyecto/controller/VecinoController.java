@@ -11,6 +11,7 @@ import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.helper.rol;
 import org.proyecto.repository.EdificioRepository;
 import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.UrbanizacionRepository;
@@ -46,8 +47,8 @@ public class VecinoController {
 	// =========================================
 
 	@GetMapping("r")
-	public String r(ModelMap m) {
-
+	public String r(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		List<Vecino> vecinos = repoVecino.findAll();
 		m.put("vecinos", vecinos);
 		m.put("view", "/vecino/r");
@@ -58,6 +59,7 @@ public class VecinoController {
 	// EDITAR PERFIL USUARIO (USERNAME Y PASSWORD)
 	@GetMapping("u")
 	public String u(@RequestParam("id") String id, ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("auth", s);
 		m.put("vecino", repoVecino.getOne(id));
 		m.put("view", "/vecino/u");
 		return "/_t/frame";
@@ -90,6 +92,7 @@ public class VecinoController {
 	//UPDATE DE TODOS LOS VECINOS DE UN EDIFICIO (PARTE ADMIN)
 	@GetMapping("ul")
 	public String ul(@RequestParam("idE") Long idEdificio, ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		m.put("vecinos", repoVecino.findByViveId(idEdificio));
 		m.put("portal", repoEdificio.getOne(idEdificio).getPortal());
 		m.put("view", "/vecino/ul");
@@ -145,7 +148,8 @@ public class VecinoController {
 	// =========================================
 
 	@PostMapping("d")
-	public String d(@RequestParam("idV") String idV) throws DangerException {
+	public String d(@RequestParam("idV") String idV, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		String idVecino = "";
 		try {
 			Vecino vecino = repoVecino.getOne(idV);
@@ -168,7 +172,8 @@ public class VecinoController {
 	// =========================================
 	//HOME DEL USUARIO
 	@GetMapping("/home")
-	public String homeUsuario(ModelMap m, HttpSession s) {
+	public String homeUsuario(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("auth", s);
 		Vecino vecino = (Vecino) s.getAttribute("vecino");
 		String idVecino[] = vecino.getId().split("_");
 		Urbanizacion urba = repoUrba.getByNombre(idVecino[0]);
@@ -179,13 +184,15 @@ public class VecinoController {
 	}
 	//PERFIL DEL USUARIO
 	@GetMapping("/perfil")
-	public String miPerfil(ModelMap m, HttpSession s) {
+	public String miPerfil(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("auth", s);
 		m.put("view", "/vecino/perfilUsuario");
 		return "/_t/frame";
 	}
 
 	@GetMapping("/estadistica")
-	public String estadistica(ModelMap m, HttpSession s) {
+	public String estadistica(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("auth", s);
 		Vecino vecino = (Vecino) s.getAttribute("vecino");
 		// Reservas realizadas
 		List<Reserva> resVecino = repoReserva.findByHace(vecino);
@@ -205,8 +212,8 @@ public class VecinoController {
 		
 		List<ZonaComun> zonas = new ArrayList<ZonaComun>();	
 		List<Reserva> resZona = new ArrayList<>();
-		List<String> zonaMin = new ArrayList<String>();
-		int numResZ = 0;
+		//List<String> zonaMin = new ArrayList<String>();
+		//int numResZ = 0;
 		for (Reserva res : resVecino) {
 			zonas.add(res.getTiene());
 			resZona.addAll(repoReserva.findByTiene(res.getTiene()));

@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
-
 import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
@@ -53,18 +51,10 @@ public class ReservaController {
 	@GetMapping("c")
 	public String c(@RequestParam("zonaId") Long zonaId, @RequestParam("vecinoId") String vecinoId, ModelMap m,
 			HttpSession s) throws DangerException {
-		/*if (zonaId == null && vecinoId == null) {// Admin
-			rol.isRolOK("admin", s);
-			m.put("zonas", repoZonaComun.findAll());
-			m.put("vecinos", repoVecino.findAll());
-			m.put("view", "/reserva/c");
-		} else {// Usuario
-	}*/
 			rol.isRolOK("auth", s);
 			m.put("zona", repoZonaComun.getOne(zonaId));
 			m.put("vecino", repoVecino.getOne(vecinoId));
 			m.put("view", "/reserva/cU");
-
 			return "/_t/frame";
 	}
 
@@ -84,13 +74,10 @@ public class ReservaController {
 					Franja franja = repoFranja.getByFechaAndHora(date, comienzos[i]);
 					franja.setEstado("reservado");
 					repoFranja.save(franja);
-
 				}
-
 				Reserva reserva = new Reserva(fecha, inicios.substring(0, inicios.length() - 1), comienzos.length * 30);
 
 				if (vecinoId != null && zonaId != null) {
-
 					Vecino vecino = repoVecino.getOne(vecinoId);
 					ZonaComun zona = repoZonaComun.getOne(zonaId);
 
@@ -166,7 +153,9 @@ public class ReservaController {
 	}
 
 	@PostMapping("d")
-	public String d(@RequestParam("idR") Long idR) throws DangerException {
+	public String d(@RequestParam("idR") Long idR, HttpSession s) throws DangerException {
+		rol.isRolOK("auth", s);
+
 		try {
 			Reserva reserva = repoReserva.getOne(idR);
 			String [] inicios = reserva.getInicio().split(",");

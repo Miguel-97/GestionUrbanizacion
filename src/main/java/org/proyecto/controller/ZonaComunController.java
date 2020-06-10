@@ -3,6 +3,9 @@ package org.proyecto.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.proyecto.domain.Franja;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
@@ -10,6 +13,7 @@ import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
+import org.proyecto.helper.rol;
 import org.proyecto.repository.FranjaRepository;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.ZonaComunRepository;
@@ -37,7 +41,8 @@ public class ZonaComunController {
 	// =========================================
 
 	@GetMapping("c")
-	public String c(ModelMap m) {
+	public String c(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		m.put("view", "/zonaComun/c");
 		return "/_t/frame";
@@ -84,7 +89,8 @@ public class ZonaComunController {
 	// =========================================
 
 	@GetMapping("r")
-	public String r(ModelMap m) {
+	public String r(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		List<ZonaComun> zonasComunes = repoZonaComun.findAll();
 		m.put("zonasComunes", zonasComunes);
 		m.put("view", "/zonaComun/r");
@@ -94,7 +100,8 @@ public class ZonaComunController {
 	// =========================================
 
 	@GetMapping("u")
-	public String u(ModelMap m, @RequestParam("zonaComunId") Long zonaComunId) {
+	public String u(ModelMap m, @RequestParam("zonaComunId") Long zonaComunId, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		m.put("zonaComun", repoZonaComun.getOne(zonaComunId));
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		m.put("view", "/zonaComun/u");
@@ -135,7 +142,8 @@ public class ZonaComunController {
 	// =========================================
 
 	@PostMapping("d")
-	public String dPost(@RequestParam("zonaComunId") Long zonaComunId) throws DangerException {
+	public String dPost(@RequestParam("zonaComunId") Long zonaComunId, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
 		String nombreZona = "----";
 		try {
 			ZonaComun zona = repoZonaComun.getOne(zonaComunId);

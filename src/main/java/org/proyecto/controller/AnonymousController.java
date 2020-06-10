@@ -76,7 +76,7 @@ public class AnonymousController {
 
 	@GetMapping("/init")
 	public String initGet(ModelMap m, HttpSession s) throws DangerException {
-
+		rol.isRolOK("anon", s);
 		if (repoVecino.getByUsername("administrador") != null) {
 			PRG.error("BD no vacía");
 		}
@@ -118,7 +118,6 @@ public class AnonymousController {
 				vecino.setEstado("activo");
 				s.setAttribute("vecino", vecino);
 				view = "/homeAdmin";
-
 			} else {
 				BCryptPasswordEncoder bpe = new BCryptPasswordEncoder();
 				if (vecino.getEstado().equals("pendiente")) {
@@ -148,7 +147,6 @@ public class AnonymousController {
 			PRG.error("Email o contraseña incorrecta", "/login");
 			view = "/info";
 		}
-
 		return "redirect:" + view;
 	}
 
