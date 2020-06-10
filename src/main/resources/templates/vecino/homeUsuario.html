@@ -1,129 +1,31 @@
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="container-contact100">
+	<div class="wrap-contact100">
+		<span class="contact100-form-titleHome"> Bienvenido a UrbaZone
+			<img id="logo" href="img/LogoPaginaNegroSinsombra.png" width="15%"
+			height="25%">
 
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<!--===============================================================================================-->
-
-<link rel="icon" type="image/png" href="/img/LogoPagina.png" />
-<link rel="stylesheet" type="text/css"	href="/vendor/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css"	href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css"	href="/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
-<link rel="stylesheet" type="text/css"	href="/vendor/animate/animate.css">
-<link rel="stylesheet" type="text/css" href="/css/util.css">
-<link rel="stylesheet" type="text/css" href="/css/main.css">
-
-<!--===============================================================================================-->
-	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
-	<script src="/vendor/animsition/js/animsition.min.js"></script>
-	<script src="/vendor/bootstrap/js/popper.js"></script>
-	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
-	
-	<script src="/js/main.js"></script>
-<!--===============================================================================================-->
-<script src="/vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-		$(".js-select2").each(function(){
-			$(this).on('select2:open', function (e){
-				$(this).parent().next().addClass('eff-focus-selection');
-			});
-		});
-		$(".js-select2").each(function(){
-			$(this).on('select2:close', function (e){
-				$(this).parent().next().removeClass('eff-focus-selection');
-			});
-		});
-
-	</script>
-
-<!--
-<script src="/js/jquery-3.2.1.slim.min.js"></script>
-<script src="/js/popper.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-
--->
-<title>UrbaZone</title>
+		</span>
 
 
-
-</head>
-
-
-<nav id="nav">
-	<div class="container-contact100">
-		<img id="logoHomeUsu" src="/img/LogoPaginaHome.png" width="8%" height="15%" /> 
-		<ul class="navbar-nav">
-			<form  id="" data-toggle="dropdown" action="/vecino/perfil" method="get">
-				<input type="hidden" name="id" th:value="${session.vecino.id}">
-				<button onclick="submit()" class="dropdown-item">Mi Perfil</button>
-			</form>
-		</ul>
-		<ul class="navbar-nav">
-			<form  id="" data-toggle="dropdown" action="" method="get">
-				<input type="hidden" name="id" th:value="${session.vecino.id}">
-				<button onclick="submit()" class="dropdown-item">Mis Reservas</button>
-			</form>
-		</ul>
-		
-		
-		
-
-		
-	
-	<div th:if="${session.vecino != null}" class="navbar-nav">
-		<span  id="aNav2" th:text="${session.vecino.username}" class="inputNav"></span>
-		
-	
-	<a id="" href="/logout">Logout</a>
-		
-	</div>
-	
-	
-		
-		
-		
-	<div th:if="${session.vecino == null}">
-	
-		
-		<a id="" href="/login">Login</a>
-			
-		
-		<a id="" href="/registro">Registro</a>		
-		
-		</div>
-		
-	
-	
-	</div>
-		
-	
-	
-</nav>
-
-
-
-
-
-
-&nbsp;&nbsp;
-		
- <span class="contact100-form-title"> Reserve aquí la Zona Común que desee. </span>
-		
-&nbsp;&nbsp;
 
 		<div class="container-contact100-form-btn">
-			<span th:each="zona:${zonas}">	
+			<form action="/vecino/perfil" method="get">
+				<input type="hidden" name="id" th:value="${session.vecino.id}">
+				<button onclick="submit()" class="btn btn-dark">Mi Perfil</button>
+			</form>
+		</div>
+
+
+		<div class="container-contact100-form-btn">
+			<button class="">Mis reservas</button>
+		</div>
+
+		<div class="container-contact100-form-btn">
+			<span th:each="zona:${zonas}">			
 			<form action="/reserva/c" method="get">
 				<input type="hidden" name="zonaId" th:value="${zona.id}">
 				<input type="hidden" name="vecinoId" th:value="${session.vecino.id}">			
-					 &nbsp;&nbsp;<button onclick="submit()" class="contact100-form-btnHome" th:text="${zona.nombre}"></button>
+				<button onclick="submit()" class="btn btn-dark" th:text="${zona.nombre}"></button>
 			</form>
 			</span>
 			
@@ -133,89 +35,6 @@
 
 
 
-	
-
-
-<footer class="site-footer">
-<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-		$(".js-select2").each(function(){
-			$(this).on('select2:open', function (e){
-				$(this).parent().next().addClass('eff-focus-selection');
-			});
-		});
-		$(".js-select2").each(function(){
-			$(this).on('select2:close', function (e){
-				$(this).parent().next().removeClass('eff-focus-selection');
-			});
-		});
-	
-
-	</script>
-	
-
-    
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-6">
-            <h6>About</h6>
-            <p class="text-justify"><i></i> </p>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-             <h6>Categories</h6> 
-            <ul class="footer-links">
-<!--               <li><a href="http://scanfcode.com/category/c-language/">C</a></li> -->
-              
-            </ul>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-<!--             <h6>Quick Links</h6> -->
-            <ul class="footer-links">
-<!--               <li><a href="http://scanfcode.com/about/">About Us</a></li> -->
-              
-            </ul>
-          </div>
-        </div>
-        <hr>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-sm-6 col-xs-12">
-            <p class="copyright-text">Copyright &copy; Desarrollado por UrbaZone <img
-				id="logo" src="/img/LogoPagina.png" width="5%" height="35%">
-        &nbsp; <a href="/privacidad"><font face="Comic Sans MS,arial,verdana" size="1" color="teal">Políticas de privacidad y </font></a><a href="/cookies"><font face="Comic Sans MS,arial,verdana" size="1" color="teal">Políticas de cookies</font></a>
-            </p>
-          </div>
-
-        <div id="social" class="contact100-form-social flex-c-m">
-					<a href="#" class="contact100-form-social-item flex-c-m bg1 m-r-5">
-						<i class="fa fa-facebook-f" aria-hidden="true"></i>
-					</a>
-
-					<a href="#" class="contact100-form-social-item flex-c-m bg2 m-r-5">
-						<i class="fa fa-twitter" aria-hidden="true"></i>
-					</a>
-
-					<a href="#" class="contact100-form-social-item flex-c-m bg3">
-						<i class="fa fa-youtube-play" aria-hidden="true"></i>
-					</a>
-				</div>
-        </div>
-      </div>
-</footer>
-	
-
-<!-- 		<strong></strong><p class="copyright"><strong>� 2020 Desarrollado por UrbaZone. <a href="/privacidad"><font face="Comic Sans MS,arial,verdana" size="1" color="teal">Pol�ticas de privacidad y </font></a><a href="/cookies"><font face="Comic Sans MS,arial,verdana" size="1" color="teal">Pol�ticas de cookies</font></a>. </strong></p> -->
-		
-		
-
+	</div>
+</div>
 

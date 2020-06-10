@@ -25,9 +25,8 @@
 				data-validate="portal requerido">
 				<label class="label-input100" for="nombre">Portal</label> <input
 					id="portal" class="input100" type="text" name="portal">
-					<span class="focus-input100"></span>
 				<div id="errPortal"></div>
-				
+				<span class="focus-input100"></span>
 			</div>
 
 			<div class="wrap-input100 validate-input"
@@ -68,7 +67,7 @@
 			<br> <input type="submit" class="contact100-form-btn" />
 			<div class="container-contact100-form-btn">
 				<button class="contact100-form-btn">
-					<a href="/homeAdmin" class="contact100-form-btn">Volver</a>
+					<a href="/" class="contact100-form-btn">Volver</a>
 				</button>
 
 			</div>
@@ -91,24 +90,3 @@
 		}
 	}
 </script>
-
-<script src="/vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-		$(".js-select2").each(function(){
-			$(this).on('select2:open', function (e){
-				$(this).parent().next().addClass('eff-focus-selection');
-			});
-		});
-		$(".js-select2").each(function(){
-			$(this).on('select2:close', function (e){
-				$(this).parent().next().removeClass('eff-focus-selection');
-			});
-		});
-
-	</script>

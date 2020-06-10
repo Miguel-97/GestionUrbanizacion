@@ -175,7 +175,7 @@ public class VecinoController {
 		m.put("zonas", repoZona.findByCorresponde(urba));
 		m.put("view", "/vecino/homeUsuario");
 
-		return "/vecino/homeUsuario";
+		return "/_t/frame";
 	}
 
 	@GetMapping("/perfil")
