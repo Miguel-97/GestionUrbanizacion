@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.proyecto.domain.Edificio;
+import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Vecino;
 import org.proyecto.exception.DangerException;
 import org.proyecto.helper.PRG;
 import org.proyecto.helper.helper;
 import org.proyecto.helper.rol;
 import org.proyecto.repository.EdificioRepository;
+import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.UrbanizacionRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class AnonymousController {
 
 	@Autowired
 	UrbanizacionRepository repoUrbanizacion;
+	
+	@Autowired
+	ReservaRepository repoReserva;
 
 	// =========================================
 
@@ -50,7 +55,27 @@ public class AnonymousController {
 		m.put("view", "/anonymous/homeAdmin");
 		return "/_t/frame";
 	}
+	
+	@GetMapping("/estadistica")
+	public String estadisticasAdmin(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("administrador", s);
+		// Reservas realizadas
+		List<Reserva> reservasT = repoReserva.findAll();
+		m.put("nReservas", reservasT.size());
 
+		// Minutos reservados totales
+		int tResTot = 0;
+		for (Reserva res : reservasT) {
+			tResTot += (res.gettReserva());
+		}
+		m.put("tResTot", tResTot);
+		// Franjas reservadas totales
+		m.put("fResTot", tResTot / 30);
+		
+		m.put("reservas", reservasT);
+		m.put("view", "/anonymous/estadistica");
+		return "/_t/frame";
+	}
 	// =========================================
 
 	@GetMapping("/info")

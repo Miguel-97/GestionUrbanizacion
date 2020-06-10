@@ -1,22 +1,19 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
-		<br /> <br /> <span class="contact100-form-title"> Estadísticas Generales </span> <br /> <br /> &nbsp;<a href="/homeAdmin"><button
+		<br /> <br /> <span class="contact100-form-title"> Mis estadisticas </span> <br /> <br /> &nbsp;<a href="/vecino/home"><button
 				class="contact100-form-btn">Volver</button></a> <br /> <br />
 		<table class="table table-lm table-striped ">
 
 			<tr>
-				<th>Nombre de usuario</th>
 				<th>Reservas realizadas</th>
 				<th>Minutos reservados totales</th>
 				<th>Franjas reservadas totales</th>				
 			</tr>
 
 			<tr>
-				<td th:text="${session.vecino.username}"></td>
 				<td th:text="${nReservas}"></td>
 				<td th:text="${tResTot}"></td>
 				<td th:text="${fResTot}"></td>
-				
 			</tr>
 
 		</table>
