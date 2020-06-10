@@ -1,55 +1,9 @@
 <nav id="nav">
 	<div class="container-contact100">
 		&nbsp;&nbsp;<a class="navbar-brand" href="/"><img
-			src="/img/LogoPaginaHome.png" width="15%" height="25%" /></a> &nbsp;&nbsp;
-		<ul class="navbar-nav">
-			<li class=""><a id="aNAV" class="" data-toggle="dropdown"
-				href="#">Urbanización</a>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="/urbanizacion/c">Crear</a>
-					<a class="dropdown-item" href="/urbanizacion/r">Listar</a>
-				</div></li>
-		</ul>
-
-		&nbsp;&nbsp;
-		<ul class="navbar-nav">
-			<li class="nav-item dropdown"><a id="aNAV" class=""
-				data-toggle="dropdown" href="#">Edificios</a>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="/edificio/c">Crear</a> 
-					<a class="dropdown-item" href="/edificio/r">Listar</a>
-				</div></li>
-		</ul>
-
-		&nbsp;&nbsp;
-		<ul class="navbar-nav">
-			<li class="nav-item dropdown"><a id="aNAV" class=""
-				data-toggle="dropdown" href="#">Vecinos</a>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="/vecino/r">Listar</a>
-				</div></li>
-		</ul>
-
-		&nbsp;&nbsp;
-		<ul class="navbar-nav">
-			<li class="nav-item dropdown"><a id="aNAV" class=""
-				data-toggle="dropdown" href="#">Zona Común</a>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="/zonaComun/c">Crear</a> 
-					<a class="dropdown-item" href="/zonaComun/r">Listar</a>
-				</div></li>
-		</ul>
-		&nbsp;&nbsp;
-		<ul class="navbar-nav">
-			<li class="nav-item dropdown"><a id="aNAV" class=""
-				data-toggle="dropdown" href="#">Reserva</a>
-				<div class="dropdown-menu">
-					<a class="dropdown-item" href="/reserva/c">Crear</a>
-					<a class="dropdown-item" href="/reserva/r">Listar</a>
-				</div></li>
-		</ul>
+			src="/img/LogoPaginaHome.png" width="10%" height="25%" /></a> 
 		
-		&nbsp;&nbsp;
+		
 		
 	
 	<div th:if="${session.vecino != null}" class="navbar-nav">
@@ -68,7 +22,10 @@
 	
 		
 		<a id="aNav3" href="/login">Login</a>
-			
+		
+		</div>
+		
+		<div>
 		
 		<a id="aNav2" href="/registro">Registro</a>		
 		
@@ -81,3 +38,110 @@
 	
 	
 </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <nav id="nav"> -->
+<!-- 	<div class="container-contact100"> -->
+<!-- 		&nbsp;&nbsp;<a class="navbar-brand" href="/"><img -->
+<!-- 			src="/img/LogoPaginaHome.png" width="15%" height="25%" /></a> &nbsp;&nbsp; -->
+<!-- 		<ul class="navbar-nav"> -->
+<!-- 			<li class=""><a id="aNAV" class="" data-toggle="dropdown" -->
+<!-- 				href="#">Urbanización</a> -->
+<!-- 				<div class="dropdown-menu"> -->
+<!-- 					<a class="dropdown-item" href="/urbanizacion/c">Crear</a> -->
+<!-- 					<a class="dropdown-item" href="/urbanizacion/r">Listar</a> -->
+<!-- 				</div></li> -->
+<!-- 		</ul> -->
+
+<!-- 		&nbsp;&nbsp; -->
+<!-- 		<ul class="navbar-nav"> -->
+<!-- 			<li class="nav-item dropdown"><a id="aNAV" class="" -->
+<!-- 				data-toggle="dropdown" href="#">Edificios</a> -->
+<!-- 				<div class="dropdown-menu"> -->
+<!-- 					<a class="dropdown-item" href="/edificio/c">Crear</a>  -->
+<!-- 					<a class="dropdown-item" href="/edificio/r">Listar</a> -->
+<!-- 				</div></li> -->
+<!-- 		</ul> -->
+
+<!-- 		&nbsp;&nbsp; -->
+<!-- 		<ul class="navbar-nav"> -->
+<!-- 			<li class="nav-item dropdown"><a id="aNAV" class="" -->
+<!-- 				data-toggle="dropdown" href="#">Vecinos</a> -->
+<!-- 				<div class="dropdown-menu"> -->
+<!-- 					<a class="dropdown-item" href="/vecino/r">Listar</a> -->
+<!-- 				</div></li> -->
+<!-- 		</ul> -->
+
+<!-- 		&nbsp;&nbsp; -->
+<!-- 		<ul class="navbar-nav"> -->
+<!-- 			<li class="nav-item dropdown"><a id="aNAV" class="" -->
+<!-- 				data-toggle="dropdown" href="#">Zona Común</a> -->
+<!-- 				<div class="dropdown-menu"> -->
+<!-- 					<a class="dropdown-item" href="/zonaComun/c">Crear</a>  -->
+<!-- 					<a class="dropdown-item" href="/zonaComun/r">Listar</a> -->
+<!-- 				</div></li> -->
+<!-- 		</ul> -->
+<!-- 		&nbsp;&nbsp; -->
+<!-- 		<ul class="navbar-nav"> -->
+<!-- 			<li class="nav-item dropdown"><a id="aNAV" class="" -->
+<!-- 				data-toggle="dropdown" href="#">Reserva</a> -->
+<!-- 				<div class="dropdown-menu"> -->
+<!-- 					<a class="dropdown-item" href="/reserva/c">Crear</a> -->
+<!-- 					<a class="dropdown-item" href="/reserva/r">Listar</a> -->
+<!-- 				</div></li> -->
+<!-- 		</ul> -->
+		
+<!-- 		&nbsp;&nbsp; -->
+		
+	
+<!-- 	<div th:if="${session.vecino != null}" class="navbar-nav"> -->
+<!-- 		<span  id="aNav2" th:text="${session.vecino.username}" class="inputNav"></span> -->
+		
+	
+<!-- 	<a id="aNav1" href="/logout">Logout</a> -->
+		
+<!-- 	</div> -->
+	
+	
+<!-- 		&nbsp;&nbsp; -->
+		
+		
+<!-- 	<div th:if="${session.vecino == null}"> -->
+	
+		
+<!-- 		<a id="aNav3" href="/login">Login</a> -->
+			
+		
+<!-- 		<a id="aNav2" href="/registro">Registro</a>		 -->
+		
+<!-- 		</div> -->
+		
+	
+	
+	
+		
+	
+	
+<!-- </nav> -->
