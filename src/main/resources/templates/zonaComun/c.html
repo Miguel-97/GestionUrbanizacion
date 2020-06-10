@@ -12,16 +12,18 @@
 				data-validate="Nombre requerido">
 				<label class="label-input100" for="id-nombre">Nombre</label> <input
 					id="id-nombre" class="input100" type="text" name="nombre">
+					<span class="focus-input100"></span>
 				<div id="errNombre"></div>
-				<span class="focus-input100"></span>
+				
 			</div>
 
 			<div class="wrap-input100 validate-input"
 				data-validate="Horario requerido">
 				<label class="label-input100" for="id-horario">Horario</label> <input
 					id="id-horario" class="input100" type="text" name="horario">
+					<span class="focus-input100"></span>
 				<div id="errHorario"></div>
-				<span class="focus-input100"></span>
+				
 			</div>
 
 			<div class="wrap-input100 validate-input"
@@ -53,7 +55,7 @@
 
 			<div class="container-contact100-form-btn">
 				<button class="contact100-form-btn">
-					<a href="/" class="contact100-form-btn">Volver</a>
+					<a href="/homeAdmin" class="contact100-form-btn">Volver</a>
 				</button>
 			</div>
 
@@ -95,3 +97,24 @@
 
 	}
 </script>
+
+<script src="/vendor/select2/select2.min.js"></script>
+	<script>
+		$(".js-select2").each(function(){
+			$(this).select2({
+				minimumResultsForSearch: 20,
+				dropdownParent: $(this).next('.dropDownSelect2')
+			});
+		})
+		$(".js-select2").each(function(){
+			$(this).on('select2:open', function (e){
+				$(this).parent().next().addClass('eff-focus-selection');
+			});
+		});
+		$(".js-select2").each(function(){
+			$(this).on('select2:close', function (e){
+				$(this).parent().next().removeClass('eff-focus-selection');
+			});
+		});
+
+	</script>
