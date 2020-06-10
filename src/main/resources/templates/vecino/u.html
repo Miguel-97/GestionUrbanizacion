@@ -9,7 +9,7 @@
 
 			<div class="wrap-input100 validate-input">
 				<label class="label-input100" for="id-username">Nombre de usuario</label> <input
-					class="input100" type="text" id="id-username" name="username"
+					class="input100" type="text" id="id-username" name="username" th:value="${session.vecino.username}"
 					autofocus="autofocus">
 				<div id="errUsername"></div>
 				<span class="focus-input100"></span>
@@ -33,36 +33,74 @@
 	</div>
 </div>
 <script>
-	/*function validarNombre() {
-		var expNombre = /[a-z ñáéíóúçü-]{3,30}$/;
 
-		if (!expNombre.test(miForm.nombre.value.toLowerCase())) {
-			document.getElementById("errNombre").innerHTML = "<font color='red'>El nombre no es correcto.</font>";
+	function validarUsername() {
+		var expUsername = /^[a-zA-Z]{1}([a-zA-Z]||[0-9]||[.\-_/$&]){3,30}$/;
+
+		if (!expUsername.test(miForm.username.value.toLowerCase())) {
+			document.getElementById("errUsername").innerHTML = "<font color='red'>El username debe empezar con 1 letra y puede contener números y caracteres especiales.</font>";
 			return false;
 		} else {
-			document.getElementById("errNombre").innerHTML = "";
+			document.getElementById("errUsername").innerHTML = "";
 			return true;
 		}
 	}
 
-	function validarEmail() {
-		var expEmail = /[a-z0-9ñç](\.?[a-z_0-9-ñç]){2,40}@[a-zñç]{2,20}.[a-zñç]{2,5}$/;
+	function validarPassword() {
+		var expPassword = /^[a-zA-Z0-9çÇ]([\$\@\?\-]?[a-zA-Z_0-9-çÇ]){7,30}$/;
 
-		if (!expEmail.test(miForm.email.value.toLowerCase())) {
-			document.getElementById("errEmail").innerHTML = "<font color='red'>El email no es correcto.</font>";
+		if (!expPassword.test(miForm.password.value.toLowerCase())) {
+			document.getElementById("errPwd").innerHTML = "<font color='red'>La contraseña debe tener mínimo 8 caracteres y al menos 1 letra mayúscula, 1 letra minúscula y 1 número.</font>";
 			return false;
 		} else {
-			document.getElementById("errEmail").innerHTML = "";
+			document.getElementById("errPwd").innerHTML = "";
 			return true;
 		}
+	}
+	
+	function criteriosPwd(pwd) {
+		var pwd = miForm.password.value;
+		var permitidosNumeros = "1234567890";
+		var permitidosLetrasMin = "abcdefghijklmnñopqrstuvwxyz";
+		var permitidosLetrasMay = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+		var criterio1 = false;
+		var criterio2 = false;
+		var criterio3 = false;
+		console.log(pwd);
+		//COMPRUEBA QUE LA CONTRASEÑA CONTIENE ALGÚN NÚMERO
+		for(var i = 0; i < pwd.length; i++) {
+			if(permitidosNumeros.indexOf(pwd.charAt(i)) >= 0) {
+				criterio1 = true;
+			}
+		}
+		//COMPRUEBA QUE LA CONTRASEÑA CONTIENE ALGUNA LETRA MINÚSCULA
+		for(var i = 0; i<pwd.length; i++) {
+			if(permitidosLetrasMin.indexOf(pwd.charAt(i)) >= 0) {
+				criterio2 = true;
+			}
+		}
+		//COMPRUEBA QUE LA CONTRASEÑA CONTIENE ALGUNA LETRA MAYÚSCULA
+		for(var i = 0; i<pwd.length; i++) {
+			if(permitidosLetrasMay.indexOf(pwd.charAt(i)) >= 0) {
+				criterio3 = true;
+			}
+		}
+		
+		if((criterio1==true)  && (criterio2==true) && (criterio3==true)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
 	}
 
 	function validacion() {
-		if (validarNombre() && validarEmail()) {
+		if (validarUsername() && validarPassword() && criteriosPwd()) {
 			return true;
 		} else {
 			return false;
 		}
-	}*/
+	}
 	
 </script>

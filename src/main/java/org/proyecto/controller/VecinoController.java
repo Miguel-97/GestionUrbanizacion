@@ -6,7 +6,6 @@ import javax.servlet.http.HttpSession;
 import org.proyecto.domain.Reserva;
 import org.proyecto.domain.Urbanizacion;
 import org.proyecto.domain.Vecino;
-import org.proyecto.domain.ZonaComun;
 import org.proyecto.exception.DangerException;
 import org.proyecto.exception.InfoException;
 import org.proyecto.helper.PRG;
@@ -52,7 +51,7 @@ public class VecinoController {
 	}
 
 	// =========================================
-	// EDITAR PERFIL USUARIO
+	// EDITAR PERFIL USUARIO (USERNAME Y PASSWORD)
 	@GetMapping("u")
 	public String u(@RequestParam("id") String id, ModelMap m, HttpSession s) throws DangerException {
 		m.put("vecino", repoVecino.getOne(id));
@@ -79,12 +78,12 @@ public class VecinoController {
 				repoVecino.save(v);
 				s.setAttribute("vecino", v);
 			} catch (Exception e) {
-				PRG.error("Vecino no actualizado", "/vecino/home");
+				PRG.error("Perfil no actualizado", "/vecino/home");
 			}
 		}
-		PRG.info("Vecino actualizado correctamente", "/vecino/home");
+		PRG.info("Perfil actualizado correctamente", "/vecino/home");
 	}
-
+	//UPDATE DE TODOS LOS VECINOS DE UN EDIFICIO (PARTE ADMIN)
 	@GetMapping("ul")
 	public String ul(@RequestParam("idE") Long idEdificio, ModelMap m, HttpSession s) throws DangerException {
 		m.put("vecinos", repoVecino.findByViveId(idEdificio));
@@ -163,7 +162,7 @@ public class VecinoController {
 	}
 
 	// =========================================
-
+	//HOME DEL USUARIO
 	@GetMapping("/home")
 	public String homeUsuario(ModelMap m, HttpSession s) {
 		Vecino vecino = (Vecino) s.getAttribute("vecino");
@@ -174,7 +173,7 @@ public class VecinoController {
 
 		return "/_t/frame";
 	}
-
+	//PERFIL DEL USUARIO
 	@GetMapping("/perfil")
 	public String miPerfil(ModelMap m, HttpSession s) {
 		m.put("view", "/vecino/perfilUsuario");
