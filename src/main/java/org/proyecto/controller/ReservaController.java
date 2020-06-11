@@ -90,7 +90,8 @@ public class ReservaController {
 				repoReserva.save(reserva);
 
 			} catch (Exception e) {
-				PRG.error("Reserva no realizada ", "/vecino/home");
+				//PRG.error("Reserva no realizada ", "/vecino/home");
+				PRG.error(e.getMessage(), "/vecino/home");
 		
 			}
 			PRG.info("Reserva realizada correctamente", "/vecino/home");
