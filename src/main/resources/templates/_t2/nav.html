@@ -3,15 +3,15 @@
 		<a href="/vecino/home"> <img src="/img/LogoPaginaHome.png" width="8%" height="15%" /> </a>
 		
 			
-				<input type="hidden" name="id" th:value="${session.vecino.id}">
+				
 				<a href="/vecino/perfil"> Mi Perfil </a>
 			
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		
-			<form data-toggle="dropdown" action="/reserva/rU" method="get">
+			
 				<input type="hidden" name="vecinoId" th:value="${session.vecino.id}">
-				<a href="/reserva/rU"> <button onclick="submit()" class="dropdown-item">Mis Reservas</button>  </a>
-			</form>
+				<a href="/reserva/rU">Mis Reservas  </a>
+			
 		
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;

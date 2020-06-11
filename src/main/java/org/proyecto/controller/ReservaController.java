@@ -141,8 +141,8 @@ public class ReservaController {
 			return "/_t/frame";
 	}
 	@GetMapping("rU")
-	public String rU(@RequestParam("vecinoId") String vecinoId, ModelMap m,
-			HttpSession s) throws DangerException {
+	public String rU (ModelMap m,  
+			HttpSession s) throws  DangerException {
 			rol.isRolOK("auth", s);
 			Vecino v = (Vecino) s.getAttribute("vecino");
 			List<Reserva> reservas = repoReserva.findByHace(v);
