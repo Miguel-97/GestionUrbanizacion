@@ -44,10 +44,9 @@
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
-
-#logoHomeUsu {
+#logousu{
 	
-	align: -300%;
+	margin-left: 10px;
 }
 
 #vecino{

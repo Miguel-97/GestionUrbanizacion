@@ -55,7 +55,7 @@ public class ReservaController {
 			m.put("zona", repoZonaComun.getOne(zonaId));
 			m.put("vecino", repoVecino.getOne(vecinoId));
 			m.put("view", "/reserva/cU");
-			return "/_t/frame";
+			return "/_t2/frame";
 	}
 
 	@PostMapping("c")
@@ -149,7 +149,7 @@ public class ReservaController {
 			m.put("vecino", v);
 			m.put("reservas", reservas);
 			m.put("view", "/reserva/rU");
-			return "/_t/frame";
+			return "/_t2/frame";
 	}
 
 	@PostMapping("d")

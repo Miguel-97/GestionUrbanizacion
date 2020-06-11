@@ -62,7 +62,7 @@ public class VecinoController {
 		rol.isRolOK("auth", s);
 		m.put("vecino", repoVecino.getOne(id));
 		m.put("view", "/vecino/u");
-		return "/_t/frame";
+		return "/_t2/frame";
 	}
 
 	@PostMapping("u")
@@ -180,14 +180,14 @@ public class VecinoController {
 		m.put("zonas", repoZona.findByCorresponde(urba));
 		m.put("view", "/vecino/homeUsuario");
 
-		return "/vecino/homeUsuario";
+		return "/_t2/frame";
 	}
 	//PERFIL DEL USUARIO
 	@GetMapping("/perfil")
 	public String miPerfil(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("auth", s);
 		m.put("view", "/vecino/perfilUsuario");
-		return "/_t/frame";
+		return "/_t2/frame";
 	}
 
 	@GetMapping("/estadistica")
@@ -229,7 +229,7 @@ public class VecinoController {
 
 		m.put("reservas", resVecino);
 		m.put("view", "/vecino/estadistica");
-		return "/_t/frame";
+		return "/_t2/frame";
 	}
 
 }
