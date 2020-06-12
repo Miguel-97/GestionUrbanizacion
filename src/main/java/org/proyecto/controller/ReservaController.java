@@ -21,7 +21,6 @@ import org.proyecto.repository.ReservaRepository;
 import org.proyecto.repository.VecinoRepository;
 import org.proyecto.repository.ZonaComunRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -105,31 +104,23 @@ public class ReservaController {
 
 	@RequestMapping(path = "/getFranjas", produces = { "application/json" })
 	public @ResponseBody List<String> franjasFecha(@RequestParam("datos") String datos) {
-
 		String[] dato = datos.split("Y");
 		String fecha = dato[1];
 		List<String> fs = new ArrayList<String>();
 		List<Franja> franjas = new ArrayList<Franja>();
-
 		try {
-
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			String dateInString = fecha;
-
 			Date date = formatter.parse(dateInString);
 			franjas = repoFranja.findByZonaAndFechaAndEstado(repoZonaComun.getOne(Long.parseLong(dato[0])), date,
 					"libre");
-
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
 		for (Franja franja : franjas) {
 			fs.add(franja.getHora());
 		}
-
 		return fs;
-
 	}
 	// =========================================
 
@@ -156,13 +147,11 @@ public class ReservaController {
 	@PostMapping("d")
 	public String d(@RequestParam("idR") Long idR, HttpSession s) throws DangerException {
 		rol.isRolOK("auth", s);
-
 		try {
 			Reserva reserva = repoReserva.getOne(idR);
 			String[] inicios = reserva.getInicio().split(",");
-
 			for (String inicio : inicios) {
-				Franja f = repoFranja.getByFechaAndHora(reserva.getFecha(), inicio);
+				Franja f = repoFranja.getByZonaAndFechaAndHora(reserva.getTiene(), reserva.getFecha(), inicio);
 				f.setEstado("libre");
 			}
 			// ==========historico========== Guarda la reserva seleccionada
@@ -174,7 +163,6 @@ public class ReservaController {
 		}
 		return "redirect:/vecino/home";
 	}
-
 	// @Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
 	@PostMapping("auto")
 	public String funcionAuto2350(ModelMap m, HttpSession s) throws DangerException {
@@ -187,14 +175,11 @@ public class ReservaController {
 			cal.set(anio, mes, dia, 0, 0, 0);
 			// =================Reservas pendientes-->completadas=====================
 			List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(cal.getTime(), "pendiente");
-
 			for (Reserva reserva : reservasPend) {
 				reserva.setEstado("completada");
 				repoReserva.save(reserva);
 			}
-
 			// =================Añadir Franjas dia pasadas 2 semanas=====================
-
 			List<ZonaComun> zonas = repoZonaComun.findAll();
 			for (ZonaComun z : zonas) {
 				List<Franja> franjas2Sem = helper.addFranja2sem(z);
@@ -208,20 +193,15 @@ public class ReservaController {
 			for (ZonaComun z : zonas) {
 				List<Franja> franjasZonaHoy = repoFranja.findByZonaAndFechaAndEstado(z, cal.getTime(), "libre");
 				for (Franja f : franjasZonaHoy) {
-				
+
 					z.getFranjas();
 					System.out.println(f.getFecha());
-				//	repoFranja.delete(f);
-					}
-			
+					// repoFranja.delete(f);
+				}
 			}
-
-
 		} catch (Exception e) {
 			PRG.error("Error accion automatica " + e.getMessage(), "/homeAdmin");
 		}
-
 		return "redirect:/homeAdmin";
-
 	}
 }

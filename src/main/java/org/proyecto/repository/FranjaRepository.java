@@ -13,12 +13,13 @@ public interface FranjaRepository extends JpaRepository<Franja, Long> {
 	public List<Franja> findByFecha(Date fecha);
 
 	public List<Franja> findByEstado(String estado);
-	
-	public Franja getByFechaAndHora(Date fecha,String hora);
+
+	public Franja getByFechaAndHora(Date fecha, String hora);
 
 	public List<Franja> findByFechaAndEstado(Date fecha, String estado);
 
 	public List<Franja> findByZonaAndFechaAndEstado(ZonaComun zona, Date fecha, String estado);
+
 	public Franja getByZonaAndFechaAndHora(ZonaComun zona, Date fecha, String hora);
 
 }
