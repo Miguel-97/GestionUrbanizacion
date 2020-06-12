@@ -52,7 +52,7 @@ public class VecinoController {
 		List<Vecino> vecinos = repoVecino.findAll();
 		m.put("vecinos", vecinos);
 		m.put("view", "/vecino/r");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	// =========================================

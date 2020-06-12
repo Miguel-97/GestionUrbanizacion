@@ -45,7 +45,7 @@ public class ZonaComunController {
 		rol.isRolOK("administrador", s);
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		m.put("view", "/zonaComun/c");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	@PostMapping("c")
@@ -94,7 +94,7 @@ public class ZonaComunController {
 		List<ZonaComun> zonasComunes = repoZonaComun.findAll();
 		m.put("zonasComunes", zonasComunes);
 		m.put("view", "/zonaComun/r");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	// =========================================
