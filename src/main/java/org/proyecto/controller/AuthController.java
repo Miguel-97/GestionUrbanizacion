@@ -13,7 +13,6 @@ public class AuthController {
 
 		@GetMapping("/logout")
 		public String logout(HttpSession s) throws DangerException {
-			rol.isRolOK("auth", s);
 			s.invalidate();
 			return "redirect:/login";
 		}

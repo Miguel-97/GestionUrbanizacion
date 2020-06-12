@@ -13,8 +13,11 @@
 			<span th:each="zona:${zonas}">	
 			<form action="/reserva/c" method="get">
 				<input type="hidden" name="zonaId" th:value="${zona.id}">
-				<input type="hidden" name="vecinoId" th:value="${session.vecino.id}">			
-					 &nbsp;&nbsp;<button onclick="submit()" class="contact100-form-btnHome" th:text="${zona.nombre}"></button>
+				<input type="hidden" name="vecinoId" th:value="${session.vecino.id}">
+					 &nbsp;&nbsp;<button onclick="submit()" class="contact100-form-btnHome">
+					 <span th:text="${zona.nombre}" id="textZonaImg"></span><br/><br/>
+					 <img th:src="@{/img/zonas/}+${zona.nombre}+.png" width="70%" height="60%">	
+					 </button>
 			</form>
 			</span>
 			
