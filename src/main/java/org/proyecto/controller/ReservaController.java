@@ -71,7 +71,7 @@ public class ReservaController {
 				String inicios = "";
 				for (int i = 0; i < comienzos.length; i++) {
 					inicios += comienzos[i] + ",";
-					Franja franja = repoFranja.getByFechaAndHora(date, comienzos[i]);
+					Franja franja = repoFranja.getByZonaAndFechaAndHora(repoZonaComun.getOne(zonaId),date, comienzos[i]);
 					franja.setEstado("reservado");
 					repoFranja.save(franja);
 				}
