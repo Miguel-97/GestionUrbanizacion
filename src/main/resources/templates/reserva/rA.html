@@ -4,8 +4,9 @@
 <div class="container-contact100">
 	<div class="wrap-contact100">
 		<br /> <br /> <span class="contact100-form-title"> Listado de
-			Reservas </span> <br /> <br /> <br /> &nbsp;
-			<a href="/homeAdmin"> <button class="contact100-form-btn">Volver</button></a> <br /> <br />
+			Reservas </span> <br /> <br /> <br /> &nbsp; <a href="/homeAdmin">
+			<button class="contact100-form-btn">Volver</button>
+		</a> <br /> <br />
 
 		<table class="table table-striped">
 			<tr>
@@ -14,6 +15,7 @@
 				<th>Fecha</th>
 				<th>Inicios</th>
 				<th>Tiempo</th>
+				<th>Estado</th>
 				<th>Acciones</th>
 			</tr>
 
@@ -23,13 +25,13 @@
 				<td th:text="${reserva.fecha}"></td>
 				<td th:text="${reserva.inicio}"></td>
 				<td th:text="${reserva.tReserva}"></td>
+				<td th:text="${reserva.estado}"></td>
 				<td><form action="/reserva/d" method="post">
 						<input type="hidden" name="idR" th:value="${reserva.id}">
 						<button onclick="submit()" class="btn btn-light">
 							<img src="/img/trash.png" width="20" height="20">
 						</button>
-					</form>
-				</td>
+					</form></td>
 			</tr>
 
 		</table>

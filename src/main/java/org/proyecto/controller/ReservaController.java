@@ -51,11 +51,11 @@ public class ReservaController {
 	@GetMapping("c")
 	public String c(@RequestParam("zonaId") Long zonaId, @RequestParam("vecinoId") String vecinoId, ModelMap m,
 			HttpSession s) throws DangerException {
-			rol.isRolOK("auth", s);
-			m.put("zona", repoZonaComun.getOne(zonaId));
-			m.put("vecino", repoVecino.getOne(vecinoId));
-			m.put("view", "/reserva/cU");
-			return "/_t2/frame";
+		rol.isRolOK("auth", s);
+		m.put("zona", repoZonaComun.getOne(zonaId));
+		m.put("vecino", repoVecino.getOne(vecinoId));
+		m.put("view", "/reserva/cU");
+		return "/_t2/frame";
 	}
 
 	@PostMapping("c")
@@ -71,11 +71,12 @@ public class ReservaController {
 				String inicios = "";
 				for (int i = 0; i < comienzos.length; i++) {
 					inicios += comienzos[i] + ",";
-					Franja franja = repoFranja.getByZonaAndFechaAndHora(repoZonaComun.getOne(zonaId),date, comienzos[i]);
+					Franja franja = repoFranja.getByZonaAndFechaAndHora(repoZonaComun.getOne(zonaId), date,
+							comienzos[i]);
 					franja.setEstado("reservado");
 					repoFranja.save(franja);
 				}
-				Reserva reserva = new Reserva(fecha, inicios.substring(0, inicios.length() - 1), comienzos.length * 30);
+				Reserva reserva = new Reserva(date, inicios.substring(0, inicios.length() - 1), comienzos.length * 30);
 
 				if (vecinoId != null && zonaId != null) {
 					Vecino vecino = repoVecino.getOne(vecinoId);
@@ -90,9 +91,9 @@ public class ReservaController {
 				repoReserva.save(reserva);
 
 			} catch (Exception e) {
-				//PRG.error("Reserva no realizada ", "/vecino/home");
+				// PRG.error("Reserva no realizada ", "/vecino/home");
 				PRG.error(e.getMessage(), "/vecino/home");
-		
+
 			}
 			PRG.info("Reserva realizada correctamente", "/vecino/home");
 		} else {
@@ -133,24 +134,23 @@ public class ReservaController {
 	// =========================================
 
 	@GetMapping("r")
-	public String rA(ModelMap m,
-			HttpSession s) throws DangerException {
-			rol.isRolOK("admin", s);
-			List<Reserva> reservas = repoReserva.findAll();
-			m.put("reservas", reservas);
-			m.put("view", "/reserva/rA");
-			return "/_t3/frame";
+	public String rA(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("admin", s);
+		List<Reserva> reservas = repoReserva.findAll();
+		m.put("reservas", reservas);
+		m.put("view", "/reserva/rA");
+		return "/_t3/frame";
 	}
+
 	@GetMapping("rU")
-	public String rU (ModelMap m,  
-			HttpSession s) throws  DangerException {
-			rol.isRolOK("auth", s);
-			Vecino v = (Vecino) s.getAttribute("vecino");
-			List<Reserva> reservas = repoReserva.findByHace(v);
-			m.put("vecino", v);
-			m.put("reservas", reservas);
-			m.put("view", "/reserva/rU");
-			return "/_t2/frame";
+	public String rU(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("auth", s);
+		Vecino v = (Vecino) s.getAttribute("vecino");
+		List<Reserva> reservas = repoReserva.findByHace(v);
+		m.put("vecino", v);
+		m.put("reservas", reservas);
+		m.put("view", "/reserva/rU");
+		return "/_t2/frame";
 	}
 
 	@PostMapping("d")
@@ -159,12 +159,10 @@ public class ReservaController {
 
 		try {
 			Reserva reserva = repoReserva.getOne(idR);
-			String [] inicios = reserva.getInicio().split(",");
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String[] inicios = reserva.getInicio().split(",");
 
-			Date date = formatter.parse(reserva.getFecha());
-			for(String inicio : inicios) {
-				Franja f = repoFranja.getByFechaAndHora(date, inicio);
+			for (String inicio : inicios) {
+				Franja f = repoFranja.getByFechaAndHora(reserva.getFecha(), inicio);
 				f.setEstado("libre");
 			}
 			// ==========historico========== Guarda la reserva seleccionada
@@ -177,27 +175,53 @@ public class ReservaController {
 		return "redirect:/vecino/home";
 	}
 
-	@Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
-	public void funcionAuto2350() {
-		Calendar cal = Calendar.getInstance();
-		int dia = cal.get(Calendar.DATE);
-		int mes = cal.get(Calendar.MONTH);
-		int anio = cal.get(Calendar.YEAR);
-		cal.set(anio, mes, dia, 0, 0, 0);
-		// =================Reservas pendientes-->completadas=====================
-		List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(cal.getTime(), "pendiente");
-		for (int i = 0; i < reservasPend.size(); i++) {
-			reservasPend.get(i).setEstado("completada");
-			repoReserva.save(reservasPend.get(i));
+	// @Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
+	@PostMapping("auto")
+	public String funcionAuto2350(ModelMap m, HttpSession s) throws DangerException {
+		rol.isRolOK("admin", s);
+		try {
+			Calendar cal = Calendar.getInstance();
+			int dia = cal.get(Calendar.DATE);
+			int mes = cal.get(Calendar.MONTH);
+			int anio = cal.get(Calendar.YEAR);
+			cal.set(anio, mes, dia, 0, 0, 0);
+			// =================Reservas pendientes-->completadas=====================
+			List<Reserva> reservasPend = repoReserva.findByFechaAndEstado(cal.getTime(), "pendiente");
+
+			for (Reserva reserva : reservasPend) {
+				reserva.setEstado("completada");
+				repoReserva.save(reserva);
+			}
+
+			// =================Añadir Franjas dia pasadas 2 semanas=====================
+
+			List<ZonaComun> zonas = repoZonaComun.findAll();
+			for (ZonaComun z : zonas) {
+				List<Franja> franjas2Sem = helper.addFranja2sem(z);
+				for (Franja f : franjas2Sem) {
+					repoFranja.save(f);
+					z.getFranjas().add(f);
+				}
+				repoZonaComun.save(z);
+			}
+			// =================Borrar Franjas de hoy=====================
+			for (ZonaComun z : zonas) {
+				List<Franja> franjasZonaHoy = repoFranja.findByZonaAndFechaAndEstado(z, cal.getTime(), "libre");
+				for (Franja f : franjasZonaHoy) {
+				
+					z.getFranjas();
+					System.out.println(f.getFecha());
+				//	repoFranja.delete(f);
+					}
+			
+			}
+
+
+		} catch (Exception e) {
+			PRG.error("Error accion automatica " + e.getMessage(), "/homeAdmin");
 		}
-		// =================Borrar Franjas de hoy=====================
 
-		List<Franja> franjasHoy = repoFranja.findByFechaAndEstado(cal.getTime(), "libre");
-		repoFranja.deleteAll(franjasHoy);
-
-		// =================Añadir Franjas dia pasadas 2 semanas===================== en
-		// el controller de zc
-		// List<Franja> franjas2Sem= helper.addFranja2sem(zona);
+		return "redirect:/homeAdmin";
 
 	}
 }
