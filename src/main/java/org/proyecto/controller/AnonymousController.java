@@ -53,7 +53,7 @@ public class AnonymousController {
 	public String homeAdmin(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("administrador", s);
 		m.put("view", "/anonymous/homeAdmin");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 	
 	@GetMapping("/estadistica")
@@ -74,7 +74,7 @@ public class AnonymousController {
 		
 		m.put("reservas", reservasT);
 		m.put("view", "/anonymous/estadistica");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 	// =========================================
 

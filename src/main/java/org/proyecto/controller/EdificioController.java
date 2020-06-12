@@ -38,7 +38,7 @@ public class EdificioController {
 		rol.isRolOK("administrador", s);
 		m.put("urbanizaciones", repoUrbanizacion.findAll());
 		m.put("view", "/edificio/c");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	@PostMapping("c")
@@ -137,7 +137,7 @@ public class EdificioController {
 		List<Edificio> edificios = repoEdificio.findAll();
 		m.put("edificios", edificios);
 		m.put("view", "/edificio/r");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	@PostMapping("d")

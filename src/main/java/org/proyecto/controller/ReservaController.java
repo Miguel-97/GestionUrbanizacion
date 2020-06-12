@@ -139,7 +139,7 @@ public class ReservaController {
 			List<Reserva> reservas = repoReserva.findAll();
 			m.put("reservas", reservas);
 			m.put("view", "/reserva/rA");
-			return "/_t/frame";
+			return "/_t3/frame";
 	}
 	@GetMapping("rU")
 	public String rU (ModelMap m,  

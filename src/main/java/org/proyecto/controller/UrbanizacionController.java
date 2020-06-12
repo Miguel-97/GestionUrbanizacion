@@ -36,7 +36,7 @@ public class UrbanizacionController {
 	public String c(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("administrador", s);
 		m.put("view", "/urbanizacion/c");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	@PostMapping("c")
@@ -63,7 +63,7 @@ public class UrbanizacionController {
 		List<Urbanizacion> urbanizaciones = repoUrbanizacion.findAll();
 		m.put("urbanizaciones", urbanizaciones);
 		m.put("view", "/urbanizacion/r");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	// =========================================
