@@ -1,5 +1,7 @@
 package org.proyecto.domain;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +15,7 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String fecha;
+	private Date fecha;
 
 	private String inicio;
 
@@ -34,7 +36,7 @@ public class Reserva {
 
 	}
 
-	public Reserva(String fecha, String inicio, Integer tReserva) {
+	public Reserva(Date fecha, String inicio, Integer tReserva) {
 		super();
 		this.fecha = fecha;
 		this.inicio = inicio;
@@ -52,11 +54,11 @@ public class Reserva {
 		this.id = id;
 	}
 
-	public String getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(String fecha) {
+	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
 
