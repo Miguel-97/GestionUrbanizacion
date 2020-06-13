@@ -58,45 +58,50 @@ public class ReservaController {
 	}
 
 	@PostMapping("c")
-	public String cPost(@RequestParam("fecha") String fecha, @RequestParam("franjas[]") String comienzos[],
+	public String cPost(@RequestParam("fecha") String fecha,
+			@RequestParam(value = "franjas[]", required = false) String comienzos[],
 			@RequestParam("tReserva") Integer tReserva, @RequestParam("vecinoId") String vecinoId,
 			@RequestParam("zonaId") Long zonaId) throws DangerException, InfoException {
-
-		if (comienzos.length <= tReserva / 30) {
-			try {
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-				Date date = formatter.parse(fecha);
-
-				String inicios = "";
-				for (int i = 0; i < comienzos.length; i++) {
-					inicios += comienzos[i] + ",";
-					Franja franja = repoFranja.getByZonaAndFechaAndHora(repoZonaComun.getOne(zonaId), date,
-							comienzos[i]);
-					franja.setEstado("reservado");
-					repoFranja.save(franja);
-				}
-				Reserva reserva = new Reserva(date, inicios.substring(0, inicios.length() - 1), comienzos.length * 30);
-
-				if (vecinoId != null && zonaId != null) {
-					Vecino vecino = repoVecino.getOne(vecinoId);
-					ZonaComun zona = repoZonaComun.getOne(zonaId);
-
-					vecino.getReservas().add(reserva);
-					zona.getReservas().add(reserva);
-
-					reserva.setHace(vecino);
-					reserva.setTiene(zona);
-				}
-				repoReserva.save(reserva);
-
-			} catch (Exception e) {
-				// PRG.error("Reserva no realizada ", "/vecino/home");
-				PRG.error(e.getMessage(), "/vecino/home");
-
-			}
-			PRG.info("Reserva realizada correctamente", "/vecino/home");
+		if (comienzos == null || comienzos.length == 0 || tReserva == null) {
+			PRG.error("Los datos no pueden estar vacíos ", "/vecino/home");
 		} else {
-			PRG.error("Limite de tiempo para la reserva excedido ", "/vecino/home");
+			if (comienzos.length <= tReserva / 30) {
+				try {
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					Date date = formatter.parse(fecha);
+
+					String inicios = "";
+					for (int i = 0; i < comienzos.length; i++) {
+						inicios += comienzos[i] + ",";
+						Franja franja = repoFranja.getByZonaAndFechaAndHora(repoZonaComun.getOne(zonaId), date,
+								comienzos[i]);
+						franja.setEstado("reservado");
+						repoFranja.save(franja);
+					}
+					Reserva reserva = new Reserva(date, inicios.substring(0, inicios.length() - 1),
+							comienzos.length * 30);
+
+					if (vecinoId != null && zonaId != null) {
+						Vecino vecino = repoVecino.getOne(vecinoId);
+						ZonaComun zona = repoZonaComun.getOne(zonaId);
+
+						vecino.getReservas().add(reserva);
+						zona.getReservas().add(reserva);
+
+						reserva.setHace(vecino);
+						reserva.setTiene(zona);
+					}
+					repoReserva.save(reserva);
+
+				} catch (Exception e) {
+					// PRG.error("Reserva no realizada ", "/vecino/home");
+					PRG.error(e.getMessage(), "/vecino/home");
+
+				}
+				PRG.info("Reserva realizada correctamente", "/vecino/home");
+			} else {
+				PRG.error("Límite de tiempo para la reserva excedido ", "/vecino/home");
+			}
 		}
 
 		return "redirect:/vecino/home";
@@ -163,6 +168,7 @@ public class ReservaController {
 		}
 		return "redirect:/vecino/home";
 	}
+
 	// @Scheduled(cron = "0 50 23 * * *", zone = "Europe/Madrid")
 	@PostMapping("auto")
 	public String funcionAuto2350(ModelMap m, HttpSession s) throws DangerException {
@@ -200,7 +206,7 @@ public class ReservaController {
 				}
 			}
 		} catch (Exception e) {
-			PRG.error("Error accion automatica " + e.getMessage(), "/homeAdmin");
+			PRG.error("Error acción automática " + e.getMessage(), "/homeAdmin");
 		}
 		return "redirect:/homeAdmin";
 	}
