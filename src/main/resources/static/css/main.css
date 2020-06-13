@@ -38,11 +38,23 @@
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
+
+#textZonaImg{
+	font-size: 20px;
+}
+
 #footerUsu{
 	
 	margin-top: 20%;
 	
 }
+
+#footerUsu2{
+	
+	margin-top: 20%;
+	
+}
+
 #logousu {
 	margin-left: 10px;
 }
