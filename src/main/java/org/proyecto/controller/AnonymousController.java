@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping("https://urbazone.herokuapp.com")
 @Controller
 public class AnonymousController {
 
@@ -36,7 +35,7 @@ public class AnonymousController {
 
 	@Autowired
 	UrbanizacionRepository repoUrbanizacion;
-
+	
 	@Autowired
 	ReservaRepository repoReserva;
 
@@ -56,7 +55,7 @@ public class AnonymousController {
 		m.put("view", "/anonymous/homeAdmin");
 		return "/_t3/frame";
 	}
-
+	
 	@GetMapping("/estadistica")
 	public String estadisticasAdmin(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("administrador", s);
@@ -72,7 +71,7 @@ public class AnonymousController {
 		m.put("tResTot", tResTot);
 		// Franjas reservadas totales
 		m.put("fResTot", tResTot / 30);
-
+		
 		m.put("reservas", reservasT);
 		m.put("view", "/anonymous/estadistica");
 		return "/_t3/frame";
@@ -140,8 +139,7 @@ public class AnonymousController {
 		String view = "/";
 		try {
 			Vecino vecino = repoVecino.getByEmail(email);
-			if (vecino.getEmail().equals("gestion.urbanizacion.2020@gmail.com")
-					&& vecino.getPassword().equals(password)) {
+			if (vecino.getEmail().equals("gestion.urbanizacion.2020@gmail.com")&& vecino.getPassword().equals(password)) {
 				vecino.setEstado("activo");
 				s.setAttribute("vecino", vecino);
 				view = "/homeAdmin";
@@ -159,7 +157,7 @@ public class AnonymousController {
 						PRG.error("Email o Contraseña incorrecta", "/login");
 						view = "/info";
 					}
-				} else if (vecino.getEstado().equals("activo")) {
+				} else if (vecino.getEstado().equals("activo")) {				
 					if ((bpe.matches(password, vecino.getPassword()))) {
 						s.setAttribute("vecino", vecino);
 						s.setAttribute("inicio", "multiple");
