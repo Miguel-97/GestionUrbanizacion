@@ -96,7 +96,7 @@ public class VecinoController {
 		m.put("vecinos", repoVecino.findByViveId(idEdificio));
 		m.put("portal", repoEdificio.getOne(idEdificio).getPortal());
 		m.put("view", "/vecino/ul");
-		return "/_t/frame";
+		return "/_t3/frame";
 	}
 
 	@PostMapping("ul")

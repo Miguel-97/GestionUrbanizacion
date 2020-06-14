@@ -15,7 +15,7 @@
 
 			<tr th:each="reserva:${reservas}">
 				<td th:text="${reserva.tiene?.nombre}"></td>
-				<td th:text="${reserva.fecha}"></td>
+				<td th:text="${#strings.substringBefore(reserva.fecha,' ')}"></td>
 				<td th:text="${reserva.inicio}"></td>
 				<td th:text="${reserva.tReserva}"></td>
 				<td th:text="${reserva.estado}"></td>

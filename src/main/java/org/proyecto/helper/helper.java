@@ -136,44 +136,44 @@ public class helper {
 		fecha2sem.set(anio, mes, dia, 0, 0, 0);
 		fecha2sem.add(Calendar.DAY_OF_YEAR, 14);
 
-			String temp[] = zona.getHorario().split("-");// {temp[0]--> [hh:mm] temp[1]-->[hh:mm]}-->String
+		String temp[] = zona.getHorario().split("-");// {temp[0]--> [hh:mm] temp[1]-->[hh:mm]}-->String
 
-			String[] horaminI = temp[0].split(":"); // [hh:mm]
-			String[] horaminF = temp[1].split(":"); // [hh:mm]
+		String[] horaminI = temp[0].split(":"); // [hh:mm]
+		String[] horaminF = temp[1].split(":"); // [hh:mm]
 
-			int horaI = Integer.parseInt(horaminI[0]);// [hh]
-			int minI = Integer.parseInt(horaminI[1]);// [mm]
-			int horaF = Integer.parseInt(horaminF[0]);// [hh]
-			int minF = Integer.parseInt(horaminF[1]);// [mm]
-			int franjasDiarias = 0;
+		int horaI = Integer.parseInt(horaminI[0]);// [hh]
+		int minI = Integer.parseInt(horaminI[1]);// [mm]
+		int horaF = Integer.parseInt(horaminF[0]);// [hh]
+		int minF = Integer.parseInt(horaminF[1]);// [mm]
+		int franjasDiarias = 0;
 
-			if (minI == minF) {// 1
-				franjasDiarias = (horaF - horaI) * 2;
-			} else if (minI == 00 && minF == 30) {// 2
-				franjasDiarias = ((horaF - horaI) * 2) + 1;
-			} else if (minI == 30 && minF == 00) {// 3
-				franjasDiarias = ((horaF - horaI) * 2) - 1;
+		if (minI == minF) {// 1
+			franjasDiarias = (horaF - horaI) * 2;
+		} else if (minI == 00 && minF == 30) {// 2
+			franjasDiarias = ((horaF - horaI) * 2) + 1;
+		} else if (minI == 30 && minF == 00) {// 3
+			franjasDiarias = ((horaF - horaI) * 2) - 1;
+		}
+		for (int i = 0; i <= franjasDiarias; i++) {
+			Franja f = new Franja();
+			if (minI == 00 && i % 2 == 0) {// a en puntos minI ==0
+				int hora = horaI + (i / 2);
+				f.setHora("" + hora + ":00");
+			} else if (minI == 00 && i % 2 != 0) {// y medias minI ==0
+				int hora = horaI + (i / 2);
+				f.setHora("" + hora + ":30");
+			} else if (minI == 30 && i % 2 == 0) {// a y medias minI ==30
+				int hora = horaI + (i / 2);
+				f.setHora("" + hora + ":30");
+			} else if (minI == 30 && i % 2 != 0) {// en puntos minI ==30
+				int hora = horaI + ((i / 2) + 1);
+				f.setHora("" + hora + ":00");
 			}
-			for (int i = 0; i <= franjasDiarias; i++) {
-				Franja f = new Franja();
-				if (minI == 00 && i % 2 == 0) {// a en puntos minI ==0
-					int hora = horaI + (i / 2);
-					f.setHora("" + hora + ":00");
-				} else if (minI == 00 && i % 2 != 0) {// y medias minI ==0
-					int hora = horaI + (i / 2);
-					f.setHora("" + hora + ":30");
-				} else if (minI == 30 && i % 2 == 0) {// a y medias minI ==30
-					int hora = horaI + (i / 2);
-					f.setHora("" + hora + ":30");
-				} else if (minI == 30 && i % 2 != 0) {// en puntos minI ==30
-					int hora = horaI + ((i / 2) + 1);
-					f.setHora("" + hora + ":00");
-				}
-				f.setFecha(fecha2sem.getTime());
-				f.setZona(zona);
-				franjas2sem.add(f);
-			}
-		
+			f.setFecha(fecha2sem.getTime());
+			f.setZona(zona);
+			franjas2sem.add(f);
+		}
+
 		return franjas2sem;
 	}
 
@@ -205,23 +205,24 @@ public class helper {
 	public static void historicoReserva(Reserva reserva) {
 		try {
 			File fileR = new File(RUTA + "reservas.txt");
+			if (reserva.getEstado().equals("completada")) {
+				// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
+				String agenda = reserva.getTiene().getId() + "," + reserva.getFecha() + "," + reserva.getInicio() + ","
+						+ reserva.gettReserva() + "," + reserva.getHace().getId() + "|";
 
-			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
-			String agenda = reserva.getTiene().getId() + "," + reserva.getFecha() + "," + reserva.getInicio() + ","
-					+ reserva.gettReserva() + "," + reserva.getHace().getId() + "|";
+				String docR = leerArchivo("reservas");
+				docR += agenda;
 
-			String docR = leerArchivo("reservas");
-			docR += agenda;
+				FileWriter fwr = new FileWriter(fileR);
 
-			FileWriter fwr = new FileWriter(fileR);
+				BufferedWriter bwr = new BufferedWriter(fwr);
 
-			BufferedWriter bwr = new BufferedWriter(fwr);
+				bwr.write(docR);
 
-			bwr.write(docR);
+				bwr.flush();
 
-			bwr.flush();
-
-			fwr.close();
+				fwr.close();
+			}
 		} catch (IOException e) {
 			e.getMessage();
 		}
@@ -343,10 +344,13 @@ public class helper {
 			}
 
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
+			
 			ArrayList<String> agenda = new ArrayList<String>();
-			for (int i = 0; i < reservas.size(); i++) {
-				agenda.add(reservas.get(i).getTiene().getId() + "," + reservas.get(i).getFecha() + ","
-						+ reservas.get(i).gettReserva() + "," + reservas.get(i).getHace().getId() + "|");
+			for (Reserva reserva : reservas) {
+				if (reserva.getEstado().equals("completada")) {
+				agenda.add(reserva.getTiene().getId() + "," + reserva.getFecha() + ","
+						+ reserva.gettReserva() + "," + reserva.getHace().getId() + "|");
+				}
 			}
 
 			String docE = leerArchivo("edificios");
