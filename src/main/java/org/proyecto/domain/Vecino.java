@@ -52,10 +52,11 @@ public class Vecino {
 		this.reservas = new ArrayList<Reserva>();
 	}
 
-	public Vecino(String id, String username, String password, String email, String estado) {
+	public Vecino(String id, String username, String nombre, String password, String email, String estado) {
 		super();
 		this.id = id;
 		this.username = username;
+		this.nombre = nombre;
 		this.password = password;
 		this.email = email;
 		this.estado = estado;

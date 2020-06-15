@@ -35,7 +35,7 @@ public class AnonymousController {
 
 	@Autowired
 	UrbanizacionRepository repoUrbanizacion;
-	
+
 	@Autowired
 	ReservaRepository repoReserva;
 
@@ -47,7 +47,6 @@ public class AnonymousController {
 		return "redirect:/login";
 	}
 
-	
 	// =========================================
 
 	@GetMapping("/privacidad")
@@ -55,15 +54,15 @@ public class AnonymousController {
 		rol.isRolOK("anon", s);
 		m.put("view", "/anonymous/privacidad");
 		return "/_t/frame";
-	}	
+	}
 	// =========================================
-	
+
 	@GetMapping("/cookies")
 	public String cookies(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("anon", s);
 		m.put("view", "/anonymous/cookies");
 		return "/_t/frame";
-	}	
+	}
 	// =========================================
 
 	@GetMapping("/homeAdmin")
@@ -72,7 +71,7 @@ public class AnonymousController {
 		m.put("view", "/anonymous/homeAdmin");
 		return "/_t3/frame";
 	}
-	
+
 	@GetMapping("/estadistica")
 	public String estadisticasAdmin(ModelMap m, HttpSession s) throws DangerException {
 		rol.isRolOK("administrador", s);
@@ -88,7 +87,7 @@ public class AnonymousController {
 		m.put("tResTot", tResTot);
 		// Franjas reservadas totales
 		m.put("fResTot", tResTot / 30);
-		
+
 		m.put("reservas", reservasT);
 		m.put("view", "/anonymous/estadistica");
 		return "/_t3/frame";
@@ -136,8 +135,8 @@ public class AnonymousController {
 			PRG.error("Contraseña incorrecta", "/init");
 		}
 		repoVecino.deleteAll();
-		repoVecino.save(new Vecino("40m1n157r40or", "administrador", "40m1n157r40or",
-				"gestion.urbanizacion.2020@gmail.com", "pendiente"));
+		repoVecino.save(new Vecino("40m1n157r40or", "administrador", "administrador", "40m1n157r40or",
+				"gestion.urbanizacion.2020@gmail.com", "administrador"));
 		return "redirect:/login";
 	}
 
@@ -156,7 +155,8 @@ public class AnonymousController {
 		String view = "/";
 		try {
 			Vecino vecino = repoVecino.getByEmail(email);
-			if (vecino.getEmail().equals("gestion.urbanizacion.2020@gmail.com")&& vecino.getPassword().equals(password)) {
+			if (vecino.getEmail().equals("gestion.urbanizacion.2020@gmail.com")
+					&& vecino.getPassword().equals(password)) {
 				vecino.setEstado("activo");
 				s.setAttribute("vecino", vecino);
 				view = "/homeAdmin";
@@ -174,7 +174,7 @@ public class AnonymousController {
 						PRG.error("Email o Contraseña incorrecta", "/login");
 						view = "/info";
 					}
-				} else if (vecino.getEstado().equals("activo")) {				
+				} else if (vecino.getEstado().equals("activo")) {
 					if ((bpe.matches(password, vecino.getPassword()))) {
 						s.setAttribute("vecino", vecino);
 						s.setAttribute("inicio", "multiple");

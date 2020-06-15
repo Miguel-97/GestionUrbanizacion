@@ -344,12 +344,12 @@ public class helper {
 			}
 
 			// $R[[idZona][#fecha],[#franja],[#numFranjas],[#idVecino]]
-			
+
 			ArrayList<String> agenda = new ArrayList<String>();
 			for (Reserva reserva : reservas) {
 				if (reserva.getEstado().equals("completada")) {
-				agenda.add(reserva.getTiene().getId() + "," + reserva.getFecha() + ","
-						+ reserva.gettReserva() + "," + reserva.getHace().getId() + "|");
+					agenda.add(reserva.getTiene().getId() + "," + reserva.getFecha() + "," + reserva.gettReserva() + ","
+							+ reserva.getHace().getId() + "|");
 				}
 			}
 
