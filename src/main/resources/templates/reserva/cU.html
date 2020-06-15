@@ -27,16 +27,6 @@
 				<span class="focus-input100"></span>
 			</div>
 
-<!-- 
-			<div class="wrap-input100 validate-input"
-				data-validate="franjas requerido">
-				<label class="label-input100" for="franjas">Franjas</label> <select
-					id="franjas" class="input100" multiple="multiple" name="franjas[]">
-					<option th:each="franja:${franjas}" th:text="${franja.hora}"
-						th:value="${zona.id}"></option>
-				</select> <span class="focus-input100"></span>
-			</div>
- -->
 				<div id="tablaFranjas" class="form-inline"></div>
 			
 			<input type="hidden" id="zonaId" name="zonaId" th:value="${zona.id}"> <input
@@ -54,22 +44,6 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {	
-		//SACA LAS FRANJAS EN UN SELECT MULTIPLE
-	/*	$('#fecha').on('change',
-			function() {
-				$.getJSON('getFranjas',
-					'datos='+$('#zonaId').val()+'Y'+$(this).val(),
-					function(valor) {
-						$('#franjas').empty();
-						var html = '<option>Selecciona Franjas</option>';
-						var len = valor.length;
-						for(var i=0; i<len;i++) {
-							html+='<option value="' + valor[i] + '">' + valor[i] + '</option>';
-						}
-						$('#franjas').append(html);
-					});
-							
-		});*/
 		
 		//SACA LAS FRANJAS EN UNA TABLA
 		$('#fecha').on('change',

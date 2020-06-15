@@ -50,16 +50,14 @@ public class AnonymousController {
 	// =========================================
 
 	@GetMapping("/privacidad")
-	public String privacidad(ModelMap m, HttpSession s) throws DangerException {
-		rol.isRolOK("anon", s);
+	public String privacidad(ModelMap m, HttpSession s) {
 		m.put("view", "/anonymous/privacidad");
 		return "/_t/frame";
 	}
 	// =========================================
 
 	@GetMapping("/cookies")
-	public String cookies(ModelMap m, HttpSession s) throws DangerException {
-		rol.isRolOK("anon", s);
+	public String cookies(ModelMap m, HttpSession s) {
 		m.put("view", "/anonymous/cookies");
 		return "/_t/frame";
 	}
